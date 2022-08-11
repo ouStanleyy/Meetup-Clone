@@ -28,22 +28,15 @@ const restoreUser = (req, res, next) => {
   req.user = null;
 
   return jwt.verify(token, secret, null, async (err, jwtPayload) => {
-    if (err) {
-      return next();
+    if (!err) {
+      try {
+        req.user = await User.getCurrentUserById(jwtPayload.data.id);
+      } catch (err) {}
     }
 
-    try {
-      const { id } = jwtPayload.data;
-      req.user = await User.getCurrentUserById(id);
+    if (!req.user) res.clearCookie("token");
 
-      if (!req.user) res.clearCookie("token");
-
-      return next();
-    } catch (err) {
-      res.clearCookie("token");
-
-      return next();
-    }
+    return next();
   });
 };
 
