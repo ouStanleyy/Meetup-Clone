@@ -5,9 +5,10 @@ const { User } = require("../../db/models");
 
 // Get current user/session
 router.get("/", (req, res) => {
-  if (req.user) return res.json({ user: req.user.toSafeObject() });
+  // if (req.user) return res.json({ user: req.user.toSafeObject() });
 
-  res.json({});
+  // res.json({});
+  res.json(req.user);
 });
 
 // Log in
@@ -24,9 +25,9 @@ router.post("/", validateLogin, async (req, res, next) => {
     return next(err);
   }
 
-  setTokenCookie(res, user);
+  user.dataValues.token = setTokenCookie(res, user);
 
-  res.json({ user });
+  res.json(user);
 });
 
 // Log out
