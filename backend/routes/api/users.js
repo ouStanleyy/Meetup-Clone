@@ -8,8 +8,8 @@ router.use("/session", sessionRouter);
 
 // Sign up a new user
 router.post("/", validateSignup, async (req, res) => {
-  const { username, email, password } = req.body;
-  const user = await User.signup({ username, email, password });
+  const { firstName, lastName, email, password } = req.body;
+  const user = await User.signup({ firstName, lastName, email, password });
 
   setTokenCookie(res, user);
 

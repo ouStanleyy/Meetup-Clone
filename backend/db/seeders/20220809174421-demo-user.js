@@ -8,19 +8,22 @@ module.exports = {
       "Users",
       [
         {
+          firstName: "Demo",
+          lastName: "User",
           email: "demo@user.io",
-          username: "Demo-lition",
-          hashedPassword: bcrypt.hashSync("password"),
+          password: bcrypt.hashSync("demopassword"),
         },
         {
-          email: "user1@user.io",
-          username: "FakeUser1",
-          hashedPassword: bcrypt.hashSync("password2"),
+          firstName: "Fake",
+          lastName: "User",
+          email: "fake@user.io",
+          password: bcrypt.hashSync("fakepassword"),
         },
         {
-          email: "user2@user.io",
-          username: "FakeUser2",
-          hashedPassword: bcrypt.hashSync("password3"),
+          firstName: "Wannabe",
+          lastName: "User",
+          email: "wannabe@user.io",
+          password: bcrypt.hashSync("wannabepassword"),
         },
       ],
       {}
@@ -31,7 +34,7 @@ module.exports = {
     await queryInterface.bulkDelete(
       "Users",
       {
-        username: ["Demo-lition", "FakeUser1", "FakeUser2"],
+        email: ["demo@user.io", "fake@user.io", "wannabe@user.io"],
       },
       {}
     );

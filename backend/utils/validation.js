@@ -19,9 +19,10 @@ const handleValidationErrors = (req, _res, next) => {
 };
 
 const validateLogin = [
-  check("credential")
+  check("email")
     .exists({ checkFalsy: true })
-    .withMessage("Please provide a valid email or username."),
+    .isEmail()
+    .withMessage("Please provide a valid email."),
   check("password")
     .exists({ checkFalsy: true })
     .withMessage("Please provide a password."),
@@ -34,11 +35,26 @@ const validateSignup = [
     .isEmail()
     .isLength({ min: 3, max: 256 })
     .withMessage("Please provide a valid email."),
-  check("username")
+  check("firstName")
     .exists({ checkFalsy: true })
     .isLength({ min: 4, max: 30 })
-    .withMessage("Please provide a valid username with at least 4 characters."),
-  check("username").not().isEmail().withMessage("Username cannot be an email."),
+    .withMessage(
+      "Please provide a valid first name with at least 4 characters."
+    ),
+  check("firstName")
+    .not()
+    .isEmail()
+    .withMessage("First name cannot be an email."),
+  check("lastName")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 4, max: 30 })
+    .withMessage(
+      "Please provide a valid last name with at least 4 characters."
+    ),
+  check("lastName")
+    .not()
+    .isEmail()
+    .withMessage("Last name cannot be an email."),
   check("password")
     .exists({ checkFalsy: true })
     .isLength({ min: 6 })

@@ -12,8 +12,8 @@ router.get("/", (req, res) => {
 
 // Log in
 router.post("/", validateLogin, async (req, res, next) => {
-  const { credential, password } = req.body;
-  const user = await User.login({ credential, password });
+  const { email, password } = req.body;
+  const user = await User.login({ email, password });
 
   if (!user) {
     const err = new Error("Login failed");
