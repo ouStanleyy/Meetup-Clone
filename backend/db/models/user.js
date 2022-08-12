@@ -37,13 +37,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Group, { foreignKey: "organizerId" });
     }
   }
   User.init(
     {
       firstName: {
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           len: [4, 30],
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       lastName: {
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           len: [4, 30],
@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       email: {
-        type: DataTypes.STRING(256),
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         validate: {
