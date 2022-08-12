@@ -17,7 +17,7 @@ const users = [
         private: false,
         city: "Demo City",
         state: "Demo State",
-        organizer: true,
+        status: "host",
       },
     ],
   },
@@ -34,7 +34,7 @@ const users = [
         private: false,
         city: "Demo City",
         state: "Demo State",
-        organizer: false,
+        status: "member",
       },
     ],
   },
@@ -49,7 +49,7 @@ const users = [
         about: "Wannabe description.",
         city: "Wannabe City",
         state: "Wannabe State",
-        organizer: true,
+        status: "host",
       },
       {
         name: "Demo Group",
@@ -58,7 +58,7 @@ const users = [
         private: false,
         city: "Demo City",
         state: "Demo State",
-        organizer: false,
+        status: "member",
       },
     ],
   },
@@ -76,17 +76,9 @@ module.exports = {
       });
 
       for (const group of groups) {
-        const {
-          name,
-          about,
-          type,
-          private: prv,
-          city,
-          state,
-          organizer,
-        } = group;
+        const { name, about, type, private: prv, city, state, status } = group;
 
-        if (organizer) {
+        if (status === "host") {
           const newGroup = await newUser.createGroup({
             name,
             about,
@@ -97,13 +89,13 @@ module.exports = {
           });
           await newUser.createMembership({
             groupId: newGroup.id,
-            status: "host",
+            status,
           });
         } else {
           const queriedGroup = await Group.findOne({ where: { name } });
           await newUser.createMembership({
             groupId: queriedGroup.id,
-            status: "member",
+            status,
           });
         }
       }
@@ -111,12 +103,9 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete(
-      "Users",
-      {
-        email: ["demo@user.io", "fake@user.io", "wannabe@user.io"],
-      },
-      {}
-    );
+    for (const user of users) {
+      const { email } = user;
+      await User.destroy({ where: { email } });
+    }
   },
 };
