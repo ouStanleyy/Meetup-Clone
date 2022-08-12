@@ -47,8 +47,8 @@ const users = [
       {
         name: "Wannabe Group",
         about: "Wannabe description.",
-        city: "Demo City",
-        state: "Demo State",
+        city: "Wannabe City",
+        state: "Wannabe State",
         organizer: true,
       },
       {
@@ -68,19 +68,42 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     for (const user of users) {
       const { firstName, lastName, email, password, groups } = user;
-      const newUser = User.create({ firstName, lastName, email, password });
+      const newUser = await User.create({
+        firstName,
+        lastName,
+        email,
+        password,
+      });
 
       for (const group of groups) {
-        const { name, about, type, private, city, state, organizer } = group;
+        const {
+          name,
+          about,
+          type,
+          private: prv,
+          city,
+          state,
+          organizer,
+        } = group;
 
         if (organizer) {
-          const newGroup = newUser.createGroup({
+          const newGroup = await newUser.createGroup({
             name,
             about,
             type,
-            private,
+            private: prv,
             city,
             state,
+          });
+          await newUser.createMembership({
+            groupId: newGroup.id,
+            status: "host",
+          });
+        } else {
+          const queriedGroup = await Group.findOne({ where: { name } });
+          await newUser.createMembership({
+            groupId: queriedGroup.id,
+            status: "member",
           });
         }
       }

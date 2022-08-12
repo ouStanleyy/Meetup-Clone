@@ -9,11 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Group.belongsTo(models.User, { foreignKey: "organizerId" });
+      Group.hasMany(models.Membership, { foreignKey: "groupId" });
     }
   }
   Group.init(
     {
-      organizerId: DataTypes.INTEGER,
+      organizerId: { type: DataTypes.INTEGER, allowNull: false },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -23,9 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       about: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: { len: [50] },
+        // validate: { len: [50] },
       },
-      type: DataTypes.ENUM,
+      type: {
+        type: DataTypes.ENUM("Online", "In person"),
+        allowNull: false,
+        defaultValue: "Online",
+      },
       private: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
