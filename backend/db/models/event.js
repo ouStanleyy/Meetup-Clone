@@ -15,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         hooks: true,
       });
+      Event.hasMany(models.Image, {
+        foreignKey: "imageableId",
+        constraints: false,
+        onDelete: "CASCADE",
+        scope: {
+          commentableType: "Event",
+        },
+      });
     }
   }
   Event.init(

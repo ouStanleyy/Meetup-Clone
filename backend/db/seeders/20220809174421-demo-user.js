@@ -27,7 +27,6 @@ const users = [
               lat: 123.4567,
               lng: 234.5678,
             },
-
             name: "Demo Event",
             description: "Demo description.",
             type: "In person",
@@ -80,7 +79,6 @@ const users = [
               lat: 87.6543211,
               lng: 123.4567899,
             },
-
             name: "Wannabe Event",
             description: "Wannabe description.",
             capacity: 20,

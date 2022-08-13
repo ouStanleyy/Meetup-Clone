@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         hooks: true,
       });
+      User.hasMany(models.Image, { foreignKey: "userId" });
     }
   }
   User.init(
