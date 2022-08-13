@@ -43,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true,
       });
       User.hasMany(models.Membership, { foreignKey: "memberId" });
+      User.hasMany(models.Attendance, {
+        foreignKey: "userId",
+        onDelete: "CASCADE",
+        hooks: true,
+      });
     }
   }
   User.init(

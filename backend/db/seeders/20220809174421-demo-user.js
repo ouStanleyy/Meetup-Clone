@@ -1,7 +1,7 @@
 "use strict";
 
 const bcrypt = require("bcryptjs");
-const { User, Group } = require("../models");
+const { User, Group, Event } = require("../models");
 
 const users = [
   {
@@ -18,6 +18,26 @@ const users = [
         city: "Demo City",
         state: "Demo State",
         status: "host",
+        events: [
+          {
+            venue: {
+              address: "123 Demo Street",
+              city: "Demo City",
+              state: "Demo State",
+              lat: 123.4567,
+              lng: 234.5678,
+            },
+
+            name: "Demo Event",
+            description: "Demo description.",
+            type: "In person",
+            capacity: 10,
+            price: 99.99,
+            startDate: new Date("December 17, 2022 03:00:00").toString(),
+            endDate: new Date("December 24, 2022 03:00:00").toString(),
+            status: "host",
+          },
+        ],
       },
     ],
   },
@@ -29,12 +49,13 @@ const users = [
     groups: [
       {
         name: "Demo Group",
-        about: "Demo description.",
-        type: "In person",
-        private: false,
-        city: "Demo City",
-        state: "Demo State",
         status: "member",
+        events: [
+          {
+            name: "Demo Event",
+            status: "member",
+          },
+        ],
       },
     ],
   },
@@ -50,15 +71,35 @@ const users = [
         city: "Wannabe City",
         state: "Wannabe State",
         status: "host",
+        events: [
+          {
+            venue: {
+              address: "123 Wannabe Avenue",
+              city: "Wannabe City",
+              state: "Wannabe State",
+              lat: 87.6543211,
+              lng: 123.4567899,
+            },
+
+            name: "Wannabe Event",
+            description: "Wannabe description.",
+            capacity: 20,
+            price: 199.99,
+            startDate: new Date("November 05, 2022 03:00:00").toString(),
+            endDate: new Date("November 15, 2022 03:00:00").toString(),
+            status: "host",
+          },
+        ],
       },
       {
         name: "Demo Group",
-        about: "Demo description.",
-        type: "In person",
-        private: false,
-        city: "Demo City",
-        state: "Demo State",
         status: "member",
+        events: [
+          {
+            name: "Demo Event",
+            status: "member",
+          },
+        ],
       },
     ],
   },
@@ -76,27 +117,32 @@ module.exports = {
       });
 
       for (const group of groups) {
-        const { name, about, type, private: prv, city, state, status } = group;
+        const { name, status, events } = group;
+        delete group.status, group.events;
+        let newGroup;
 
-        if (status === "host") {
-          const newGroup = await newUser.createGroup({
-            name,
-            about,
-            type,
-            private: prv,
-            city,
-            state,
-          });
-          await newUser.createMembership({
-            groupId: newGroup.id,
-            status,
-          });
-        } else {
-          const queriedGroup = await Group.findOne({ where: { name } });
-          await newUser.createMembership({
-            groupId: queriedGroup.id,
-            status,
-          });
+        if (status === "host") newGroup = await newUser.createGroup(group);
+        else newGroup = await Group.findOne({ where: { name } });
+
+        await newUser.createMembership({
+          groupId: newGroup.id,
+          status,
+        });
+
+        for (const event of events) {
+          const { name, venue, status } = event;
+          delete event.venue, event.status;
+          let newEvent, newVenue;
+
+          if (venue) {
+            newVenue = await newGroup.createVenue(venue);
+            newEvent = await newGroup.createEvent({
+              ...event,
+              venueId: newVenue.id,
+            });
+          } else newEvent = await Event.findOne({ where: { name } });
+
+          await newUser.createAttendance({ eventId: newEvent.id, status });
         }
       }
     }
