@@ -108,13 +108,10 @@ const users = [
 module.exports = {
   async up(queryInterface, Sequelize) {
     for (const user of users) {
-      const { firstName, lastName, email, password, groups } = user;
-      const newUser = await User.create({
-        firstName,
-        lastName,
-        email,
-        password,
-      });
+      const { groups } = user;
+      delete user.groups;
+
+      const newUser = await User.create(user);
 
       for (const group of groups) {
         const { name, status, events } = group;
@@ -132,10 +129,10 @@ module.exports = {
         for (const event of events) {
           const { name, venue, status } = event;
           delete event.venue, event.status;
-          let newEvent, newVenue;
+          let newEvent;
 
           if (venue) {
-            newVenue = await newGroup.createVenue(venue);
+            const newVenue = await newGroup.createVenue(venue);
             newEvent = await newGroup.createEvent({
               ...event,
               venueId: newVenue.id,
