@@ -1,7 +1,38 @@
 const router = require("express").Router();
+const sequelize = require("sequelize");
 const { validateLogin } = require("../../utils/validation");
-const { setTokenCookie } = require("../../utils/auth");
-const { User } = require("../../db/models");
+const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const { User, Group, Membership, Image } = require("../../db/models");
+
+// Get all groups joined or organized by the Current User
+router.get("/groups", requireAuth, async (req, res, next) => {
+  const { id } = req.user;
+  const allGroups = await Group.findAll({
+    attributes: {
+      include: [
+        [sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+        [sequelize.col("Images.url"), "previewImage"],
+      ],
+    },
+    group: "name",
+    include: [
+      {
+        model: Membership,
+        where: {
+          groupId: [
+            sequelize.literal(
+              `SELECT groupId FROM Memberships WHERE memberId = ${id}`
+            ),
+          ],
+        },
+        attributes: [],
+      },
+      { model: Image, attributes: [] },
+    ],
+  });
+
+  res.json({ Groups: allGroups });
+});
 
 // Get current user/session
 router.get("/", (req, res) => {
