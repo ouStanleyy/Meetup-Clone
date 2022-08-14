@@ -6,7 +6,6 @@ const { User, Group, Membership, Image } = require("../../db/models");
 
 // Get all groups joined or organized by the Current User
 router.get("/groups", requireAuth, async (req, res, next) => {
-  const { id } = req.user;
   const allGroups = await Group.findAll({
     attributes: {
       include: [
@@ -21,7 +20,7 @@ router.get("/groups", requireAuth, async (req, res, next) => {
         where: {
           groupId: [
             sequelize.literal(
-              `SELECT groupId FROM Memberships WHERE memberId = ${id}`
+              `SELECT groupId FROM Memberships WHERE memberId = ${req.user.id}`
             ),
           ],
         },
