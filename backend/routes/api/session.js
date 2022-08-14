@@ -34,10 +34,18 @@ router.get("/groups", requireAuth, async (req, res, next) => {
 });
 
 // Get current user/session
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
   // if (req.user) return res.json({ user: req.user.toSafeObject() });
 
   // res.json({});
+  if (!req.user) {
+    const err = new Error("No active session");
+    err.status = 401;
+    err.errors = ["A user is not currently logged in"];
+
+    return next(err);
+  }
+
   res.json(req.user);
 });
 
@@ -47,10 +55,10 @@ router.post("/", validateLogin, async (req, res, next) => {
   const user = await User.login({ email, password });
 
   if (!user) {
-    const err = new Error("Login failed");
-    err.title = "Login failed";
+    const err = new Error("Invalid credentials");
+    // err.title = "Login failed";
     err.status = 401;
-    err.errors = ["The provided credentials were invalid"];
+    // err.errors = ["The provided credentials were invalid"];
 
     return next(err);
   }
@@ -64,7 +72,7 @@ router.post("/", validateLogin, async (req, res, next) => {
 router.delete("/", (req, res, next) => {
   if (!req.user) {
     const err = new Error("No active session");
-    err.title = "No active session";
+    // err.title = "No active session";
     err.status = 401;
     err.errors = ["A user is not currently logged in"];
 

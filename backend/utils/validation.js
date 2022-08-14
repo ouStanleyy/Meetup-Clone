@@ -5,12 +5,15 @@ const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
-    const errors = validationErrors.array().map((error) => error.msg);
+    const errors = validationErrors.array().map((error) => {
+      return { [error.param]: error.msg };
+    });
+    console.log(errors);
 
-    const err = new Error("Bad request.");
+    const err = new Error("Validation error");
     err.errors = errors;
     err.status = 400;
-    err.title = "Bad request.";
+    // err.title = "Bad request.";
 
     return next(err);
   }
@@ -21,11 +24,11 @@ const handleValidationErrors = (req, _res, next) => {
 const validateLogin = [
   check("email")
     .exists({ checkFalsy: true })
-    .isEmail()
-    .withMessage("Please provide a valid email."),
+    // .isEmail()
+    .withMessage("Email is required"),
   check("password")
     .exists({ checkFalsy: true })
-    .withMessage("Please provide a password."),
+    .withMessage("Password is required"),
   handleValidationErrors,
 ];
 
