@@ -15,11 +15,11 @@ module.exports = {
           model: "Users",
           key: "id",
         },
+        onDelete: "cascade",
       },
       imageableId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onDelete: "cascade",
       },
       imageableType: {
         type: Sequelize.ENUM("Event", "Group"),

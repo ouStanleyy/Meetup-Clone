@@ -18,6 +18,7 @@ const users = [
         city: "Demo City",
         state: "Demo State",
         status: "host",
+        images: ["image url"],
         events: [
           {
             venue: {
@@ -35,6 +36,7 @@ const users = [
             startDate: new Date("December 17, 2022 03:00:00").toString(),
             endDate: new Date("December 24, 2022 03:00:00").toString(),
             status: "host",
+            images: ["image url"],
           },
         ],
       },
@@ -70,6 +72,7 @@ const users = [
         city: "Wannabe City",
         state: "Wannabe State",
         status: "host",
+        images: ["image url"],
         events: [
           {
             venue: {
@@ -86,6 +89,7 @@ const users = [
             startDate: new Date("November 05, 2022 03:00:00").toString(),
             endDate: new Date("November 15, 2022 03:00:00").toString(),
             status: "host",
+            images: ["image url"],
           },
         ],
       },
@@ -112,8 +116,8 @@ module.exports = {
       const newUser = await User.create(user);
 
       for (const group of groups) {
-        const { name, status, events } = group;
-        delete group.status, group.events;
+        const { name, status, events, images } = group;
+        delete group.status, group.events, group.images;
         let newGroup;
 
         if (status === "host") newGroup = await newUser.createGroup(group);
@@ -124,9 +128,15 @@ module.exports = {
           status,
         });
 
+        if (images) {
+          for (const image of images) {
+            await newGroup.createImage({ userId: newUser.id, url: image });
+          }
+        }
+
         for (const event of events) {
-          const { name, venue, status } = event;
-          delete event.venue, event.status;
+          const { name, venue, status, images } = event;
+          delete event.venue, event.status, event.images;
           let newEvent;
 
           if (venue) {
@@ -138,6 +148,12 @@ module.exports = {
           } else newEvent = await Event.findOne({ where: { name } });
 
           await newUser.createAttendance({ eventId: newEvent.id, status });
+
+          if (images) {
+            for (const image of images) {
+              await newEvent.createImage({ userId: newUser.id, url: image });
+            }
+          }
         }
       }
     }

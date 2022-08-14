@@ -27,9 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       Group.hasMany(models.Image, {
         foreignKey: "imageableId",
         constraints: false,
-        onDelete: "CASCADE",
         scope: {
-          commentableType: "Group",
+          imageableType: "Group",
         },
       });
     }
