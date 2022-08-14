@@ -2,7 +2,7 @@ const router = require("express").Router();
 const sequelize = require("sequelize");
 const { validateLogin } = require("../../utils/validation");
 const { setTokenCookie } = require("../../utils/auth");
-const { Group, Membership } = require("../../db/models");
+const { Group, Membership, Image } = require("../../db/models");
 
 // Get all groups
 router.get("/", async (req, res, next) => {
@@ -10,13 +10,14 @@ router.get("/", async (req, res, next) => {
     attributes: {
       include: [
         [sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+        [sequelize.col("Images.url"), "previewImage"],
       ],
     },
     group: "name",
-    include: {
-      model: Membership,
-      attributes: [],
-    },
+    include: [
+      { model: Membership, attributes: [] },
+      { model: Image, attributes: [] },
+    ],
   });
 
   res.json({ Groups: allGroups });
