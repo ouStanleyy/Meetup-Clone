@@ -15,7 +15,7 @@ router.get("/:groupId", async (req, res, next) => {
     include: [
       { model: Membership, attributes: [] },
       { model: Image, attributes: ["id", "imageableId", "url"] },
-      { model: User },
+      { model: User, as: "Organizer" },
       { model: Venue, attributes: { exclude: ["createdAt", "updatedAt"] } },
     ],
   });
