@@ -51,13 +51,17 @@ app.use((err, _req, _res, next) => {
 
 app.use((err, _req, res, _next) => {
   console.error(err);
-  const allErrors = Object.assign({}, ...err.errors);
+  if (
+    Array.isArray(err.errors) &&
+    err.errors[0].toString() === "[object Object]"
+  )
+    err.errors = Object.assign({}, ...err.errors);
 
   res.status(err.status || 500).json({
     // title: err.title || undefined,
     message: err.message,
     statusCode: err.status,
-    errors: allErrors,
+    errors: err.errors,
     // stack: isProduction ? null : err.stack,
   });
 });
