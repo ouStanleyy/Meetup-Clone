@@ -39,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Image",
+      defaultScope: {
+        attributes: ["id", "imageableId", "url"],
+      },
     }
   );
   return Image;
