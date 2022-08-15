@@ -37,13 +37,11 @@ const validateSignup = [
     .exists({ checkFalsy: true })
     .isEmail()
     .isLength({ min: 3, max: 256 })
-    .withMessage("Please provide a valid email."),
+    .withMessage("Invalid email"),
   check("firstName")
     .exists({ checkFalsy: true })
     .isLength({ min: 4, max: 30 })
-    .withMessage(
-      "Please provide a valid first name with at least 4 characters."
-    ),
+    .withMessage("First Name is required"),
   check("firstName")
     .not()
     .isEmail()
@@ -51,9 +49,7 @@ const validateSignup = [
   check("lastName")
     .exists({ checkFalsy: true })
     .isLength({ min: 4, max: 30 })
-    .withMessage(
-      "Please provide a valid last name with at least 4 characters."
-    ),
+    .withMessage("Last Name is required"),
   check("lastName")
     .not()
     .isEmail()
