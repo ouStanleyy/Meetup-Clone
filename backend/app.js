@@ -42,7 +42,8 @@ app.use((_req, _res, next) => {
 
 app.use((err, _req, _res, next) => {
   if (err instanceof ValidationError) {
-    err.errors = err.errors.map((e) => e.message);
+    // console.log(err.errors);
+    err.errors = err.errors.map((error) => error.message);
     // err.title = "Validation error";
   }
 
@@ -51,11 +52,11 @@ app.use((err, _req, _res, next) => {
 
 app.use((err, _req, res, _next) => {
   console.error(err);
-  if (
-    Array.isArray(err.errors) &&
-    err.errors[0].toString() === "[object Object]"
-  )
-    err.errors = Object.assign({}, ...err.errors);
+  // if (
+  //   Array.isArray(err.errors) &&
+  //   err.errors[0].toString() === "[object Object]"
+  // )
+  //   err.errors = Object.assign({}, ...err.errors);
 
   res.status(err.status || 500).json({
     // title: err.title || undefined,

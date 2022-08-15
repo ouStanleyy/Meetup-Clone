@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const sequelize = require("sequelize");
-const { validateLogin } = require("../../utils/validation");
-const { setTokenCookie } = require("../../utils/auth");
+const { validateGroupCreation } = require("../../utils/validation");
+const { requireAuth } = require("../../utils/auth");
 const { Group, Membership, Image, User, Venue } = require("../../db/models");
 
 // Get details of a group by group id
@@ -23,7 +23,6 @@ router.get("/:groupId", async (req, res, next) => {
   if (!group.id) {
     const err = new Error("Group couldn't be found");
     err.status = 404;
-    // err.title = "Group couldn't be found";
     return next(err);
   }
 
@@ -31,7 +30,7 @@ router.get("/:groupId", async (req, res, next) => {
 });
 
 // Get all groups
-router.get("/", async (req, res, next) => {
+router.get("/", async (_req, res) => {
   const allGroups = await Group.findAll({
     attributes: {
       include: [
@@ -47,6 +46,24 @@ router.get("/", async (req, res, next) => {
   });
 
   res.json({ Groups: allGroups });
+});
+
+// Create a group
+router.post("/", requireAuth, validateGroupCreation, async (req, res, next) => {
+  const { name, about, type, private, city, state } = req.body;
+  const currUser = await User.findByPk(req.user.id);
+  const newGroup = await currUser.createGroup({
+    name,
+    about,
+    type,
+    private,
+    city,
+    state,
+  });
+
+  await currUser.createMembership({ groupId: newGroup.id, status: "host" });
+
+  res.json(newGroup);
 });
 
 module.exports = router;
