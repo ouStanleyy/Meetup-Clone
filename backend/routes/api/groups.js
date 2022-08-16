@@ -129,20 +129,20 @@ router.get("/:groupId", async (req, res, next) => {
     ],
   });
 
-  const includedTables = await Group.findByPk(req.params.groupId, {
-    attributes: [],
-    include: [
-      { model: Image },
-      { model: User, as: "Organizer" },
-      { model: Venue, attributes: { exclude: ["createdAt", "updatedAt"] } },
-    ],
-  });
-
   if (!group) {
     const err = new Error("Group couldn't be found");
     err.status = 404;
     return next(err);
   }
+
+  const includedTables = await Group.findByPk(req.params.groupId, {
+    attributes: [],
+    include: [
+      { model: Image },
+      { model: User, as: "Organizer" },
+      { model: Venue },
+    ],
+  });
 
   group.dataValues = { ...group.dataValues, ...includedTables.dataValues };
 
