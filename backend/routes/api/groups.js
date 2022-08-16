@@ -1,20 +1,41 @@
 const router = require("express").Router();
 const sequelize = require("sequelize");
-const { validateGroupInput } = require("../../utils/validation");
+const {
+  validateGroupInput,
+  validateVenueInput,
+} = require("../../utils/validation");
 const { requireAuth, authorize, authorizeRole } = require("../../utils/auth");
 const { Group, Membership, Image, User, Venue } = require("../../db/models");
 
 // Get all venues for a group specified by its id
-router.get(
+router.get("/:groupId/venues", requireAuth, authorizeRole, async (req, res) => {
+  const venues = await req.group.getVenues({
+    attributes: { exclude: ["createdAt", "updatedAt"] },
+  });
+
+  res.json(venues);
+});
+
+// Create a new venue for a group specified by its id
+router.post(
   "/:groupId/venues",
   requireAuth,
   authorizeRole,
-  async (req, res, next) => {
-    const venues = await req.group.getVenues({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+  validateVenueInput,
+  async (req, res) => {
+    const { address, city, state, lat, lng } = req.body;
+    const newVenue = await req.group.createVenue({
+      address,
+      city,
+      state,
+      lat,
+      lng,
     });
 
-    res.json(venues);
+    delete newVenue.dataValues.createdAt;
+    delete newVenue.dataValues.updatedAt;
+
+    res.json(newVenue);
   }
 );
 
@@ -71,13 +92,13 @@ router.get("/:groupId", async (req, res, next) => {
     ],
   });
 
-  group.dataValues = { ...group.dataValues, ...includedTables.dataValues };
-
-  if (!group.id) {
+  if (!group) {
     const err = new Error("Group couldn't be found");
     err.status = 404;
     return next(err);
   }
+
+  group.dataValues = { ...group.dataValues, ...includedTables.dataValues };
 
   res.json(group);
 });
