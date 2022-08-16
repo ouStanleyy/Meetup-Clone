@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const {
   jwtConfig: { secret, expiresIn },
 } = require("../config");
-const { User, Group, Membership } = require("../db/models");
+const { User, Group, Membership, Venue } = require("../db/models");
 
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
@@ -66,7 +66,20 @@ const authorize = async (req, _res, next) => {
 
 // Checks user role
 const authorizeRole = async (req, _res, next) => {
-  req.group = await Group.findByPk(req.params.groupId);
+  const { groupId, venueId } = req.params;
+
+  if (groupId) req.group = await Group.findByPk(groupId);
+  else if (venueId) {
+    req.venue = await Venue.findByPk(venueId);
+    if (!req.venue) {
+      const err = new Error("Venue couldn't be found");
+      err.status = 404;
+      return next(err);
+    }
+
+    req.group = await Group.findByPk(req.venue.groupId);
+  }
+
   if (!req.group) {
     const err = new Error("Group couldn't be found");
     err.status = 404;
