@@ -5,7 +5,53 @@ const {
   validateVenueInput,
 } = require("../../utils/validation");
 const { requireAuth, authorize, authorizeRole } = require("../../utils/auth");
-const { Group, Membership, Image, User, Venue } = require("../../db/models");
+const {
+  Group,
+  Membership,
+  Image,
+  User,
+  Venue,
+  Attendance,
+  Event,
+} = require("../../db/models");
+
+// Get all events of a group specified by its id
+router.get("/:groupId/events", async (req, res, next) => {
+  const { groupId } = req.params;
+  const group = await Group.findByPk(groupId);
+
+  if (!group) {
+    const err = new Error("Group couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  const events = await Event.findAll({
+    where: { groupId },
+    attributes: {
+      include: [
+        [
+          sequelize.fn(
+            "COUNT",
+            sequelize.fn("DISTINCT", sequelize.col("Attendances.id"))
+          ),
+          "numAttending",
+        ],
+        [sequelize.col("Images.url"), "previewImage"],
+      ],
+      exclude: ["description", "capacity", "price", "createdAt", "updatedAt"],
+    },
+    group: "Event.id",
+    include: [
+      { model: Attendance, attributes: [] },
+      { model: Image, attributes: [] },
+      { model: Group, attributes: ["id", "name", "city", "state"] },
+      { model: Venue, attributes: ["id", "city", "state"] },
+    ],
+  });
+
+  res.json({ Events: events });
+});
 
 // Get all venues for a group specified by its id
 router.get("/:groupId/venues", requireAuth, authorizeRole, async (req, res) => {
