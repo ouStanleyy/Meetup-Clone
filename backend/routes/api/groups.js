@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const sequelize = require("sequelize");
-const { validateGroupCreation } = require("../../utils/validation");
-const { requireAuth } = require("../../utils/auth");
+const { validateGroupInput } = require("../../utils/validation");
+const { requireAuth, authorize } = require("../../utils/auth");
 const { Group, Membership, Image, User, Venue } = require("../../db/models");
 
 // Add an image to a group based on the group's id
@@ -68,6 +68,33 @@ router.get("/:groupId", async (req, res, next) => {
   res.json(group);
 });
 
+// Edit a group
+router.put(
+  "/:groupId",
+  requireAuth,
+  authorize,
+  validateGroupInput,
+  async (req, res) => {
+    const { group } = req;
+    const { name, about, type, private, city, state } = req.body;
+
+    const updatedGroup = await group.update({
+      name,
+      about,
+      type,
+      private,
+      city,
+      state,
+    });
+
+    // updatedGroup.dataValues.createdAt = new Date(
+    //   updatedGroup.dataValues.createdAt
+    // ).toUTCString();
+
+    res.json(updatedGroup);
+  }
+);
+
 // Get all groups
 router.get("/", async (_req, res) => {
   const allGroups = await Group.findAll({
@@ -94,7 +121,7 @@ router.get("/", async (_req, res) => {
 });
 
 // Create a group
-router.post("/", requireAuth, validateGroupCreation, async (req, res) => {
+router.post("/", requireAuth, validateGroupInput, async (req, res) => {
   const { name, about, type, private, city, state } = req.body;
   const currUser = await User.findByPk(req.user.id);
   const newGroup = await currUser.createGroup({

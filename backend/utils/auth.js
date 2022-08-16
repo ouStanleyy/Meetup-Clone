@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const {
   jwtConfig: { secret, expiresIn },
 } = require("../config");
-const { User } = require("../db/models");
+const { User, Group } = require("../db/models");
 
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
@@ -41,15 +41,27 @@ const restoreUser = (req, res, next) => {
 };
 
 // If there is no current user, return an error
-const requireAuth = function (req, _res, next) {
+const requireAuth = (req, _res, next) => {
   if (req.user) return next();
 
   const err = new Error("Authentication required");
-  // err.title = "Unauthorized";
-  // err.errors = ["Unauthorized"];
   err.status = 401;
-
   return next(err);
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+// Checks permission
+const authorize = async (req, _res, next) => {
+  req.group = await Group.findByPk(req.params.groupId);
+
+  if (!req.group) {
+    const err = new Error("Group couldn't be found");
+    err.status = 404;
+    return next(err);
+  } else if (req.user.id === req.group.organizerId) return next();
+
+  const err = new Error("Forbidden");
+  err.status = 403;
+  return next(err);
+};
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, authorize };

@@ -74,7 +74,7 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
-const validateGroupCreation = [
+const validateGroupInput = [
   check("name")
     .isLength({ max: 60 })
     .withMessage("Name must be 60 characters or less"),
@@ -93,5 +93,5 @@ const validateGroupCreation = [
 module.exports = {
   validateLogin,
   validateSignup,
-  validateGroupCreation,
+  validateGroupInput,
 };
