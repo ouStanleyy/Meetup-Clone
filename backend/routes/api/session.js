@@ -9,11 +9,17 @@ router.get("/groups", requireAuth, async (req, res, next) => {
   const allGroups = await Group.findAll({
     attributes: {
       include: [
-        [sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"],
+        [
+          sequelize.fn(
+            "COUNT",
+            sequelize.fn("DISTINCT", sequelize.col("Memberships.id"))
+          ),
+          "numMembers",
+        ],
         [sequelize.col("Images.url"), "previewImage"],
       ],
     },
-    group: "name",
+    group: "Group.id",
     include: [
       {
         model: Membership,

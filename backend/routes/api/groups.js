@@ -75,10 +75,8 @@ router.put(
   authorize,
   validateGroupInput,
   async (req, res) => {
-    const { group } = req;
     const { name, about, type, private, city, state } = req.body;
-
-    const updatedGroup = await group.update({
+    const updatedGroup = await req.group.update({
       name,
       about,
       type,
@@ -94,6 +92,12 @@ router.put(
     res.json(updatedGroup);
   }
 );
+
+// Delete a group
+router.delete("/:groupId", requireAuth, authorize, async (req, res) => {
+  await req.group.destroy();
+  res.json({ message: "Successfully deleted", statusCode: 200 });
+});
 
 // Get all groups
 router.get("/", async (_req, res) => {
