@@ -1,8 +1,22 @@
 const router = require("express").Router();
 const sequelize = require("sequelize");
 const { validateGroupInput } = require("../../utils/validation");
-const { requireAuth, authorize } = require("../../utils/auth");
+const { requireAuth, authorize, authorizeRole } = require("../../utils/auth");
 const { Group, Membership, Image, User, Venue } = require("../../db/models");
+
+// Get all venues for a group specified by its id
+router.get(
+  "/:groupId/venues",
+  requireAuth,
+  authorizeRole,
+  async (req, res, next) => {
+    const venues = await req.group.getVenues({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
+
+    res.json(venues);
+  }
+);
 
 // Add an image to a group based on the group's id
 router.post("/:groupId/images", requireAuth, async (req, res, next) => {

@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const {
   jwtConfig: { secret, expiresIn },
 } = require("../config");
-const { User, Group } = require("../db/models");
+const { User, Group, Membership } = require("../db/models");
 
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
@@ -64,4 +64,37 @@ const authorize = async (req, _res, next) => {
   return next(err);
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, authorize };
+// Checks user role
+const authorizeRole = async (req, _res, next) => {
+  req.group = await Group.findByPk(req.params.groupId);
+  if (!req.group) {
+    const err = new Error("Group couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  req.membership = await req.group.getMemberships({
+    where: { memberId: req.user.id },
+  });
+  // req.membership = await Membership.findOne({
+  //   where: { memberId: req.user.id, groupId: req.params.groupId },
+  // });
+  if (
+    req.membership.length &&
+    (req.membership[0].status === "host" ||
+      req.membership[0].status === "co-host")
+  )
+    return next();
+
+  const err = new Error("Forbidden");
+  err.status = 403;
+  return next(err);
+};
+
+module.exports = {
+  setTokenCookie,
+  restoreUser,
+  requireAuth,
+  authorize,
+  authorizeRole,
+};
