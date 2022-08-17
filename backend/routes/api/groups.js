@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const sequelize = require("sequelize");
+const { sequelize, Op } = require("sequelize");
 const {
   validateGroupInput,
   validateVenueInput,
@@ -15,6 +15,51 @@ const {
   Attendance,
   Event,
 } = require("../../db/models");
+
+// Get all members of a group specified by its id
+router.get("/:groupId/members", requireAuth, async (req, res, next) => {
+  const { groupId } = req.params;
+  const group = await Group.findByPk(groupId, {
+    include: { model: Membership },
+  });
+  if (!group) {
+    const err = new Error("Group couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  const currUser = await group.getMemberships({
+    where: { memberId: req.user.id },
+  });
+  let members;
+
+  if (
+    currUser.length &&
+    (currUser[0].status === "host" || currUser[0].status === "co-host")
+  )
+    members = await User.findAll({
+      include: {
+        model: Membership,
+        where: { groupId },
+        attributes: ["status"],
+      },
+    });
+  else
+    members = await User.findAll({
+      include: {
+        model: Membership,
+        where: { groupId, status: { [Op.not]: "pending" } },
+        attributes: ["status"],
+      },
+    });
+
+  members.forEach((member) => {
+    member.dataValues.Membership = member.dataValues.Memberships[0];
+    delete member.dataValues.Memberships;
+  });
+
+  res.json({ Members: members });
+});
 
 // Get all events of a group specified by its id
 router.get("/:groupId/events", async (req, res, next) => {

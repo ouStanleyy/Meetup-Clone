@@ -24,11 +24,12 @@ router.get("/groups", requireAuth, async (req, res, next) => {
       {
         model: Membership,
         where: {
-          groupId: [
-            sequelize.literal(
-              `SELECT groupId FROM Memberships WHERE memberId = ${req.user.id}`
-            ),
-          ],
+          // groupId: [
+          //   sequelize.literal(
+          //     `SELECT groupId FROM Memberships WHERE memberId = ${req.user.id}`
+          //   ),
+          // ],
+          memberId: req.user.id,
         },
         attributes: [],
       },
