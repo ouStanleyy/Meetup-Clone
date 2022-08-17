@@ -1,5 +1,5 @@
 const { validationResult, check } = require("express-validator");
-const { User } = require("../db/models");
+const { User, Venue } = require("../db/models");
 
 // Handles validation errors
 const handleValidationErrors = (req, _res, next) => {
@@ -105,9 +105,45 @@ const validateVenueInput = [
   handleValidationErrors,
 ];
 
+const validateEventInput = [
+  check("venueId").custom((venueId, { req }) =>
+    Venue.findByPk(venueId).then((venue) => {
+      if (!venue || venue.groupId != req.params.groupId)
+        return Promise.reject("Venue does not exist");
+    })
+  ),
+  check("name")
+    .isLength({ min: 5 })
+    .withMessage("Name must be at least 5 characters"),
+  check("type")
+    .isIn(["Online", "In person"])
+    .withMessage("Type must be 'Online' or 'In person'"),
+  check("capacity")
+    .isInt()
+    .not()
+    .isString()
+    .withMessage("Capacity must be an integer"),
+  check("price")
+    .isDecimal({ force_decimal: true, decimal_digits: "1,2" })
+    .not()
+    .isString()
+    .withMessage("Price is invalid"),
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Description is required"),
+  check("startDate").isAfter().withMessage("Start date must be in the future"),
+  check("endDate").custom((endDate, { req }) => {
+    if (new Date(endDate) <= new Date(req.body.startDate))
+      return Promise.reject("End date is less than start date");
+    return true;
+  }),
+  handleValidationErrors,
+];
+
 module.exports = {
   validateLogin,
   validateSignup,
   validateGroupInput,
   validateVenueInput,
+  validateEventInput,
 };

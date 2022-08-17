@@ -3,6 +3,7 @@ const sequelize = require("sequelize");
 const {
   validateGroupInput,
   validateVenueInput,
+  validateEventInput,
 } = require("../../utils/validation");
 const { requireAuth, authorize, authorizeRole } = require("../../utils/auth");
 const {
@@ -52,6 +53,49 @@ router.get("/:groupId/events", async (req, res, next) => {
 
   res.json({ Events: events });
 });
+
+// Create a new event for a group specified by its id
+router.post(
+  "/:groupId/events",
+  requireAuth,
+  authorizeRole,
+  validateEventInput,
+  async (req, res) => {
+    const {
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    } = req.body;
+    const newEvent = await req.group.createEvent({
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    });
+
+    delete newEvent.dataValues.createdAt;
+    delete newEvent.dataValues.updatedAt;
+    newEvent.dataValues.startDate = new Date(newEvent.dataValues.startDate)
+      .toISOString()
+      .replace(/T/, " ")
+      .replace(/\..+/g, "");
+    newEvent.dataValues.endDate = new Date(newEvent.dataValues.endDate)
+      .toISOString()
+      .replace(/T/, " ")
+      .replace(/\..+/g, "");
+
+    res.json(newEvent);
+  }
+);
 
 // Get all venues for a group specified by its id
 router.get("/:groupId/venues", requireAuth, authorizeRole, async (req, res) => {
