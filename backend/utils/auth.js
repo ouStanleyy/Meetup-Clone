@@ -49,19 +49,103 @@ const requireAuth = (req, _res, next) => {
   return next(err);
 };
 
-// Checks permission
-const authorize = async (req, _res, next) => {
-  req.group = await Group.findByPk(req.params.groupId);
+// // Checks permission
+// const authorize = async (req, _res, next) => {
+//   req.group = await Group.findByPk(req.params.groupId);
 
-  if (!req.group) {
-    const err = new Error("Group couldn't be found");
+//   if (!req.group) {
+//     const err = new Error("Group couldn't be found");
+//     err.status = 404;
+//     return next(err);
+//   } else if (req.user.id === req.group.organizerId) return next();
+
+//   const err = new Error("Forbidden");
+//   err.status = 403;
+//   return next(err);
+// };
+
+// Checks params
+const authParams = async (req, _res, next) => {
+  const { groupId, venueId, eventId } = req.params;
+  let errorType;
+
+  if (eventId) {
+    req.event = await Event.findByPk(eventId);
+    if (!req.event) errorType = "Event";
+  }
+  if (venueId || req.body.venueId) {
+    req.venue = await Venue.findByPk(venueId || req.body.venueId);
+    if (!req.venue) errorType = "Venue";
+  }
+  if (groupId || req.event || req.venue) {
+    req.event
+      ? (req.group = await Group.findByPk(groupId || req.event.groupId))
+      : (req.group = await Group.findByPk(groupId || req.venue.groupId));
+    if (!req.group) errorType = "Group";
+  }
+  if (errorType) {
+    const err = new Error(`${errorType} couldn't be found`);
     err.status = 404;
     return next(err);
-  } else if (req.user.id === req.group.organizerId) return next();
+  }
+  next();
+};
+
+// Checks ownership of group
+const authOwnership = async (req, _res, next) => {
+  if (req.user.id === req.group.organizerId) return next();
 
   const err = new Error("Forbidden");
   err.status = 403;
-  return next(err);
+  next(err);
+};
+
+// Checks user role in memberships
+const authMembership = async (req, _res, next) => {
+  req.membership = await req.group.getMemberships({
+    where: { memberId: req.user.id },
+  });
+
+  if (
+    req.membership.length &&
+    (req.membership[0].status === "host" ||
+      req.membership[0].status === "co-host")
+  )
+    return next();
+
+  const err = new Error("Forbidden");
+  err.status = 403;
+  next(err);
+};
+
+// Checks user role in attendances
+const authAttendance = async (req, _res, next) => {
+  // const { eventId } = req.params;
+
+  // if (eventId) {
+  //   req.event = await Event.findByPk(eventId);
+  //   if (!req.event) {
+  //     const err = new Error("Event couldn't be found");
+  //     err.status = 404;
+  //     return next(err);
+  //   }
+  // }
+
+  req.attendance = await req.event.getAttendances({
+    where: { userId: req.user.id },
+  });
+
+  if (
+    req.attendance.length &&
+    (req.attendance[0].status === "host" ||
+      req.attendance[0].status === "co-host" ||
+      req.attendance[0].status === "member")
+  )
+    return next();
+
+  const err = new Error("Forbidden");
+  err.status = 403;
+  next(err);
 };
 
 // Checks user role
@@ -117,43 +201,15 @@ const authorizeRole = async (req, _res, next) => {
   return next(err);
 };
 
-// Checks user role in attendance
-const authorizeAttendanceRole = async (req, _res, next) => {
-  const { eventId } = req.params;
-
-  if (eventId) {
-    req.event = await Event.findByPk(eventId);
-    if (!req.event) {
-      const err = new Error("Event couldn't be found");
-      err.status = 404;
-      return next(err);
-    }
-  }
-
-  req.attendance = await req.event.getAttendances({
-    where: { userId: req.user.id },
-  });
-  // req.membership = await Membership.findOne({
-  //   where: { memberId: req.user.id, groupId: req.params.groupId },
-  // });
-  if (
-    req.attendance.length &&
-    (req.attendance[0].status === "host" ||
-      req.attendance[0].status === "co-host" ||
-      req.attendance[0].status === "member")
-  )
-    return next();
-
-  const err = new Error("Forbidden");
-  err.status = 403;
-  return next(err);
-};
-
 module.exports = {
   setTokenCookie,
   restoreUser,
   requireAuth,
-  authorize,
-  authorizeRole,
-  authorizeAttendanceRole,
+  // authorize,
+  // authorizeRole,
+  // authorizeAttendanceRole,
+  authParams,
+  authOwnership,
+  authMembership,
+  authAttendance,
 };

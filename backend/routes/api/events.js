@@ -7,9 +7,9 @@ const {
 } = require("../../utils/validation");
 const {
   requireAuth,
-  authorize,
-  authorizeRole,
-  authorizeAttendanceRole,
+  authParams,
+  authAttendance,
+  authMembership,
 } = require("../../utils/auth");
 const {
   Group,
@@ -24,7 +24,8 @@ const {
 router.post(
   "/:eventId/images",
   requireAuth,
-  authorizeAttendanceRole,
+  authParams,
+  authAttendance,
   async (req, res) => {
     // const event = await Event.findByPk(req.params.eventId);
 
@@ -94,7 +95,8 @@ router.get("/:eventId", async (req, res, next) => {
 router.put(
   "/:eventId",
   requireAuth,
-  authorizeRole,
+  authParams,
+  authMembership,
   validateEventInput,
   async (req, res) => {
     const {
@@ -136,10 +138,16 @@ router.put(
 );
 
 // Delete an event specified by its id
-router.delete("/:eventId", requireAuth, authorizeRole, async (req, res) => {
-  await req.event.destroy();
-  res.json({ message: "Successfully deleted" });
-});
+router.delete(
+  "/:eventId",
+  requireAuth,
+  authParams,
+  authMembership,
+  async (req, res) => {
+    await req.event.destroy();
+    res.json({ message: "Successfully deleted" });
+  }
+);
 
 // Get all events
 router.get("/", async (_req, res) => {

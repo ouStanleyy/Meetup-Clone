@@ -5,7 +5,12 @@ const {
   validateVenueInput,
   validateEventInput,
 } = require("../../utils/validation");
-const { requireAuth, authorize, authorizeRole } = require("../../utils/auth");
+const {
+  requireAuth,
+  authParams,
+  authMembership,
+  authOwnership,
+} = require("../../utils/auth");
 const {
   Group,
   Membership,
@@ -61,6 +66,9 @@ router.get("/:groupId/members", requireAuth, async (req, res, next) => {
   res.json({ Members: members });
 });
 
+// Request a membership for a group based on the group's id
+router.post("/:groupId/memberships", requireAuth, async (req, res, next) => {});
+
 // Get all events of a group specified by its id
 router.get("/:groupId/events", async (req, res, next) => {
   const { groupId } = req.params;
@@ -103,7 +111,8 @@ router.get("/:groupId/events", async (req, res, next) => {
 router.post(
   "/:groupId/events",
   requireAuth,
-  authorizeRole,
+  authParams,
+  authMembership,
   validateEventInput,
   async (req, res) => {
     const {
@@ -146,19 +155,26 @@ router.post(
 );
 
 // Get all venues for a group specified by its id
-router.get("/:groupId/venues", requireAuth, authorizeRole, async (req, res) => {
-  const venues = await req.group.getVenues({
-    attributes: { exclude: ["createdAt", "updatedAt"] },
-  });
+router.get(
+  "/:groupId/venues",
+  requireAuth,
+  authParams,
+  authMembership,
+  async (req, res) => {
+    const venues = await req.group.getVenues({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
 
-  res.json(venues);
-});
+    res.json(venues);
+  }
+);
 
 // Create a new venue for a group specified by its id
 router.post(
   "/:groupId/venues",
   requireAuth,
-  authorizeRole,
+  authParams,
+  authMembership,
   validateVenueInput,
   async (req, res) => {
     const { address, city, state, lat, lng } = req.body;
@@ -245,7 +261,8 @@ router.get("/:groupId", async (req, res, next) => {
 router.put(
   "/:groupId",
   requireAuth,
-  authorize,
+  authParams,
+  authOwnership,
   validateGroupInput,
   async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
@@ -267,10 +284,16 @@ router.put(
 );
 
 // Delete a group
-router.delete("/:groupId", requireAuth, authorize, async (req, res) => {
-  await req.group.destroy();
-  res.json({ message: "Successfully deleted", statusCode: 200 });
-});
+router.delete(
+  "/:groupId",
+  requireAuth,
+  authParams,
+  authOwnership,
+  async (req, res) => {
+    await req.group.destroy();
+    res.json({ message: "Successfully deleted", statusCode: 200 });
+  }
+);
 
 // Get all groups
 router.get("/", async (_req, res) => {
