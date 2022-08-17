@@ -66,22 +66,35 @@ const authorize = async (req, _res, next) => {
 
 // Checks user role
 const authorizeRole = async (req, _res, next) => {
-  const { groupId, venueId } = req.params;
+  const { groupId, venueId, eventId } = req.params;
+  let errorType;
 
-  if (groupId) req.group = await Group.findByPk(groupId);
-  else if (venueId) {
-    req.venue = await Venue.findByPk(venueId);
-    if (!req.venue) {
-      const err = new Error("Venue couldn't be found");
-      err.status = 404;
-      return next(err);
-    }
-
-    req.group = await Group.findByPk(req.venue.groupId);
+  if (eventId) {
+    req.event = await Event.findByPk(eventId);
+    if (!req.event) errorType = "Event";
+    // else {
+    //   req.venue = await Venue.findByPk(req.event.venueId);
+    //   req.group = await Group.findByPk(req.venue.groupId);
+    // }
+  }
+  if (groupId || req.event) {
+    req.group = await Group.findByPk(groupId || req.event.groupId);
+    if (!req.group) errorType = "Group";
+  }
+  if (venueId || req.body.venueId) {
+    req.venue = await Venue.findByPk(venueId || req.body.venueId);
+    if (!req.venue) errorType = "Venue";
+    // req.group = await Group.findByPk(req.venue.groupId);
   }
 
-  if (!req.group) {
-    const err = new Error("Group couldn't be found");
+  // if ((eventId || venueId) && !req.venue) {
+  //   const err = new Error("Venue couldn't be found");
+  //   err.status = 404;
+  //   return next(err);
+  // }
+
+  if (errorType) {
+    const err = new Error(`${errorType} couldn't be found`);
     err.status = 404;
     return next(err);
   }

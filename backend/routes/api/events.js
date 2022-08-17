@@ -3,6 +3,7 @@ const sequelize = require("sequelize");
 const {
   validateGroupInput,
   validateVenueInput,
+  validateEventInput,
 } = require("../../utils/validation");
 const {
   requireAuth,
@@ -88,6 +89,51 @@ router.get("/:eventId", async (req, res, next) => {
 
   res.json(event);
 });
+
+// Edit an event specified by its id
+router.put(
+  "/:eventId",
+  requireAuth,
+  authorizeRole,
+  validateEventInput,
+  async (req, res) => {
+    const {
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    } = req.body;
+    const updatedEvent = await req.event.update({
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    });
+
+    delete updatedEvent.dataValues.createdAt;
+    delete updatedEvent.dataValues.updatedAt;
+    updatedEvent.dataValues.startDate = new Date(
+      updatedEvent.dataValues.startDate
+    )
+      .toISOString()
+      .replace(/T/, " ")
+      .replace(/\..+/g, "");
+    updatedEvent.dataValues.endDate = new Date(updatedEvent.dataValues.endDate)
+      .toISOString()
+      .replace(/T/, " ")
+      .replace(/\..+/g, "");
+
+    res.json(updatedEvent);
+  }
+);
 
 // Get all events
 router.get("/", async (_req, res) => {
