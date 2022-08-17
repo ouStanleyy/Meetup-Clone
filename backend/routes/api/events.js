@@ -135,6 +135,12 @@ router.put(
   }
 );
 
+// Delete an event specified by its id
+router.delete("/:eventId", requireAuth, authorizeRole, async (req, res) => {
+  await req.event.destroy();
+  res.json({ message: "Successfully deleted" });
+});
+
 // Get all events
 router.get("/", async (_req, res) => {
   const allEvents = await Event.findAll({
