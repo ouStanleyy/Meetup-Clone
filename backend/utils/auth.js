@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const {
   jwtConfig: { secret, expiresIn },
 } = require("../config");
-const { User, Group, Membership, Venue } = require("../db/models");
+const { User, Group, Membership, Venue, Event } = require("../db/models");
 
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
@@ -104,10 +104,43 @@ const authorizeRole = async (req, _res, next) => {
   return next(err);
 };
 
+// Checks user role in attendance
+const authorizeAttendanceRole = async (req, _res, next) => {
+  const { eventId } = req.params;
+
+  if (eventId) {
+    req.event = await Event.findByPk(eventId);
+    if (!req.event) {
+      const err = new Error("Event couldn't be found");
+      err.status = 404;
+      return next(err);
+    }
+  }
+
+  req.attendance = await req.event.getAttendances({
+    where: { userId: req.user.id },
+  });
+  // req.membership = await Membership.findOne({
+  //   where: { memberId: req.user.id, groupId: req.params.groupId },
+  // });
+  if (
+    req.attendance.length &&
+    (req.attendance[0].status === "host" ||
+      req.attendance[0].status === "co-host" ||
+      req.attendance[0].status === "member")
+  )
+    return next();
+
+  const err = new Error("Forbidden");
+  err.status = 403;
+  return next(err);
+};
+
 module.exports = {
   setTokenCookie,
   restoreUser,
   requireAuth,
   authorize,
   authorizeRole,
+  authorizeAttendanceRole,
 };

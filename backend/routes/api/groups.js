@@ -71,6 +71,7 @@ router.post(
       startDate,
       endDate,
     } = req.body;
+    const currUser = await User.findByPk(req.user.id);
     const newEvent = await req.group.createEvent({
       venueId,
       name,
@@ -92,6 +93,8 @@ router.post(
       .toISOString()
       .replace(/T/, " ")
       .replace(/\..+/g, "");
+
+    await currUser.createAttendance({ eventId: newEvent.id, status: "host" });
 
     res.json(newEvent);
   }

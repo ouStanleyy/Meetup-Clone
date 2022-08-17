@@ -4,7 +4,12 @@ const {
   validateGroupInput,
   validateVenueInput,
 } = require("../../utils/validation");
-const { requireAuth, authorize, authorizeRole } = require("../../utils/auth");
+const {
+  requireAuth,
+  authorize,
+  authorizeRole,
+  authorizeAttendanceRole,
+} = require("../../utils/auth");
 const {
   Group,
   Image,
@@ -13,6 +18,32 @@ const {
   Event,
   Attendance,
 } = require("../../db/models");
+
+// Add an image to an event based on the event's id
+router.post(
+  "/:eventId/images",
+  requireAuth,
+  authorizeAttendanceRole,
+  async (req, res) => {
+    // const event = await Event.findByPk(req.params.eventId);
+
+    // if (!event) {
+    //   const err = new Error("Event couldn't be found");
+    //   err.status = 404;
+
+    //   return next(err);
+    // }
+
+    const newImage = await req.event.createImage({
+      userId: req.user.id,
+      url: req.body.url,
+    });
+
+    const { id, imageableId, url } = newImage;
+
+    res.json({ id, imageableId, url });
+  }
+);
 
 // Get details of an event specified by its id
 router.get("/:eventId", async (req, res, next) => {
