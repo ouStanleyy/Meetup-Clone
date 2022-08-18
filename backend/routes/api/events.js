@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const sequelize = require("sequelize");
 const { Op } = sequelize;
-const { validateEventInput } = require("../../utils/validation");
+const {
+  validateEventInput,
+  validateAttendanceInput,
+} = require("../../utils/validation");
 const {
   requireAuth,
   authParams,
@@ -17,6 +20,33 @@ const {
   Attendance,
   Membership,
 } = require("../../db/models");
+
+// Change the status of an attendance for an event specified by id
+router.put(
+  "/:eventId/attendances/:userId",
+  requireAuth,
+  authParams,
+  authMembership,
+  validateAttendanceInput,
+  async (req, res, next) => {
+    const attendance = await Attendance.findOne({
+      where: { userId: req.body.userId, eventId: req.event.id },
+    });
+
+    if (!attendance) {
+      const err = new Error(
+        "Attendance between the user and the event does not exist"
+      );
+      err.status = 404;
+      return next(err);
+    }
+
+    const { id, eventId, userId, status } = await attendance.update({
+      status: req.body.status,
+    });
+    res.json({ id, eventId, userId, status });
+  }
+);
 
 // Get all attendees of an event specified by its id
 router.get("/:eventId/attendees", requireAuth, authParams, async (req, res) => {

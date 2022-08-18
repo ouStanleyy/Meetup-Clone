@@ -32,20 +32,19 @@ router.put(
   authMembership,
   validateMembershipInput,
   async (req, res, next) => {
-    const { status } = req.body;
     const membership = await Membership.findOne({
       where: { memberId: req.body.memberId, groupId: req.group.id },
     });
 
     if (!membership) {
       const err = new Error(
-        "Membership between the user and the group does not exit"
+        "Membership between the user and the group does not exist"
       );
       err.status = 404;
       return next(err);
     }
 
-    if (status === "co-host" && req.membership.status !== "host") {
+    if (req.body.status === "co-host" && req.membership.status !== "host") {
       const err = new Error(
         "Must be organizer of group to change status to 'co-host'"
       );
@@ -53,13 +52,10 @@ router.put(
       return next(err);
     }
 
-    const {
-      id,
-      groupId,
-      memberId,
-      status: newStatus,
-    } = await membership.update({ status });
-    res.json({ id, groupId, memberId, newStatus });
+    const { id, groupId, memberId, status } = await membership.update({
+      status: req.body.status,
+    });
+    res.json({ id, groupId, memberId, status });
   }
 );
 

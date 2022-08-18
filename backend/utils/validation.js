@@ -141,6 +141,11 @@ const validateEventInput = [
 ];
 
 const validateMembershipInput = [
+  check("memberId").custom((memberId, { req }) => {
+    if (memberId != req.params.memberId)
+      return Promise.reject("Body and params memberId does not match");
+    return true;
+  }),
   check("memberId").custom((memberId) =>
     User.findByPk(memberId).then((user) => {
       if (!user) return Promise.reject("User couldn't be found");
@@ -153,6 +158,27 @@ const validateMembershipInput = [
     .not()
     .isIn(["pending"])
     .withMessage("Cannot change a membership status to 'pending'"),
+  handleValidationErrors,
+];
+
+const validateAttendanceInput = [
+  check("userId").custom((userId, { req }) => {
+    if (userId != req.params.userId)
+      return Promise.reject("Body and params userId does not match");
+    return true;
+  }),
+  check("userId").custom((userId) =>
+    User.findByPk(userId).then((user) => {
+      if (!user) return Promise.reject("User couldn't be found");
+    })
+  ),
+  check("status")
+    .isIn(["member", "waitlist"])
+    .withMessage("Attendance status must be 'member' or 'waitlist'"),
+  check("status")
+    .not()
+    .isIn(["pending"])
+    .withMessage("Cannot change an attendance status to 'pending'"),
   handleValidationErrors,
 ];
 
@@ -177,5 +203,6 @@ module.exports = {
   validateVenueInput,
   validateEventInput,
   validateMembershipInput,
+  validateAttendanceInput,
   validateMembershipDeletion,
 };
