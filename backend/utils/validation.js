@@ -147,8 +147,8 @@ const validateMembershipInput = [
     })
   ),
   check("status")
-    .isIn(["host", "co-host", "member"])
-    .withMessage("Membership status must be 'host', 'co-host', or 'member'"),
+    .isIn(["co-host", "member"])
+    .withMessage("Membership status must be 'co-host' or 'member'"),
   check("status")
     .not()
     .isIn(["pending"])
