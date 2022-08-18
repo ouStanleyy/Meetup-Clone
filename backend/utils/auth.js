@@ -102,14 +102,13 @@ const authOwnership = async (req, _res, next) => {
 
 // Checks user role in memberships
 const authMembership = async (req, _res, next) => {
-  req.membership = await req.group.getMemberships({
-    where: { memberId: req.user.id },
+  req.membership = await Membership.findOne({
+    where: { memberId: req.user.id, groupId: req.group.id },
   });
 
   if (
-    req.membership.length &&
-    (req.membership[0].status === "host" ||
-      req.membership[0].status === "co-host")
+    req.membership &&
+    (req.membership.status === "host" || req.membership.status === "co-host")
   )
     return next();
 

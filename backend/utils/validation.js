@@ -140,10 +140,27 @@ const validateEventInput = [
   handleValidationErrors,
 ];
 
+const validateMembershipInput = [
+  check("memberId").custom((memberId) =>
+    User.findByPk(memberId).then((user) => {
+      if (!user) return Promise.reject("User couldn't be found");
+    })
+  ),
+  check("status")
+    .isIn(["host", "co-host", "member"])
+    .withMessage("Membership status must be 'host', 'co-host', or 'member'"),
+  check("status")
+    .not()
+    .isIn(["pending"])
+    .withMessage("Cannot change a membership status to 'pending'"),
+  handleValidationErrors,
+];
+
 module.exports = {
   validateLogin,
   validateSignup,
   validateGroupInput,
   validateVenueInput,
   validateEventInput,
+  validateMembershipInput,
 };

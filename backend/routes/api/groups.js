@@ -5,6 +5,7 @@ const {
   validateGroupInput,
   validateVenueInput,
   validateEventInput,
+  validateMembershipInput,
 } = require("../../utils/validation");
 const {
   requireAuth,
@@ -21,6 +22,33 @@ const {
   Attendance,
   Event,
 } = require("../../db/models");
+
+// Change the status of a membership for a group specified by id
+router.put(
+  "/:groupId/memberships/:memberId",
+  requireAuth,
+  authParams,
+  authMembership,
+  validateMembershipInput,
+  async (req, res, next) => {
+    const membership = await Membership.findOne({
+      where: { memberId: req.body.memberId, groupId: req.group.id },
+    });
+
+    if (!membership) {
+      const err = new Error(
+        "Membership between the user and the group does not exit"
+      );
+      err.status = 404;
+      return next(err);
+    }
+
+    const { id, groupId, memberId, status } = await membership.update({
+      status: req.body.status,
+    });
+    res.json({ id, groupId, memberId, status });
+  }
+);
 
 // Get all members of a group specified by its id
 router.get("/:groupId/members", requireAuth, async (req, res, next) => {
