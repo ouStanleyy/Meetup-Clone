@@ -6,6 +6,7 @@ const {
   validateVenueInput,
   validateEventInput,
   validateMembershipInput,
+  validateMembershipDeletion,
 } = require("../../utils/validation");
 const {
   requireAuth,
@@ -59,6 +60,36 @@ router.put(
       status: newStatus,
     } = await membership.update({ status });
     res.json({ id, groupId, memberId, newStatus });
+  }
+);
+
+// Delete membership to a group specified by id
+router.delete(
+  "/:groupId/memberships/:memberId",
+  requireAuth,
+  authParams,
+  validateMembershipDeletion,
+  async (req, res, next) => {
+    const { id } = req.user;
+    const { memberId } = req.body;
+    const membership = await Membership.findOne({
+      where: { memberId, groupId: req.group.id },
+    });
+
+    if (!membership) {
+      const err = new Error("Membership does not exist for this User");
+      err.status = 404;
+      return next(err);
+    }
+
+    if (id !== req.group.organizerId && id !== memberId) {
+      const err = new Error("Forbidden");
+      err.status = 403;
+      return next(err);
+    }
+
+    await membership.destroy();
+    res.json({ message: "Successfully deleted membership from group" });
   }
 );
 

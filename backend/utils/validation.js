@@ -156,6 +156,20 @@ const validateMembershipInput = [
   handleValidationErrors,
 ];
 
+const validateMembershipDeletion = [
+  check("memberId").custom((memberId, { req }) => {
+    if (memberId != req.params.memberId)
+      return Promise.reject("Body and params memberId does not match");
+    return true;
+  }),
+  check("memberId").custom((memberId) =>
+    User.findByPk(memberId).then((user) => {
+      if (!user) return Promise.reject("User couldn't be found");
+    })
+  ),
+  handleValidationErrors,
+];
+
 module.exports = {
   validateLogin,
   validateSignup,
@@ -163,4 +177,5 @@ module.exports = {
   validateVenueInput,
   validateEventInput,
   validateMembershipInput,
+  validateMembershipDeletion,
 };
