@@ -15,46 +15,79 @@ const {
   Venue,
   Event,
   Attendance,
+  Membership,
 } = require("../../db/models");
 
 // Get all attendees of an event specified by its id
-router.get(
-  "/:eventId/attendees",
+router.get("/:eventId/attendees", requireAuth, authParams, async (req, res) => {
+  let attendees;
+  const { eventId } = req.params;
+  const currUser = await req.event.getAttendances({
+    where: { userId: req.user.id },
+  });
+
+  if (
+    currUser.length &&
+    (currUser[0].status === "host" || currUser[0].status === "co-host")
+  )
+    attendees = await User.findAll({
+      include: {
+        model: Attendance,
+        where: { eventId },
+        attributes: ["status"],
+      },
+    });
+  else
+    attendees = await User.findAll({
+      include: {
+        model: Attendance,
+        where: { eventId, status: { [Op.not]: "pending" } },
+        attributes: ["status"],
+      },
+    });
+
+  attendees.forEach((attendee) => {
+    attendee.dataValues.Attendance = attendee.dataValues.Attendances[0];
+    delete attendee.dataValues.Attendances;
+  });
+
+  res.json({ Attendees: attendees });
+});
+
+// Request to attend an event based on the event's id
+router.post(
+  "/:eventId/attendances",
   requireAuth,
   authParams,
   async (req, res, next) => {
-    let attendees;
-    const { eventId } = req.params;
-    const currUser = await req.event.getAttendances({
-      where: { userId: req.user.id },
+    const membership = await Membership.findOne({
+      where: { memberId: req.user.id, groupId: req.group.id },
     });
 
-    if (
-      currUser.length &&
-      (currUser[0].status === "host" || currUser[0].status === "co-host")
-    )
-      attendees = await User.findAll({
-        include: {
-          model: Attendance,
-          where: { eventId },
-          attributes: ["status"],
-        },
-      });
-    else
-      attendees = await User.findAll({
-        include: {
-          model: Attendance,
-          where: { eventId, status: { [Op.not]: "pending" } },
-          attributes: ["status"],
-        },
-      });
+    if (!membership || membership.status === "pending") {
+      const err = new Error("Forbidden");
+      err.status = 403;
+      return next(err);
+    }
 
-    attendees.forEach((attendee) => {
-      attendee.dataValues.Attendance = attendee.dataValues.Attendances[0];
-      delete attendee.dataValues.Attendances;
+    const { id } = req.event;
+    const attendance = await Attendance.findOne({
+      where: { userId: req.user.id, eventId: id },
     });
 
-    res.json({ Attendees: attendees });
+    if (!attendance) {
+      const { eventId, userId, status } = await req.user.createAttendance({
+        eventId: id,
+      });
+      return res.json({ eventId, userId, status });
+    }
+
+    const err = new Error();
+    err.status = 400;
+    if (attendance.status === "pending")
+      err.message = "Attendance has already been requested";
+    else err.message = "User is already an attendees of the event";
+    next(err);
   }
 );
 
