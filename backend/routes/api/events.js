@@ -1,10 +1,7 @@
 const router = require("express").Router();
 const sequelize = require("sequelize");
-const {
-  validateGroupInput,
-  validateVenueInput,
-  validateEventInput,
-} = require("../../utils/validation");
+const { Op } = sequelize;
+const { validateEventInput } = require("../../utils/validation");
 const {
   requireAuth,
   authParams,
@@ -19,6 +16,47 @@ const {
   Event,
   Attendance,
 } = require("../../db/models");
+
+// Get all attendees of an event specified by its id
+router.get(
+  "/:eventId/attendees",
+  requireAuth,
+  authParams,
+  async (req, res, next) => {
+    let attendees;
+    const { eventId } = req.params;
+    const currUser = await req.event.getAttendances({
+      where: { userId: req.user.id },
+    });
+
+    if (
+      currUser.length &&
+      (currUser[0].status === "host" || currUser[0].status === "co-host")
+    )
+      attendees = await User.findAll({
+        include: {
+          model: Attendance,
+          where: { eventId },
+          attributes: ["status"],
+        },
+      });
+    else
+      attendees = await User.findAll({
+        include: {
+          model: Attendance,
+          where: { eventId, status: { [Op.not]: "pending" } },
+          attributes: ["status"],
+        },
+      });
+
+    attendees.forEach((attendee) => {
+      attendee.dataValues.Attendance = attendee.dataValues.Attendances[0];
+      delete attendee.dataValues.Attendances;
+    });
+
+    res.json({ Attendees: attendees });
+  }
+);
 
 // Add an image to an event based on the event's id
 router.post(
