@@ -1,4 +1,4 @@
-const { validationResult, check } = require("express-validator");
+const { validationResult, check, body } = require("express-validator");
 const { User, Venue } = require("../db/models");
 
 // Handles validation errors
@@ -183,13 +183,29 @@ const validateAttendanceInput = [
 ];
 
 const validateMembershipDeletion = [
-  check("memberId").custom((memberId, { req }) => {
+  body("memberId").custom((memberId, { req }) => {
     if (memberId != req.params.memberId)
-      return Promise.reject("Body and params memberId does not match");
+      throw new Error("Body and params memberId does not match");
     return true;
   }),
-  check("memberId").custom((memberId) =>
+  handleValidationErrors,
+  body("memberId").custom((memberId) =>
     User.findByPk(memberId).then((user) => {
+      if (!user) return Promise.reject("User couldn't be found");
+    })
+  ),
+  handleValidationErrors,
+];
+
+const validateAttendanceDeletion = [
+  body("userId").custom((userId, { req }) => {
+    if (userId != req.params.userId)
+      throw new Error("Body and params userId does not match");
+    return true;
+  }),
+  handleValidationErrors,
+  body("userId").custom((userId) =>
+    User.findByPk(userId).then((user) => {
       if (!user) return Promise.reject("User couldn't be found");
     })
   ),
@@ -205,4 +221,5 @@ module.exports = {
   validateMembershipInput,
   validateAttendanceInput,
   validateMembershipDeletion,
+  validateAttendanceDeletion,
 };

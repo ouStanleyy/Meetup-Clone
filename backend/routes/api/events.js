@@ -4,6 +4,7 @@ const { Op } = sequelize;
 const {
   validateEventInput,
   validateAttendanceInput,
+  validateAttendanceDeletion,
 } = require("../../utils/validation");
 const {
   requireAuth,
@@ -45,6 +46,38 @@ router.put(
       status: req.body.status,
     });
     res.json({ id, eventId, userId, status });
+  }
+);
+
+// Delete attendance to an event specified by id
+router.delete(
+  "/:eventId/attendances/:userId",
+  requireAuth,
+  authParams,
+  validateAttendanceDeletion,
+  async (req, res, next) => {
+    const { id } = req.user;
+    const { userId, eventId } = req.params;
+    const attendance = await Attendance.findOne({
+      where: { userId, eventId },
+    });
+
+    if (!attendance) {
+      const err = new Error("Attendance does not exist for this User");
+      err.status = 404;
+      return next(err);
+    }
+
+    if (id !== req.group.organizerId && id != userId) {
+      const err = new Error(
+        "Only the User or organizer may delete an Attendance"
+      );
+      err.status = 403;
+      return next(err);
+    }
+
+    await attendance.destroy();
+    res.json({ message: "Successfully deleted attendance from event" });
   }
 );
 
