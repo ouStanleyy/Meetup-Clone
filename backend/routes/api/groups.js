@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { sequelize, Op } = require("sequelize");
+const sequelize = require("sequelize");
+const { Op } = sequelize;
 const {
   validateGroupInput,
   validateVenueInput,
@@ -67,7 +68,31 @@ router.get("/:groupId/members", requireAuth, async (req, res, next) => {
 });
 
 // Request a membership for a group based on the group's id
-router.post("/:groupId/memberships", requireAuth, async (req, res, next) => {});
+router.post(
+  "/:groupId/memberships",
+  requireAuth,
+  authParams,
+  async (req, res, next) => {
+    const { id } = req.group;
+    const membership = await Membership.findOne({
+      where: { memberId: req.user.id, groupId: id },
+    });
+
+    if (!membership) {
+      const { groupId, memberId, status } = await req.user.createMembership({
+        groupId: id,
+      });
+      return res.json({ groupId, memberId, status });
+    }
+
+    const err = new Error();
+    err.status = 400;
+    if (membership.status === "pending")
+      err.message = "Membership has already been requested";
+    else err.message = "User is already a member of the group";
+    next(err);
+  }
+);
 
 // Get all events of a group specified by its id
 router.get("/:groupId/events", async (req, res, next) => {
