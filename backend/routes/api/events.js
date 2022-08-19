@@ -308,7 +308,7 @@ router.get("/", validateEventQueryFilters, async (req, res) => {
       ],
       exclude: ["description", "capacity", "price", "createdAt", "updatedAt"],
     },
-    group: ["Event.id", "Group.id", "Images.url", "Images.id"],
+    group: ["Event.id", "Group.id", "Venue.id", "Images.url", "Images.id"],
     include: [
       { model: Attendance, attributes: [] },
       { model: Image, attributes: [] },
