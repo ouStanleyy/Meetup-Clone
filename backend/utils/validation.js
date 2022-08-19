@@ -217,8 +217,8 @@ const validateAttendanceDeletion = [
 const validateEventQueryFilters = [
   query("page")
     .optional()
-    .isInt({ min: 0, max: 10 })
-    .withMessage("Page must be between 0 and 10"),
+    .isInt({ min: 1, max: 10 })
+    .withMessage("Page must be between 1 and 10"),
   query("size")
     .optional()
     .isInt({ min: 0, max: 20 })
