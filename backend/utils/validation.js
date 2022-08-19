@@ -1,4 +1,4 @@
-const { validationResult, check, body } = require("express-validator");
+const { validationResult, check, body, query } = require("express-validator");
 const { User, Venue } = require("../db/models");
 
 // Handles validation errors
@@ -214,6 +214,30 @@ const validateAttendanceDeletion = [
   handleValidationErrors,
 ];
 
+const validateEventQueryFilters = [
+  query("page")
+    .optional()
+    .isInt({ min: 0, max: 10 })
+    .withMessage("Page must be between 0 and 10"),
+  query("size")
+    .optional()
+    .isInt({ min: 0, max: 20 })
+    .withMessage("Size must be between 0 and 20"),
+  query("name")
+    .optional()
+    .exists({ checkFalsy: true })
+    .withMessage("Name must be a string"),
+  query("type")
+    .optional()
+    .isIn(["Online", "In person"])
+    .withMessage("Type must be 'Online' or 'In Person'"),
+  query("startDate")
+    .optional()
+    .isISO8601()
+    .withMessage("Start date must be a valid datetime"),
+  handleValidationErrors,
+];
+
 module.exports = {
   validateLogin,
   validateSignup,
@@ -224,4 +248,5 @@ module.exports = {
   validateAttendanceInput,
   validateMembershipDeletion,
   validateAttendanceDeletion,
+  validateEventQueryFilters,
 };

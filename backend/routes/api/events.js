@@ -5,6 +5,7 @@ const {
   validateEventInput,
   validateAttendanceInput,
   validateAttendanceDeletion,
+  validateEventQueryFilters,
 } = require("../../utils/validation");
 const {
   requireAuth,
@@ -284,7 +285,15 @@ router.delete(
 );
 
 // Get all events
-router.get("/", async (_req, res) => {
+router.get("/", validateEventQueryFilters, async (req, res) => {
+  const { page, size, name, type, startDate } = req.query;
+  const where = {};
+  const limit = size || 20;
+  const offset = limit * ((page || 0) - 1);
+  if (name) where.name = { [Op.like]: `%${name}%` };
+  if (type) where.type = type;
+  if (startDate) where.startDate = startDate;
+
   const allEvents = await Event.findAll({
     attributes: {
       include: [
@@ -306,6 +315,10 @@ router.get("/", async (_req, res) => {
       { model: Group, attributes: ["id", "name", "city", "state"] },
       { model: Venue, attributes: ["id", "city", "state"] },
     ],
+    where,
+    limit,
+    offset,
+    subQuery: false,
   });
 
   res.json({ Events: allEvents });

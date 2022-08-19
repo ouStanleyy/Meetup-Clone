@@ -26,28 +26,81 @@ module.exports = (sequelize, DataTypes) => {
   }
   Event.init(
     {
-      groupId: { type: DataTypes.INTEGER, allowNull: false },
-      venueId: DataTypes.INTEGER,
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        get() {
+          return this.getDataValue("id");
+        },
+      },
+      groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        get() {
+          return this.getDataValue("groupId");
+        },
+      },
+      venueId: {
+        type: DataTypes.INTEGER,
+        get() {
+          return this.getDataValue("venueId");
+        },
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         validate: { len: [3, 60] },
+        get() {
+          return this.getDataValue("name");
+        },
       },
       description: {
         type: DataTypes.STRING,
         allowNull: false,
         // validate: { len: [50] },
+        get() {
+          return this.getDataValue("description");
+        },
       },
       type: {
         type: DataTypes.ENUM("Online", "In person"),
         allowNull: false,
         defaultValue: "Online",
+        get() {
+          return this.getDataValue("type");
+        },
       },
-      capacity: { type: DataTypes.INTEGER, allowNull: false },
-      price: { type: DataTypes.DECIMAL, allowNull: false },
-      startDate: { type: DataTypes.DATE, allowNull: false },
-      endDate: { type: DataTypes.DATE, allowNull: false },
+      capacity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        get() {
+          return this.getDataValue("capacity");
+        },
+      },
+      price: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        get() {
+          return this.getDataValue("price");
+        },
+      },
+      startDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        get() {
+          return this.getDataValue("startDate").toLocaleString("sv");
+        },
+      },
+      endDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        get() {
+          return this.getDataValue("endDate").toLocaleString("sv");
+        },
+      },
     },
     {
       sequelize,
