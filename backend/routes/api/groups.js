@@ -402,7 +402,7 @@ router.get("/", async (_req, res) => {
         [sequelize.col("Images.url"), "previewImage"],
       ],
     },
-    group: "Group.id",
+    group: ["Group.id", "Images.url"],
     include: [
       { model: Membership, attributes: [] },
       { model: Image, attributes: [] },
