@@ -19,7 +19,7 @@ router.get("/groups", requireAuth, async (req, res, next) => {
         [sequelize.col("Images.url"), "previewImage"],
       ],
     },
-    group: "Group.id",
+    group: ["Group.id", "Images.url", "Images.id"],
     include: [
       {
         model: Membership,
