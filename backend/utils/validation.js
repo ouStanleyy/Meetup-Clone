@@ -98,9 +98,11 @@ const validateVenueInput = [
   check("state").exists({ checkFalsy: true }).withMessage("State is required"),
   check("lat")
     .exists({ checkFalsy: true })
+    .isFloat({ min: -90, max: 90 })
     .withMessage("Latitude is not valid"),
   check("lng")
     .exists({ checkFalsy: true })
+    .isFloat({ min: -180, max: 180 })
     .withMessage("Longitude is not valid"),
   handleValidationErrors,
 ];
@@ -125,6 +127,7 @@ const validateEventInput = [
     .withMessage("Capacity must be an integer"),
   check("price")
     .isDecimal({ force_decimal: true, decimal_digits: "1,2" })
+    .isFloat({ min: 0.0, max: 9999.99 })
     .not()
     .isString()
     .withMessage("Price is invalid"),

@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       price: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.DECIMAL(6, 2),
         allowNull: false,
         get() {
           return this.getDataValue("price");

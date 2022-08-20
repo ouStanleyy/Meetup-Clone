@@ -197,7 +197,7 @@ router.get("/:eventId", async (req, res, next) => {
       ],
       exclude: ["createdAt", "updatedAt"],
     },
-    group: "Event.id",
+    group: ["Event.id", "Group.id"],
     include: [
       { model: Attendance, attributes: [] },
       { model: Group, attributes: ["id", "name", "private", "city", "state"] },
@@ -257,16 +257,16 @@ router.put(
 
     delete updatedEvent.dataValues.createdAt;
     delete updatedEvent.dataValues.updatedAt;
-    updatedEvent.dataValues.startDate = new Date(
-      updatedEvent.dataValues.startDate
-    )
-      .toISOString()
-      .replace(/T/, " ")
-      .replace(/\..+/g, "");
-    updatedEvent.dataValues.endDate = new Date(updatedEvent.dataValues.endDate)
-      .toISOString()
-      .replace(/T/, " ")
-      .replace(/\..+/g, "");
+    // updatedEvent.dataValues.startDate = new Date(
+    //   updatedEvent.dataValues.startDate
+    // )
+    //   .toISOString()
+    //   .replace(/T/, " ")
+    //   .replace(/\..+/g, "");
+    // updatedEvent.dataValues.endDate = new Date(updatedEvent.dataValues.endDate)
+    //   .toISOString()
+    //   .replace(/T/, " ")
+    //   .replace(/\..+/g, "");
 
     res.json(updatedEvent);
   }

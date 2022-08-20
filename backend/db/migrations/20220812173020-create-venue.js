@@ -1,4 +1,7 @@
 "use strict";
+
+const { sequelize } = require("../models");
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Venues", {
@@ -30,11 +33,11 @@ module.exports = {
         allowNull: false,
       },
       lat: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(9, 7),
         allowNull: false,
       },
       lng: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 7),
         allowNull: false,
       },
       createdAt: {
