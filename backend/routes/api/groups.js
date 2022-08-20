@@ -240,7 +240,7 @@ router.post(
     //   .replace(/T/, " ")
     //   .replace(/\..+/g, "");
 
-    await currUser.createAttendance({ eventId: newEvent.id, status: "host" });
+    await currUser.createAttendance({ eventId: newEvent.id, status: "member" });
 
     res.json(newEvent);
   }
