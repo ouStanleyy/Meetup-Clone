@@ -86,8 +86,8 @@ router.delete(
 router.get("/:eventId/attendees", requireAuth, authParams, async (req, res) => {
   let attendees;
   const { eventId } = req.params;
-  const currUser = await req.event.getAttendances({
-    where: { userId: req.user.id },
+  const currUser = await req.group.getMemberships({
+    where: { memberId: req.user.id },
   });
 
   if (

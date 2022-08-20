@@ -23,6 +23,7 @@ module.exports = {
           model: "Venues",
           key: "id",
         },
+        onDelete: "set null",
       },
       name: {
         type: Sequelize.STRING,
