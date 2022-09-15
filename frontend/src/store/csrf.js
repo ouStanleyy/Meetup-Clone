@@ -12,7 +12,10 @@ export const csrfFetch = async (url, options = {}) => {
 
   const res = await window.fetch(url, options);
 
-  if (res.status >= 400) throw res;
+  // if (res.status >= 400) {
+  //   console.log(await res.json());
+  //   throw res;
+  // }
   return res;
 };
 

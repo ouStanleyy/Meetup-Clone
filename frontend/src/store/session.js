@@ -18,9 +18,16 @@ export const login = (payload) => async (dispatch) => {
     body: JSON.stringify(payload),
   });
 
-  if (res.ok) {
-    const user = await res.json();
-    dispatch(setSession(user));
+  const data = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    throw err;
+  } else {
+    dispatch(setSession(data));
+    return data;
   }
 };
 
