@@ -35,10 +35,27 @@ export const restoreSession = () => async (dispatch) => {
   const res = await csrfFetch("/api/users/session");
   const data = await res.json();
 
-  console.log(data);
-
-  dispatch(setSession(data));
+  if (res.ok) dispatch(setSession(data));
   return data;
+};
+
+export const signup = (payload) => async (dispatch) => {
+  const res = await csrfFetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+
+  const data = await res.json();
+  console.log(data);
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    throw err;
+  } else {
+    dispatch(setSession(data));
+    return data;
+  }
 };
 
 const sessionReducer = (state = { user: null }, action) => {

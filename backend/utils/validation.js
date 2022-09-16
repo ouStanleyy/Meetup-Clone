@@ -53,7 +53,7 @@ const validateSignup = [
   ),
   check("firstName")
     .exists({ checkFalsy: true })
-    .isLength({ min: 4, max: 30 })
+    .isLength({ min: 1, max: 30 })
     .withMessage("First Name is required"),
   check("firstName")
     .not()
