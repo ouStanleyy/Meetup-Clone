@@ -14,6 +14,7 @@ const LoginFormPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setWiggle(true);
 
     const credentials = { email, password };
 
@@ -32,12 +33,12 @@ const LoginFormPage = () => {
   return (
     <section className="login">
       <form className="login-form" onSubmit={submitHandler}>
-        <div className="errors">
+        <div className="error">
           {errors.status && (
             <h3
-              key={Math.random() * 100}
+              //   key={Math.random() * 100}
               onAnimationEnd={() => setWiggle(false)}
-              className={wiggle ? "wiggle" : ""}
+              className={wiggle ? "error-wiggle" : ""}
             >
               Login failed: {errors.message}
             </h3>
@@ -59,9 +60,7 @@ const LoginFormPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" onClick={() => setWiggle(true)}>
-          Log In
-        </button>
+        <button type="submit">Log In</button>
       </form>
     </section>
   );

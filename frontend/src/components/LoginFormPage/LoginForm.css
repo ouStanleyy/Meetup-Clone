@@ -27,15 +27,6 @@
   transition: 100ms;
 }
 
-.errors {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  height: 30px;
-  color: red;
-}
-
 /* .errors h3 {
   animation: phaseIn 200ms ease-in;
 } */
@@ -51,7 +42,21 @@
   scale: 1;
 }
 
-.wiggle {
+.login-form input:focus {
+  outline-width: 0;
+  filter: drop-shadow(0 0 10px) contrast(0.85);
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 30px;
+  color: red;
+}
+
+.error-wiggle {
   animation: wiggle 200ms ease-in;
 }
 
