@@ -46,11 +46,6 @@ const validateSignup = [
     .isEmail()
     .isLength({ min: 3, max: 256 })
     .withMessage("Invalid email"),
-  check("email").custom((email) =>
-    User.findOne({ where: { email } }).then((user) => {
-      if (user) return Promise.reject("User with that email already exists");
-    })
-  ),
   check("firstName")
     .exists({ checkFalsy: true })
     .isLength({ min: 1, max: 30 })
@@ -61,16 +56,19 @@ const validateSignup = [
     .withMessage("First name cannot be an email."),
   check("lastName")
     .exists({ checkFalsy: true })
-    .isLength({ min: 4, max: 30 })
+    .isLength({ min: 1, max: 30 })
     .withMessage("Last Name is required"),
-  check("lastName")
-    .not()
-    .isEmail()
-    .withMessage("Last name cannot be an email."),
+  check("lastName").not().isEmail().withMessage("Last name cannot be an email"),
   check("password")
     .exists({ checkFalsy: true })
     .isLength({ min: 6 })
-    .withMessage("Please provide a valid password with at least 6 characters."),
+    .withMessage("Please provide a valid password with at least 6 characters"),
+  handleValidationErrors,
+  check("email").custom((email) =>
+    User.findOne({ where: { email } }).then((user) => {
+      if (user) return Promise.reject("User with that email already exists");
+    })
+  ),
   handleValidationErrors,
 ];
 
@@ -146,7 +144,7 @@ const validateMembershipInput = [
       throw new Error("Body and params memberId does not match");
     return true;
   }),
-  handleValidationErrors,
+
   body("memberId").custom((memberId) =>
     User.findByPk(memberId).then((user) => {
       if (!user) return Promise.reject("User couldn't be found");

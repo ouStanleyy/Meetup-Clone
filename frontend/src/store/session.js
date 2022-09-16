@@ -51,6 +51,7 @@ export const signup = (payload) => async (dispatch) => {
     const err = new Error();
     err.message = data.message;
     err.status = data.statusCode;
+    err.errors = data.errors;
     throw err;
   } else {
     dispatch(setSession(data));

@@ -1,0 +1,115 @@
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { signup } from "../../store/session";
+import "./SignupForm.css";
+
+const SignupFormPage = () => {
+  const dispatch = useDispatch();
+  const activeSession = useSelector((state) => state.session.user);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [wiggle, setWiggle] = useState(false);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setWiggle(true);
+
+    if (password !== confirmPassword)
+      return setErrors({ status: 400, message: "Passwords do not match" });
+
+    const credentials = { firstName, lastName, email, password };
+
+    try {
+      await dispatch(signup(credentials));
+    } catch (err) {
+      setErrors({ ...err, ...err.errors });
+    }
+  };
+
+  if (activeSession) return <Redirect to="/" />;
+
+  return (
+    <section className="signup">
+      <form className="signup-form" onSubmit={submitHandler}>
+        <div className="errors">
+          {errors.status && (
+            <h3
+              onAnimationEnd={() => setWiggle(false)}
+              className={wiggle ? "errors-wiggle" : ""}
+            >
+              Signup failed: {errors.message}
+            </h3>
+          )}
+        </div>
+        <label>First Name</label>
+        <input
+          className="credentials"
+          type="text"
+          placeholder="First Name"
+          required
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <p>{errors.firstName}</p>
+        <label>Last Name</label>
+        <input
+          className="credentials"
+          type="text"
+          placeholder="Last Name"
+          required
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <p>{errors.lastName}</p>
+        <label>Email</label>
+        <input
+          className="credentials"
+          type="text"
+          placeholder="Email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <p>{errors.email}</p>
+        <label>Password</label>
+        <input
+          className="credentials"
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <p>{errors.password}</p>
+        <label>Confirm Password</label>
+        <input
+          className="credentials"
+          type={showPassword ? "text" : "password"}
+          placeholder="Confirm Password"
+          required
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <label className="show-password">
+          <div className="checkbox">
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => setShowPassword((state) => !state)}
+            />
+          </div>
+          <span>Show Password</span>
+        </label>
+        <button type="submit">Sign Up</button>
+      </form>
+    </section>
+  );
+};
+
+export default SignupFormPage;
