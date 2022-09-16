@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { login } from "../../store/session";
 import "./LoginForm.css";
 
 const LoginFormPage = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const activeSession = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [wiggle, setWiggle] = useState(false);
 
   const submitHandler = async (e) => {
@@ -23,12 +24,12 @@ const LoginFormPage = () => {
 
     try {
       await dispatch(login(credentials));
-
-      history.push("/");
     } catch (err) {
       setErrors({ ...err });
     }
   };
+
+  if (activeSession) return <Redirect to="/" />;
 
   return (
     <section className="login">
@@ -46,6 +47,7 @@ const LoginFormPage = () => {
         </div>
         <label>Email</label>
         <input
+          className="credentials"
           type="text"
           placeholder="Email"
           required
@@ -54,12 +56,23 @@ const LoginFormPage = () => {
         />
         <label>Password</label>
         <input
-          type="password"
+          className="credentials"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <label className="show-password">
+          <div className="checkbox">
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onClick={() => setShowPassword((state) => !state)}
+            />
+          </div>
+          <span>Show Password</span>
+        </label>
         <button type="submit">Log In</button>
       </form>
     </section>

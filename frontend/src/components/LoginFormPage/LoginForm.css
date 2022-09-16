@@ -11,7 +11,7 @@
 }
 
 .login-form button,
-.login-form input {
+.credentials {
   width: 80%;
   padding: 5px;
   border: solid 1px black;
@@ -42,9 +42,16 @@
   scale: 1;
 }
 
-.login-form input:focus {
+.credentials:focus {
   outline-width: 0;
   filter: drop-shadow(0 0 10px) contrast(0.85);
+}
+
+.show-password {
+  display: flex;
+  justify-content: space-between;
+  width: 130px;
+  height: 20px;
 }
 
 .error {
