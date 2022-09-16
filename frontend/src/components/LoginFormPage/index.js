@@ -68,7 +68,7 @@ const LoginFormPage = () => {
             <input
               type="checkbox"
               checked={showPassword}
-              onClick={() => setShowPassword((state) => !state)}
+              onChange={() => setShowPassword((state) => !state)}
             />
           </div>
           <span>Show Password</span>
