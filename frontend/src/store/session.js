@@ -59,6 +59,12 @@ export const signup = (payload) => async (dispatch) => {
   }
 };
 
+export const logout = () => async (dispatch) => {
+  const res = await csrfFetch("/api/users/session", { method: "DELETE" });
+
+  if (res.ok) dispatch(removeSession());
+};
+
 const sessionReducer = (state = { user: null }, action) => {
   switch (action.type) {
     case SET_SESSION:

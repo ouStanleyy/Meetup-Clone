@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { restoreSession } from "./store/session";
@@ -25,6 +25,9 @@ function App() {
           </Route>
           <Route path="/signup">
             <SignupFormPage />
+          </Route>
+          <Route path="">
+            <Redirect to="/" />
           </Route>
         </Switch>
       </>
