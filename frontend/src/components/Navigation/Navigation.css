@@ -1,0 +1,28 @@
+.navbar > ul {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  list-style-type: none;
+}
+
+.navlink {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color: salmon;
+}
+
+.profile-button,
+.logout-button {
+  border: transparent;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: salmon;
+  border-radius: 10px;
+}
