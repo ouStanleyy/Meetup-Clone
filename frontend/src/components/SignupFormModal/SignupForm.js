@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { signup } from "../../store/session";
 import "./SignupForm.css";
 
-const SignupFormPage = () => {
+const SignupForm = () => {
   const dispatch = useDispatch();
-  const activeSession = useSelector((state) => state.session.user);
+  // const activeSession = useSelector((state) => state.session.user);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +17,6 @@ const SignupFormPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setWiggle(true);
 
     if (password !== confirmPassword)
       return setErrors({ status: 400, message: "Passwords do not match" });
@@ -28,11 +26,12 @@ const SignupFormPage = () => {
     try {
       await dispatch(signup(credentials));
     } catch (err) {
+      setWiggle(true);
       setErrors({ ...err, ...err.errors });
     }
   };
 
-  if (activeSession) return <Redirect to="/" />;
+  // if (activeSession) return <Redirect to="/" />;
 
   return (
     <section className="signup">
@@ -112,4 +111,4 @@ const SignupFormPage = () => {
   );
 };
 
-export default SignupFormPage;
+export default SignupForm;
