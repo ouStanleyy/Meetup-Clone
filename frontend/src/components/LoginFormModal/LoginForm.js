@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { login } from "../../store/session";
 import "./LoginForm.css";
 
-const LoginFormPage = () => {
+const LoginForm = () => {
   const dispatch = useDispatch();
-  const activeSession = useSelector((state) => state.session.user);
+  //   const activeSession = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -15,7 +14,6 @@ const LoginFormPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setWiggle(true);
 
     const credentials = { email, password };
 
@@ -25,11 +23,12 @@ const LoginFormPage = () => {
     try {
       await dispatch(login(credentials));
     } catch (err) {
+      setWiggle(true);
       setErrors({ ...err });
     }
   };
 
-  if (activeSession) return <Redirect to="/" />;
+  //   if (activeSession) return <Redirect to="/" />;
 
   return (
     <section className="login">
@@ -79,4 +78,4 @@ const LoginFormPage = () => {
   );
 };
 
-export default LoginFormPage;
+export default LoginForm;
