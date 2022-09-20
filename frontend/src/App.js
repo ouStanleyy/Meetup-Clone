@@ -23,6 +23,7 @@ function App() {
           </Route>
           <Route path="/groups/:groupId" component={GroupInfo} />
           <Route path="/groups" component={GroupsIndex} />
+          <Route path="/your-groups" component={GroupsIndex} />
           <Route path="">
             <Redirect to="/" />
           </Route>

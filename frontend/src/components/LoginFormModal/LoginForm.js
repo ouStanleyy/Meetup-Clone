@@ -28,6 +28,12 @@ const LoginForm = ({ signup }) => {
     }
   };
 
+  const demoLogin = async () => {
+    const credentials = { email: "demo@user.io", password: "demopassword" };
+
+    await dispatch(login(credentials));
+  };
+
   //   if (activeSession) return <Redirect to="/" />;
 
   return (
@@ -73,6 +79,9 @@ const LoginForm = ({ signup }) => {
           <span>Show Password</span>
         </label>
         <button type="submit">Log In</button>
+        <p className="demo-login" onClick={demoLogin}>
+          Demo login
+        </p>
         <p>
           Not a member yet?{" "}
           <span className="signup-span" onClick={signup}>

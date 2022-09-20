@@ -55,8 +55,13 @@
   color: salmon;
 }
 
-.signup-span:hover {
+.signup-span:hover,
+.demo-login:hover {
   cursor: pointer;
+}
+
+.login-form p {
+  margin: 0;
 }
 
 .error {

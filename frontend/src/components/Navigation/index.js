@@ -11,7 +11,7 @@ const Navigation = () => {
     <nav className="navbar">
       <ul>
         <li>
-          <Link className="navlink" exact to="/">
+          <Link className="navlink" to="/">
             <i className="fa-solid fa-house fa-2x" />
           </Link>
         </li>

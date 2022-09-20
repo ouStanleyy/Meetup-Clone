@@ -27,9 +27,26 @@
 }
 
 .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
-  background-color: salmon;
-  border-radius: 10px;
+  top: 35px;
+  right: 20px;
+  background-color: lightgray;
+  border-radius: 5px;
+  border: 1px solid gray;
+  width: 150px;
+  height: 200px;
+}
+
+.dropdown-menu > div {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 80%;
+  height: 100%;
+  border-bottom: 1px solid gray;
 }
 
 .login-signup-li {
