@@ -1,8 +1,6 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
-import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
 import LoginSignupModal from "../LoginSignupModal";
 
@@ -18,17 +16,9 @@ const Navigation = () => {
           </NavLink>
         </li>
         {!activeSession ? (
-          <>
-            {/* <li>
-              <LoginFormModal />
-            </li>
-            <li>
-              <SignupFormModal />
-            </li> */}
-            <li>
-              <LoginSignupModal />
-            </li>
-          </>
+          <li>
+            <LoginSignupModal />
+          </li>
         ) : (
           <li>
             <ProfileButton user={activeSession} />

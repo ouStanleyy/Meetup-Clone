@@ -4,7 +4,6 @@
   justify-content: center;
   align-items: center;
   width: 500px;
-  /* border: 1px solid black; */
   border-radius: 10px;
   padding: 10px;
   gap: 5px;
@@ -27,10 +26,6 @@
   font-size: 1em;
   transition: 100ms;
 }
-
-/* .errors h3 {
-    animation: phaseIn 200ms ease-in;
-  } */
 
 .signup-form button:hover {
   filter: brightness(1.2);
@@ -76,33 +71,6 @@
   animation: wiggle 200ms ease-in;
 }
 
-@keyframes phaseIn {
-  0% {
-    scale: 0.8;
-    opacity: 0;
-  }
-  15% {
-    transform: rotate(-5deg);
-  }
-  35% {
-    transform: rotate(5deg);
-  }
-  50% {
-    scale: 1.2;
-  }
-  65% {
-    transform: rotate(-5deg);
-  }
-  85% {
-    transform: rotate(5deg);
-  }
-  100% {
-    transform: rotate(0);
-    scale: 1;
-    opacity: 1;
-  }
-}
-
 @keyframes wiggle {
   0% {
     scale: 0.8;
@@ -125,25 +93,5 @@
   100% {
     transform: rotate(0);
     scale: 1;
-  }
-}
-
-.signup {
-  /* transition: transform 500ms;
-  transform: translateX(-100%); */
-  /* animation: signupSlideIn 500ms ease-in; */
-  /* background-color: white; */
-}
-
-.signup-hidden {
-  /* transform: translateX(0%); */
-}
-
-@keyframes signupSlideIn {
-  0% {
-    transform: translateX(110%);
-  }
-  100% {
-    transform: translateX(0%);
   }
 }

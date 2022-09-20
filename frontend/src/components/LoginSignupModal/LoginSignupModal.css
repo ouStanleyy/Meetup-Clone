@@ -2,48 +2,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 1000px; */
-  /* height: 100%; */
   overflow: hidden;
   border-radius: 10px;
-  /* border: 1px solid red; */
   transition: height 500ms;
   transform: translate3d(0, 0, 0);
   background-color: white;
 }
 
 .login-modal {
-  /* width: 550px; */
-  /* position: fixed; */
-  transition: all 500ms;
-  /* height: 325px; */
-
+  transition: all 500ms ease;
   transform: translateX(0%);
 }
 
 .login-modal_hidden {
-  transition: all 500ms;
+  transition: all 500ms ease;
   transform: translateX(-100%);
   position: fixed;
-
-  /* height: 500px; */
-  /* width: 100%; */
 }
 
 .signup-modal {
-  /* width: 600px; */
-  /* position: fixed; */
-  transition: all 500ms;
+  transition: all 500ms ease;
   transform: translateX(0%);
-
-  /* height: 500px; */
 }
 
 .signup-modal_hidden {
-  transition: all 500ms;
+  transition: all 500ms ease;
   transform: translateX(100%);
   position: fixed;
-
-  /* height: 325px; */
-  /* width: 100%; */
 }

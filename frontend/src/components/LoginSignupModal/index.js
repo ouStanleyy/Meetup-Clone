@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Modal } from "../../context/Modal";
 import LoginForm from "../LoginFormModal/LoginForm";
 import SignupForm from "../SignupFormModal/SignupForm";
@@ -8,51 +8,39 @@ const LoginSignupModal = () => {
   const [showModal, setShowModal] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const [menu, setMenu] = useState("");
   const [toggleDisplay, setToggleDisplay] = useState("");
   const [height, setHeight] = useState("");
+  const loginRef = useRef(null);
+  const signupRef = useRef(null);
+
+  useEffect(() => {
+    if (showLogin) setHeight(loginRef.current.clientHeight);
+  }, [showLogin]);
+
+  useEffect(() => {
+    if (showSignup) setHeight(signupRef.current.clientHeight);
+  }, [showSignup]);
 
   const login = () => {
-    // setShowSignup(false);
-    setShowLogin(true);
-    setToggleDisplay(true);
     setShowModal(true);
-    setHeight("300px");
+    setToggleDisplay(true);
+    setShowLogin(true);
+    setTimeout(() => setShowSignup(false), 500);
   };
 
   const signup = () => {
-    // setShowLogin(false);
-    setShowSignup(true);
-    setToggleDisplay(false);
     setShowModal(true);
-    setHeight("650px");
-  };
-
-  const setSignup = () => {
     setToggleDisplay(false);
-    setTimeout(() => setShowLogin(false), 500);
-    setHeight("650px");
     setShowSignup(true);
+    setTimeout(() => setShowLogin(false), 500);
   };
 
-  const setLogin = () => {
-    setToggleDisplay(true);
-    setTimeout(() => setShowSignup(false), 500);
-    setHeight("300px");
-    setShowLogin(true);
-  };
-
-  //   const toggleMenu = (menu) => {
-  //     setMenu(menu);
-  //     setShowModal(true);
-  //   };
-
-  const closeModal = () => {
+  const reset = () => {
+    setHeight("");
+    setToggleDisplay("");
     setShowModal(false);
     setShowLogin(false);
     setShowSignup(false);
-    setToggleDisplay("");
-    setHeight("");
   };
 
   return (
@@ -64,19 +52,21 @@ const LoginSignupModal = () => {
         Sign Up
       </button>
       {showModal && (
-        <Modal onClose={closeModal}>
+        <Modal onClose={reset}>
           <div className="login_signup-modal" style={{ height: height }}>
             <div
+              ref={loginRef}
               className={toggleDisplay ? "login-modal" : "login-modal_hidden"}
             >
-              {showLogin && <LoginForm signup={setSignup} />}
+              {showLogin && <LoginForm signup={signup} />}
             </div>
             <div
+              ref={signupRef}
               className={
                 !toggleDisplay ? "signup-modal" : "signup-modal_hidden"
               }
             >
-              {showSignup && <SignupForm login={setLogin} />}
+              {showSignup && <SignupForm login={login} />}
             </div>
           </div>
         </Modal>

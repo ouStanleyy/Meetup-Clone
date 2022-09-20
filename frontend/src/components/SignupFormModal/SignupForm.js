@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { signup } from "../../store/session";
 import "./SignupForm.css";
 
-const SignupForm = ({ hidden, login }) => {
+const SignupForm = ({ login }) => {
   const dispatch = useDispatch();
   // const activeSession = useSelector((state) => state.session.user);
   const [firstName, setFirstName] = useState("");
