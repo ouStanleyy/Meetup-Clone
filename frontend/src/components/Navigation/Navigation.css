@@ -1,8 +1,13 @@
 .navbar > ul {
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   list-style-type: none;
+  border-bottom: 1px solid lightgray;
+  box-shadow: 0 8px 6px -6px lightgray;
+  padding-bottom: 10px;
 }
 
 .navlink {

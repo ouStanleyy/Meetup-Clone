@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 import LoginSignupModal from "../LoginSignupModal";
@@ -11,19 +11,18 @@ const Navigation = () => {
     <nav className="navbar">
       <ul>
         <li>
-          <NavLink className="navlink" exact to="/">
+          <Link className="navlink" exact to="/">
             <i className="fa-solid fa-house fa-2x" />
-          </NavLink>
+          </Link>
         </li>
-        {!activeSession ? (
-          <li className="login-signup-li">
+        <li className="login-signup-li">
+          <Link to="/groups">Groups</Link>
+          {!activeSession ? (
             <LoginSignupModal />
-          </li>
-        ) : (
-          <li>
+          ) : (
             <ProfileButton user={activeSession} />
-          </li>
-        )}
+          )}
+        </li>
       </ul>
     </nav>
   );

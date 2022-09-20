@@ -9,15 +9,15 @@ const loadGroups = (groups) => ({
 
 export const getGroups = () => async (dispatch) => {
   const res = await csrfFetch("/api/groups");
-  const data = await res.json();
+  const { Groups } = await res.json();
 
   if (res.ok) {
     const normalizedData = {};
-    data.forEach((group) => (normalizedData[group.id] = group));
+    Groups.forEach((group) => (normalizedData[group.id] = group));
     dispatch(loadGroups(normalizedData));
   }
 
-  return data;
+  return Groups;
 };
 
 const groupsReducer = (state = {}, action) => {
