@@ -20,6 +20,6 @@
 
 #modal-content {
   position: absolute;
-  background-color: powderblue;
+  /* background-color: powderblue; */
   border-radius: 10px;
 }

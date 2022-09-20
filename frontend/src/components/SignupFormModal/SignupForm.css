@@ -4,10 +4,11 @@
   justify-content: center;
   align-items: center;
   width: 500px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 10px;
   padding: 10px;
   gap: 5px;
+  background-color: white;
 }
 
 .signup-form button,
@@ -52,6 +53,14 @@
   justify-content: space-between;
   width: 130px;
   height: 20px;
+}
+
+.login-span {
+  font-weight: bold;
+}
+
+.login-span:hover {
+  cursor: pointer;
 }
 
 .errors {
@@ -116,5 +125,25 @@
   100% {
     transform: rotate(0);
     scale: 1;
+  }
+}
+
+.signup {
+  /* transition: transform 500ms;
+  transform: translateX(-100%); */
+  /* animation: signupSlideIn 500ms ease-in; */
+  /* background-color: white; */
+}
+
+.signup-hidden {
+  /* transform: translateX(0%); */
+}
+
+@keyframes signupSlideIn {
+  0% {
+    transform: translateX(110%);
+  }
+  100% {
+    transform: translateX(0%);
   }
 }

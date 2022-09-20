@@ -4,10 +4,11 @@
   justify-content: center;
   align-items: center;
   width: 500px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 10px;
   padding: 10px;
   gap: 5px;
+  background-color: white;
 }
 
 .login-form button,
@@ -52,6 +53,14 @@
   justify-content: space-between;
   width: 130px;
   height: 20px;
+}
+
+.signup-span {
+  font-weight: bold;
+}
+
+.signup-span:hover {
+  cursor: pointer;
 }
 
 .error {
@@ -116,5 +125,34 @@
   100% {
     transform: rotate(0);
     scale: 1;
+  }
+}
+
+.login {
+  /* transition: transform 500ms; */
+  /* animation: loginSlideIn 500ms ease-in; */
+  /* background-color: white; */
+}
+
+.login-hidden {
+  /* transform: translateX(-110%); */
+  /* animation: loginSlideOut 500ms ease-in; */
+}
+
+@keyframes loginSlideIn {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes loginSlideOut {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-110%);
   }
 }

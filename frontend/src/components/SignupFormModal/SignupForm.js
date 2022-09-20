@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { signup } from "../../store/session";
 import "./SignupForm.css";
 
-const SignupForm = () => {
+const SignupForm = ({ hidden, login }) => {
   const dispatch = useDispatch();
   // const activeSession = useSelector((state) => state.session.user);
   const [firstName, setFirstName] = useState("");
@@ -106,6 +106,13 @@ const SignupForm = () => {
           <span>Show Password</span>
         </label>
         <button type="submit">Sign Up</button>
+        <p>
+          Already a member? Log in{" "}
+          <span className="login-span" onClick={login}>
+            here
+          </span>
+          !
+        </p>
       </form>
     </section>
   );
