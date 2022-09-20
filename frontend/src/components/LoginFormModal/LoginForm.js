@@ -74,11 +74,10 @@ const LoginForm = ({ signup }) => {
         </label>
         <button type="submit">Log In</button>
         <p>
-          Not a member yet? Sign up{" "}
+          Not a member yet?{" "}
           <span className="signup-span" onClick={signup}>
-            here
+            Sign up
           </span>
-          !
         </p>
       </form>
     </section>

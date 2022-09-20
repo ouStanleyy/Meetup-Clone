@@ -10,6 +10,7 @@ const LoginSignupModal = () => {
   const [showSignup, setShowSignup] = useState(false);
   const [toggleDisplay, setToggleDisplay] = useState("");
   const [height, setHeight] = useState("");
+  const [exitAnimation, setExitAnimation] = useState(false);
   const loginRef = useRef(null);
   const signupRef = useRef(null);
 
@@ -36,11 +37,15 @@ const LoginSignupModal = () => {
   };
 
   const reset = () => {
-    setHeight("");
-    setToggleDisplay("");
-    setShowModal(false);
-    setShowLogin(false);
-    setShowSignup(false);
+    setExitAnimation(true);
+    setTimeout(() => {
+      setHeight("");
+      setToggleDisplay("");
+      setShowModal(false);
+      setShowLogin(false);
+      setShowSignup(false);
+      setExitAnimation(false);
+    }, 300);
   };
 
   return (
@@ -53,7 +58,14 @@ const LoginSignupModal = () => {
       </button>
       {showModal && (
         <Modal onClose={reset}>
-          <div className="login_signup-modal" style={{ height: height }}>
+          <div
+            className={
+              exitAnimation
+                ? "login_signup-modal exit-animation"
+                : "login_signup-modal"
+            }
+            style={{ height: height }}
+          >
             <div
               ref={loginRef}
               className={toggleDisplay ? "login-modal" : "login-modal_hidden"}

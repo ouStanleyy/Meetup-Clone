@@ -16,7 +16,7 @@ const Navigation = () => {
           </NavLink>
         </li>
         {!activeSession ? (
-          <li>
+          <li className="login-signup-li">
             <LoginSignupModal />
           </li>
         ) : (

@@ -52,6 +52,7 @@
 
 .login-span {
   font-weight: bold;
+  color: salmon;
 }
 
 .login-span:hover {
