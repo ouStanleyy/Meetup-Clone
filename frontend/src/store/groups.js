@@ -49,6 +49,25 @@ export const createGroup = (group) => async (dispatch) => {
     body: JSON.stringify(group),
   });
   const data = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(addGroup(data));
+    return data;
+  }
+};
+
+export const updateGroup = (group) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${group.id}`, {
+    method: "PUT",
+    body: JSON.stringify(group),
+  });
+  const data = await res.json();
   console.log(data);
   if (!res.ok) {
     const err = new Error();
@@ -67,12 +86,15 @@ const groupsReducer = (state = {}, action) => {
     case LOAD_GROUPS:
       return { ...state, ...action.groups };
     case LOAD_DETAILS:
+    // return {
+    //   ...state,
+    //   [action.group.id]: { ...state[action.group.id], ...action.group },
+    // };
+    case ADD_GROUP:
       return {
         ...state,
         [action.group.id]: { ...state[action.group.id], ...action.group },
       };
-    case ADD_GROUP:
-      return { ...state, [action.group.id]: { ...action.group } };
     default:
       return state;
   }

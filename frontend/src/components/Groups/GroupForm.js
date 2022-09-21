@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createGroup } from "../../store/groups";
+import { createGroup, updateGroup } from "../../store/groups";
 
 const GroupForm = ({ group, formType }) => {
   const history = useHistory();
@@ -20,7 +20,9 @@ const GroupForm = ({ group, formType }) => {
     group = { ...group, name, about, type, private: privacy, city, state };
 
     try {
-      const newGroup = await dispatch(createGroup(group));
+      const newGroup = await dispatch(
+        formType === "Create" ? createGroup(group) : updateGroup(group)
+      );
       history.push(`/groups/${newGroup.id}`);
     } catch (err) {
       setWiggle(true);
@@ -114,7 +116,7 @@ const GroupForm = ({ group, formType }) => {
         </select>
         <p>{errors.private}</p>
         <button disabled={about.length < 50} type="submit">
-          Create Group
+          {formType} Group
         </button>
       </form>
     </section>

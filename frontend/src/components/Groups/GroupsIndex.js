@@ -21,6 +21,9 @@ const GroupsIndex = () => {
   return (
     groups && (
       <div className="groups-container">
+        <Link to="/groups/new">
+          <button>Start a new group</button>
+        </Link>
         {groups.map((group) => {
           return (
             <Link

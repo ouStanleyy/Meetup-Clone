@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getGroupById } from "../../store/groups";
 import "./Groups.css";
 
@@ -8,6 +8,9 @@ const GroupInfo = () => {
   const { groupId } = useParams();
   const dispatch = useDispatch();
   const group = useSelector((state) => state.groups[groupId]);
+  const organizer = useSelector(
+    (state) => group?.organizerId === state.session.user.id
+  );
 
   useEffect(() => {
     (async () => dispatch(getGroupById(groupId)))();
@@ -36,6 +39,11 @@ const GroupInfo = () => {
                 {group.type} {group.private ? "private" : "public"} group
               </span>
             </p>
+            {organizer && (
+              <button>
+                <Link to={`/groups/${group.id}/edit`}>Edit</Link>
+              </button>
+            )}
           </div>
         </div>
         <h3>What we're about</h3>

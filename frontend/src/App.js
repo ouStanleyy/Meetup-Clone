@@ -3,7 +3,12 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { restoreSession } from "./store/session";
 import Navigation from "./components/Navigation";
-import { GroupsIndex, GroupInfo, CreateGroupForm } from "./components/Groups";
+import {
+  GroupsIndex,
+  GroupInfo,
+  CreateGroupForm,
+  EditGroupForm,
+} from "./components/Groups";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +24,7 @@ function App() {
         <Navigation />
         <Switch>
           <Route path="/groups/new" component={CreateGroupForm} />
+          <Route path="/groups/:groupId/edit" component={EditGroupForm} />
           <Route path="/groups/:groupId" component={GroupInfo} />
           <Route path="/groups" component={GroupsIndex} />
           <Route path="/your-groups" component={GroupsIndex} />
