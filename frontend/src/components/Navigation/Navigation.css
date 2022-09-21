@@ -1,6 +1,12 @@
-.navbar > ul {
-  position: sticky;
+.navbar {
+  width: 100vw;
+  height: 60px;
+  position: fixed;
   top: 0;
+  background-color: white;
+}
+
+.navbar > ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,7 +37,7 @@
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 35px;
+  top: 50px;
   right: 20px;
   background-color: lightgray;
   border-radius: 5px;
