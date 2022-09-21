@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_GROUPS = "groups/LOAD_GROUPS";
 const LOAD_DETAILS = "groups/LOAD_DETAILS";
+const ADD_GROUP = "groups/ADD_GROUP";
 
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
@@ -10,6 +11,11 @@ const loadGroups = (groups) => ({
 
 const loadDetails = (group) => ({
   type: LOAD_DETAILS,
+  group,
+});
+
+const addGroup = (group) => ({
+  type: ADD_GROUP,
   group,
 });
 
@@ -37,6 +43,25 @@ export const getGroupById = (groupId) => async (dispatch) => {
   return group;
 };
 
+export const createGroup = (group) => async (dispatch) => {
+  const res = await csrfFetch("/api/groups", {
+    method: "POST",
+    body: JSON.stringify(group),
+  });
+  const data = await res.json();
+  console.log(data);
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(addGroup(data));
+    return data;
+  }
+};
+
 const groupsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_GROUPS:
@@ -46,6 +71,8 @@ const groupsReducer = (state = {}, action) => {
         ...state,
         [action.group.id]: { ...state[action.group.id], ...action.group },
       };
+    case ADD_GROUP:
+      return { ...state, [action.group.id]: { ...action.group } };
     default:
       return state;
   }

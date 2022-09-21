@@ -23,7 +23,6 @@ export const login = (payload) => async (dispatch) => {
     method: "POST",
     body: JSON.stringify(payload),
   });
-
   const data = await res.json();
 
   if (!res.ok) {
@@ -50,9 +49,8 @@ export const signup = (payload) => async (dispatch) => {
     method: "POST",
     body: JSON.stringify(payload),
   });
-
   const data = await res.json();
-  console.log(data);
+
   if (!res.ok) {
     const err = new Error();
     err.message = data.message;
