@@ -26,7 +26,7 @@ function App() {
         <Switch>
           <Route path="/groups/new" component={CreateGroupForm} />
           <Route path="/groups/:groupId/images/add" component={AddImageForm} />
-          <Route path="/groups/:groupId/edit" component={EditGroupForm} />
+          {/* <Route path="/groups/:groupId/edit" component={EditGroupForm} /> */}
           <Route path="/groups/:groupId" component={GroupInfo} />
           <Route path="/groups" component={GroupsIndex} />
           <Route path="/your-groups" component={GroupsIndex} />

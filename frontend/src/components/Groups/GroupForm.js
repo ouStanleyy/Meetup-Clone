@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createGroup, updateGroup } from "../../store/groups";
 
-const GroupForm = ({ group, formType }) => {
+const GroupForm = ({ onSubmit, group, formType }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [name, setName] = useState(group.name);
@@ -24,6 +24,7 @@ const GroupForm = ({ group, formType }) => {
         formType === "Create" ? createGroup(group) : updateGroup(group)
       );
       history.push(`/groups/${newGroup.id}`);
+      onSubmit();
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });
@@ -31,8 +32,9 @@ const GroupForm = ({ group, formType }) => {
   };
 
   useEffect(() => {
-    if (0 < about.length && about.length < 50)
-      setErrors({ about: "Please write at least 50 characters" });
+    0 < about.length && about.length < 50
+      ? setErrors({ about: "Please write at least 50 characters" })
+      : setErrors({});
   }, [about]);
 
   return (

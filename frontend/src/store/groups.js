@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_GROUPS = "groups/LOAD_GROUPS";
 const LOAD_DETAILS = "groups/LOAD_DETAILS";
 const ADD_GROUP = "groups/ADD_GROUP";
+const REMOVE_GROUP = "groups/REMOVE_GROUP";
 
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
@@ -17,6 +18,11 @@ const loadDetails = (group) => ({
 const addGroup = (group) => ({
   type: ADD_GROUP,
   group,
+});
+
+const removeGroup = (groupId) => ({
+  type: REMOVE_GROUP,
+  groupId,
 });
 
 export const getGroups = () => async (dispatch) => {
@@ -68,7 +74,7 @@ export const updateGroup = (group) => async (dispatch) => {
     body: JSON.stringify(group),
   });
   const data = await res.json();
-  console.log(data);
+
   if (!res.ok) {
     const err = new Error();
     err.message = data.message;
@@ -77,6 +83,22 @@ export const updateGroup = (group) => async (dispatch) => {
     throw err;
   } else {
     dispatch(addGroup(data));
+    return data;
+  }
+};
+
+export const deleteGroup = (groupId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}`, { method: "DELETE" });
+  const data = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(removeGroup(groupId));
     return data;
   }
 };
@@ -114,6 +136,10 @@ const groupsReducer = (state = {}, action) => {
         ...state,
         [action.group.id]: { ...state[action.group.id], ...action.group },
       };
+    case REMOVE_GROUP:
+      const newState = { ...state };
+      delete newState[action.groupId];
+      return newState;
     default:
       return state;
   }
