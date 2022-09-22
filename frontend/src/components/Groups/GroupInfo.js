@@ -16,7 +16,6 @@ const GroupInfo = () => {
   );
   const [showModal, setShowModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [showAddImg, setShowAddImg] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [redirect2, setRedirect2] = useState(false);
   const [redirect3, setRedirect3] = useState(false);
@@ -115,9 +114,8 @@ const GroupInfo = () => {
               {organizer && (
                 <>
                   <button onClick={() => setShowEdit(true)}>Edit</button>
-                  <button onClick={() => setShowEdit(true)}>
-                    Add Image
-                    {/* <Link to={`/groups/${group.id}/images/add`}>Add Image</Link> */}
+                  <button>
+                    <Link to={`/groups/${group.id}/images/add`}>Add Image</Link>
                   </button>
                   <button onClick={() => setShowModal(true)}>Delete</button>
                   {showModal && (
