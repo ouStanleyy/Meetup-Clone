@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { login } from "../../store/session";
 import "./LoginForm.css";
 
 const LoginForm = ({ signup }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   //   const activeSession = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
@@ -22,6 +24,7 @@ const LoginForm = ({ signup }) => {
 
     try {
       await dispatch(login(credentials));
+      history.push("/your-groups");
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err });
@@ -32,6 +35,7 @@ const LoginForm = ({ signup }) => {
     const credentials = { email: "demo@user.io", password: "demopassword" };
 
     await dispatch(login(credentials));
+    history.push("/your-groups");
   };
 
   //   if (activeSession) return <Redirect to="/" />;
@@ -39,6 +43,7 @@ const LoginForm = ({ signup }) => {
   return (
     <section className="login">
       <form className="login-form" onSubmit={submitHandler}>
+        <h1>Log in</h1>
         <div className="error">
           {errors.status && (
             <h3

@@ -36,6 +36,7 @@ const SignupForm = ({ login }) => {
   return (
     <section className="signup">
       <form className="signup-form" onSubmit={submitHandler}>
+        <h1>Sign up</h1>
         <div className="errors">
           {errors.status && (
             <h3

@@ -18,13 +18,13 @@ const GroupInfo = () => {
 
   return (
     group && (
-      <div key={group.id} className="groupInfo-container">
+      <div className="groupInfo-container">
         <div className="groupInfo-header">
-          <div className="img-container">
+          <div className="groupInfo img-container">
             <img
-              className="img"
-              src={group.previewImage}
-              alt={group.previewImage}
+              className="groupInfo img"
+              src={group.previewImage || group.Images?.[0]?.url}
+              alt={group.previewImage || group.Images?.[0]?.url}
             />
           </div>
           <div className="groupInfo-details">
