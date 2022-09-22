@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Modal } from "../../context/Modal";
 import { getGroupById, deleteGroup } from "../../store/groups";
+import { AddImageForm } from "../Images";
 import EditGroupForm from "./EditGroupForm";
 import "./Groups.css";
 
@@ -15,6 +16,7 @@ const GroupInfo = () => {
     (state) => group?.organizerId === state.session.user.id
   );
   const [showModal, setShowModal] = useState(false);
+  const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [redirect2, setRedirect2] = useState(false);
@@ -32,18 +34,15 @@ const GroupInfo = () => {
         await dispatch(getGroupById(groupId));
       } catch (err) {
         setRedirect(true);
+
         let redirectId = setTimeout(() => {
-          setRedirect(false);
           setRedirect2(true);
           redirectId = setTimeout(() => {
-            setRedirect2(false);
             setRedirect3(true);
-            redirectId = setTimeout(() => {
-              setRedirect3(false);
-              setRedirect4(true);
-            }, 1000);
+            redirectId = setTimeout(() => setRedirect4(true), 1000);
           }, 1000);
         }, 1000);
+
         const timeoutId = setTimeout(() => history.push("/groups"), 4000);
 
         return () => {
@@ -59,30 +58,13 @@ const GroupInfo = () => {
       <h1>
         The group that you are looking for does not exit. You will be redirected
         to the groups page in a moment.
-      </h1>
-    );
-  if (redirect2)
-    return (
-      <h1>
-        The group that you are looking for does not exit. You will be redirected
-        to the groups page in a moment.
-        <p> Redirecting.</p>
-      </h1>
-    );
-  if (redirect3)
-    return (
-      <h1>
-        The group that you are looking for does not exit. You will be redirected
-        to the groups page in a moment.
-        <p> Redirecting..</p>
-      </h1>
-    );
-  if (redirect4)
-    return (
-      <h1>
-        The group that you are looking for does not exit. You will be redirected
-        to the groups page in a moment.
-        <p> Redirecting...</p>
+        {redirect2 && (
+          <p>
+            {" "}
+            Redirecting.{redirect3 && <span>.</span>}
+            {redirect4 && <span>.</span>}
+          </p>
+        )}
       </h1>
     );
 
@@ -97,6 +79,7 @@ const GroupInfo = () => {
               alt={group.previewImage || group.Images?.[0]?.url}
             />
           </div>
+
           {!showEdit ? (
             <div className="groupInfo-details">
               <h3 className="name">{group.name}</h3>
@@ -111,13 +94,17 @@ const GroupInfo = () => {
                   {group.type} {group.private ? "private" : "public"} group
                 </span>
               </p>
+
               {organizer && (
                 <>
                   <button onClick={() => setShowEdit(true)}>Edit</button>
-                  <button>
-                    <Link to={`/groups/${group.id}/images/add`}>Add Image</Link>
-                  </button>
+                  <button onClick={() => setShowAddImg(true)}>Add Image</button>
                   <button onClick={() => setShowModal(true)}>Delete</button>
+
+                  {showAddImg && (
+                    <AddImageForm onClose={() => setShowAddImg(false)} />
+                  )}
+
                   {showModal && (
                     <Modal onClose={() => setShowModal(false)}>
                       <div style={{ backgroundColor: "white" }}>
@@ -139,8 +126,10 @@ const GroupInfo = () => {
             <EditGroupForm onUpdate={() => setShowEdit(false)} />
           )}
         </div>
-        <h3>What we're about</h3>
-        <p className="about">{group.about}</p>
+        <div className="groupInfo about-container">
+          <h3>What we're about</h3>
+          <p className="groupInfo about">{group.about}</p>
+        </div>
       </div>
     )
   );

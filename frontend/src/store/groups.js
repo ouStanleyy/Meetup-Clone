@@ -4,6 +4,7 @@ const LOAD_GROUPS = "groups/LOAD_GROUPS";
 const LOAD_DETAILS = "groups/LOAD_DETAILS";
 const ADD_GROUP = "groups/ADD_GROUP";
 const REMOVE_GROUP = "groups/REMOVE_GROUP";
+const ADD_IMAGE = "groups/ADD_IMAGE";
 
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
@@ -23,6 +24,12 @@ const addGroup = (group) => ({
 const removeGroup = (groupId) => ({
   type: REMOVE_GROUP,
   groupId,
+});
+
+const addImage = (groupId, image) => ({
+  type: ADD_IMAGE,
+  groupId,
+  image,
 });
 
 export const getGroups = () => async (dispatch) => {
@@ -107,21 +114,20 @@ export const deleteGroup = (groupId) => async (dispatch) => {
   }
 };
 
-export const addImage = (groupId, imgUrl) => async (dispatch) => {
+export const uploadImage = (groupId, imgUrl) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}/images`, {
     method: "POST",
     body: JSON.stringify(imgUrl),
   });
   const data = await res.json();
-  console.log(data);
+
   if (!res.ok) {
     const err = new Error();
     err.message = data.message;
     err.status = data.statusCode;
-    err.errors = data.errors;
     throw err;
   } else {
-    // dispatch(addImage(data));
+    dispatch(addImage(groupId, data));
     return data;
   }
 };
@@ -144,6 +150,14 @@ const groupsReducer = (state = {}, action) => {
       const newState = { ...state };
       delete newState[action.groupId];
       return newState;
+    case ADD_IMAGE:
+      return {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Images: [...state[action.groupId].Images, { ...action.image }],
+        },
+      };
     default:
       return state;
   }
