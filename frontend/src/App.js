@@ -9,6 +9,7 @@ import {
   CreateGroupForm,
   EditGroupForm,
 } from "./components/Groups";
+import { AddImageForm } from "./components/Images";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function App() {
         <Navigation />
         <Switch>
           <Route path="/groups/new" component={CreateGroupForm} />
+          <Route path="/groups/:groupId/images/add" component={AddImageForm} />
           <Route path="/groups/:groupId/edit" component={EditGroupForm} />
           <Route path="/groups/:groupId" component={GroupInfo} />
           <Route path="/groups" component={GroupsIndex} />

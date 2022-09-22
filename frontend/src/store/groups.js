@@ -81,6 +81,25 @@ export const updateGroup = (group) => async (dispatch) => {
   }
 };
 
+export const addImage = (groupId, imgUrl) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}/images`, {
+    method: "POST",
+    body: JSON.stringify(imgUrl),
+  });
+  const data = await res.json();
+  console.log(data);
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    // dispatch(addImage(data));
+    return data;
+  }
+};
+
 const groupsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_GROUPS:

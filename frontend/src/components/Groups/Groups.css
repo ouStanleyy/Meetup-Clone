@@ -19,8 +19,12 @@
 }
 
 .img-container {
-  width: 60%;
+  max-width: 60%;
   height: 200px;
+}
+
+.img {
+  max-width: fit-content;
 }
 
 .interpunct {

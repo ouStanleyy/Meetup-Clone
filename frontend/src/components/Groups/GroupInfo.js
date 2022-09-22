@@ -40,9 +40,14 @@ const GroupInfo = () => {
               </span>
             </p>
             {organizer && (
-              <button>
-                <Link to={`/groups/${group.id}/edit`}>Edit</Link>
-              </button>
+              <>
+                <button>
+                  <Link to={`/groups/${group.id}/edit`}>Edit</Link>
+                </button>
+                <button>
+                  <Link to={`/groups/${group.id}/images/add`}>Add Image</Link>
+                </button>
+              </>
             )}
           </div>
         </div>
