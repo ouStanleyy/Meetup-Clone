@@ -16,6 +16,11 @@ const GroupInfo = () => {
   );
   const [showModal, setShowModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showAddImg, setShowAddImg] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  const [redirect2, setRedirect2] = useState(false);
+  const [redirect3, setRedirect3] = useState(false);
+  const [redirect4, setRedirect4] = useState(false);
 
   const deleteHandler = async () => {
     await dispatch(deleteGroup(group.id));
@@ -23,8 +28,64 @@ const GroupInfo = () => {
   };
 
   useEffect(() => {
-    (async () => dispatch(getGroupById(groupId)))();
-  }, [dispatch, groupId]);
+    (async () => {
+      try {
+        await dispatch(getGroupById(groupId));
+      } catch (err) {
+        setRedirect(true);
+        let redirectId = setTimeout(() => {
+          setRedirect(false);
+          setRedirect2(true);
+          redirectId = setTimeout(() => {
+            setRedirect2(false);
+            setRedirect3(true);
+            redirectId = setTimeout(() => {
+              setRedirect3(false);
+              setRedirect4(true);
+            }, 1000);
+          }, 1000);
+        }, 1000);
+        const timeoutId = setTimeout(() => history.push("/groups"), 4000);
+
+        return () => {
+          clearTimeout(timeoutId);
+          clearTimeout(redirectId);
+        };
+      }
+    })();
+  }, [dispatch, groupId, history]);
+
+  if (redirect)
+    return (
+      <h1>
+        The group that you are looking for does not exit. You will be redirected
+        to the groups page in a moment.
+      </h1>
+    );
+  if (redirect2)
+    return (
+      <h1>
+        The group that you are looking for does not exit. You will be redirected
+        to the groups page in a moment.
+        <p> Redirecting.</p>
+      </h1>
+    );
+  if (redirect3)
+    return (
+      <h1>
+        The group that you are looking for does not exit. You will be redirected
+        to the groups page in a moment.
+        <p> Redirecting..</p>
+      </h1>
+    );
+  if (redirect4)
+    return (
+      <h1>
+        The group that you are looking for does not exit. You will be redirected
+        to the groups page in a moment.
+        <p> Redirecting...</p>
+      </h1>
+    );
 
   return (
     group && (
@@ -53,12 +114,10 @@ const GroupInfo = () => {
               </p>
               {organizer && (
                 <>
+                  <button onClick={() => setShowEdit(true)}>Edit</button>
                   <button onClick={() => setShowEdit(true)}>
-                    {/* <Link to={`/groups/${group.id}/edit`}>Edit</Link> */}
-                    Edit
-                  </button>
-                  <button>
-                    <Link to={`/groups/${group.id}/images/add`}>Add Image</Link>
+                    Add Image
+                    {/* <Link to={`/groups/${group.id}/images/add`}>Add Image</Link> */}
                   </button>
                   <button onClick={() => setShowModal(true)}>Delete</button>
                   {showModal && (
