@@ -70,8 +70,8 @@ const GroupInfo = () => {
 
   return (
     group && (
-      <div className="groupInfo-container">
-        <div className="groupInfo-header">
+      <div className="groupInfo container">
+        <div className="groupInfo header">
           <div className="groupInfo img-container">
             <img
               className="groupInfo img"
@@ -79,52 +79,64 @@ const GroupInfo = () => {
               alt={group.previewImage || group.Images?.[0]?.url}
             />
           </div>
+          <div className="groupInfo details-container">
+            {!showEdit ? (
+              <div className="groupInfo details-container-top">
+                <h1 className="groupInfo name">{group.name}</h1>
+                <div>
+                  <p className="groupInfo location">
+                    {group.city}, {group.state}
+                  </p>
+                  <p className="groupInfo numMembers">
+                    {group.numMembers}{" "}
+                    {group.numMembers === 1 ? "member" : "members"}{" "}
+                    <span className="interpunct">·</span>{" "}
+                    <span className="groupInfo type_privacy">
+                      {group.type} {group.private ? "private" : "public"} group
+                    </span>
+                  </p>
+                  <p className="groupInfo organizer">
+                    Organized by{" "}
+                    <span className="groupInfo organizer-name">
+                      {group.Organizer?.firstName} {group.Organizer?.lastName}
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  {organizer && (
+                    <>
+                      <button onClick={() => setShowEdit(true)}>Edit</button>
+                      <button onClick={() => setShowAddImg(true)}>
+                        Add Image
+                      </button>
+                      <button onClick={() => setShowModal(true)}>Delete</button>
 
-          {!showEdit ? (
-            <div className="groupInfo-details">
-              <h3 className="name">{group.name}</h3>
-              <h4 className="group">
-                {group.city}, {group.state}
-              </h4>
-              <p className="numMembers">
-                {group.numMembers}{" "}
-                {group.numMembers === 1 ? "member" : "members"}{" "}
-                <span className="interpunct">·</span>{" "}
-                <span className="type_private">
-                  {group.type} {group.private ? "private" : "public"} group
-                </span>
-              </p>
-
-              {organizer && (
-                <>
-                  <button onClick={() => setShowEdit(true)}>Edit</button>
-                  <button onClick={() => setShowAddImg(true)}>Add Image</button>
-                  <button onClick={() => setShowModal(true)}>Delete</button>
-
-                  {showAddImg && (
-                    <AddImageForm onClose={() => setShowAddImg(false)} />
+                      {showModal && (
+                        <Modal onClose={() => setShowModal(false)}>
+                          <div style={{ backgroundColor: "white" }}>
+                            <p>
+                              Are you sure you want to delete this group? This
+                              action is permanent and cannot be reverted.
+                            </p>
+                            <button onClick={deleteHandler}>DELETE</button>
+                            <button onClick={() => setShowModal(false)}>
+                              CANCEL
+                            </button>
+                          </div>
+                        </Modal>
+                      )}
+                    </>
                   )}
+                </div>
+              </div>
+            ) : (
+              <EditGroupForm onUpdate={() => setShowEdit(false)} />
+            )}
 
-                  {showModal && (
-                    <Modal onClose={() => setShowModal(false)}>
-                      <div style={{ backgroundColor: "white" }}>
-                        <p>
-                          Are you sure you want to delete this group? This
-                          action is permanent and cannot be reverted.
-                        </p>
-                        <button onClick={deleteHandler}>DELETE</button>
-                        <button onClick={() => setShowModal(false)}>
-                          CANCEL
-                        </button>
-                      </div>
-                    </Modal>
-                  )}
-                </>
-              )}
-            </div>
-          ) : (
-            <EditGroupForm onUpdate={() => setShowEdit(false)} />
-          )}
+            {showAddImg && (
+              <AddImageForm onClose={() => setShowAddImg(false)} />
+            )}
+          </div>
         </div>
         <div className="groupInfo about-container">
           <h3>What we're about</h3>

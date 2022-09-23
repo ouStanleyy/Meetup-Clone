@@ -20,10 +20,11 @@ const GroupsIndex = () => {
 
   return (
     groups && (
-      <div className="groups-container">
+      <div className="groups container">
         <Link to="/groups/new">
           <button>Start a new group</button>
         </Link>
+
         {groups.map((group) => {
           return (
             <Link
@@ -31,25 +32,27 @@ const GroupsIndex = () => {
               key={group.id}
               to={`/groups/${group.id}`}
             >
-              <div className="data-container">
-                <div className="img-container">
+              <div className="groups group-container">
+                <div className="group img-container">
                   <img
-                    className="img"
+                    className="group img"
                     src={group.previewImage}
                     alt={group.previewImage}
                   />
                 </div>
-                <div className="details-container">
-                  <h3 className="name">{group.name}</h3>
-                  <h4 className="group">
-                    {group.city}, {group.state}
-                  </h4>
-                  <p className="about">{group.about}</p>
-                  <p className="numMembers">
+                <div className="group details-container">
+                  <div>
+                    <h3 className="group name">{group.name}</h3>
+                    <h4 className="group location">
+                      {group.city}, {group.state}
+                    </h4>
+                  </div>
+                  <p className="group about">{group.about}</p>
+                  <p className="group numMembers">
                     {group.numMembers}{" "}
                     {group.numMembers === 1 ? "member" : "members"}{" "}
-                    <span className="interpunct">·</span>{" "}
-                    <span className="type_private">
+                    <span className="group interpunct">·</span>{" "}
+                    <span className="group type_privacy">
                       {group.type} {group.private ? "private" : "public"} group
                     </span>
                   </p>
