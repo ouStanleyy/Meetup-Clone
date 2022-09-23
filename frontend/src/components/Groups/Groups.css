@@ -69,8 +69,10 @@
 
 .groupInfo.container {
   border: 1px solid lightgray;
+  box-shadow: 8px 8px 6px -4px lightgray;
   margin-left: 20%;
   width: 60%;
+  min-height: 80vh;
   border-radius: 20px;
 }
 .groupInfo.header {
@@ -118,4 +120,68 @@
 
 .groupInfo.name {
   margin-top: 0.5em;
+}
+
+.groupInfo .fa-solid {
+  text-align: center;
+  width: 30px;
+}
+
+.groupInfo.button {
+  position: relative;
+  /* display: inline-block; */
+  outline: 0;
+  border: 0;
+  background-image: linear-gradient(to top right, #e052a0, #f19041);
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  margin: 0 5px;
+  z-index: 1;
+}
+
+.groupInfo.button::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(to top right, #71ffff, #526bf4);
+  border-radius: 5px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.groupInfo.button:hover::after {
+  opacity: 1;
+}
+
+.groupInfo.button:active::after {
+  filter: brightness(1.2);
+}
+
+.groupInfo.body {
+  display: flex;
+  /* border: 1px solid; */
+}
+
+.groupInfo.about-container {
+  box-sizing: border-box;
+  width: 55%;
+  padding: 0 15px;
+  /* height: inherit; */
+  /* border: 1px solid; */
+}
+
+.groupInfo.members-container {
+  box-sizing: border-box;
+  margin-left: auto;
+  width: 40%;
+  padding: 0 15px;
+  /* border: 1px solid; */
 }

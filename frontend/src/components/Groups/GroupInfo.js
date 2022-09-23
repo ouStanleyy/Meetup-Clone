@@ -85,9 +85,11 @@ const GroupInfo = () => {
                 <h1 className="groupInfo name">{group.name}</h1>
                 <div>
                   <p className="groupInfo location">
+                    <i className="fa-solid fa-location-dot" />
                     {group.city}, {group.state}
                   </p>
                   <p className="groupInfo numMembers">
+                    <i className="fa-solid fa-people-group" />
                     {group.numMembers}{" "}
                     {group.numMembers === 1 ? "member" : "members"}{" "}
                     <span className="interpunct">·</span>{" "}
@@ -96,6 +98,7 @@ const GroupInfo = () => {
                     </span>
                   </p>
                   <p className="groupInfo organizer">
+                    <i className="fa-solid fa-child-reaching" />
                     Organized by{" "}
                     <span className="groupInfo organizer-name">
                       {group.Organizer?.firstName} {group.Organizer?.lastName}
@@ -105,11 +108,24 @@ const GroupInfo = () => {
                 <div>
                   {organizer && (
                     <>
-                      <button onClick={() => setShowEdit(true)}>Edit</button>
-                      <button onClick={() => setShowAddImg(true)}>
+                      <button
+                        className="groupInfo button"
+                        onClick={() => setShowEdit(true)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="groupInfo button"
+                        onClick={() => setShowAddImg(true)}
+                      >
                         Add Image
                       </button>
-                      <button onClick={() => setShowModal(true)}>Delete</button>
+                      <button
+                        className="groupInfo button"
+                        onClick={() => setShowModal(true)}
+                      >
+                        Delete
+                      </button>
 
                       {showModal && (
                         <Modal onClose={() => setShowModal(false)}>
@@ -138,9 +154,15 @@ const GroupInfo = () => {
             )}
           </div>
         </div>
-        <div className="groupInfo about-container">
-          <h3>What we're about</h3>
-          <p className="groupInfo about">{group.about}</p>
+        <div className="groupInfo body">
+          <div className="groupInfo about-container">
+            <h3>What we're about</h3>
+            <p className="groupInfo about">{group.about}</p>
+          </div>
+          <div className="groupInfo members-container">
+            <h3>Organizer</h3>
+            <h3>Members</h3>
+          </div>
         </div>
       </div>
     )
