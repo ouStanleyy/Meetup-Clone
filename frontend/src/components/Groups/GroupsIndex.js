@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { getGroups } from "../../store/groups";
@@ -11,12 +11,72 @@ const GroupsIndex = () => {
   const groups = useSelector((state) =>
     Object.values(pathname === "/groups" ? state.groups : state.session.groups)
   );
+  const groupsRef = useRef([]);
+  const [isVisible, setIsVisible] = useState({});
+
+  // if (groupsRef.current.length !== groups.length) {
+  //   // add or remove refs
+  //   groupsRef.current = Array(groups.length)
+  //     .fill()
+  //     .map((_, i) => groupsRef.current[i] || createRef());
+  // }
+
+  // useEffect(() => {
+  //   groupsRef.current = groupsRef.current.slice(0, groups.length);
+  // }, [groups]);
+
+  // useEffect(() => {
+  //   console.log("groups", groups);
+
+  //   console.log("groupsRef", groupsRef.current);
+
+  // groupsRef.current.forEach((el) => {
+  //   console.log(el);
+  //   observer.observe(el);
+  // });
+
+  // if (groupsRef.current.length) observer.observe(groupsRef.current[0]);
+
+  // if (groupsRef.current.length) observer.observe(groupsRef?.current?.[0]);
+  // return () => {
+  //   groupsRef.current.forEach((el) => {
+  //     observer.unobserve(el);
+  //   });
+  // };
+  // }, [groups]);
 
   useEffect(() => {
-    pathname === "/groups"
-      ? (async () => dispatch(getGroups()))()
-      : (async () => dispatch(getSessionGroups()))();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, idx) => {
+          setIsVisible((state) => ({
+            ...state,
+            [entry.target]: entry.isIntersecting,
+          }));
+        });
+        // setIsVisible(entries.map((entry) => entry.isIntersecting));
+      },
+      { threshold: 1 }
+    );
+
+    (async () => {
+      try {
+        await dispatch(
+          pathname === "/groups" ? getGroups() : getSessionGroups()
+        );
+
+        groupsRef.current.forEach((el) => {
+          observer.observe(el);
+        });
+      } catch {}
+    })();
   }, [dispatch, pathname]);
+
+  // useEffect(() => {
+  //   pathname === "/groups"
+  //     ? (async () => dispatch(getGroups()))()
+  //     : (async () => dispatch(getSessionGroups()))();
+  // }, [dispatch, pathname]);
 
   return (
     groups && (
@@ -25,14 +85,21 @@ const GroupsIndex = () => {
           <button>Start a new group</button>
         </Link>
 
-        {groups.map((group) => {
+        {groups.map((group, idx) => {
           return (
             <Link
               className="groupInfo-link"
               key={group.id}
+              ref={(el) => (groupsRef.current[idx] = el)}
               to={`/groups/${group.id}`}
             >
-              <div className="groups group-container">
+              <div
+                className={`groups group-container ${
+                  isVisible[`http://localhost:3000/groups/${group.id}`]
+                    ? "visible"
+                    : ""
+                }`}
+              >
                 <div className="group img-container">
                   <img
                     className="group img"

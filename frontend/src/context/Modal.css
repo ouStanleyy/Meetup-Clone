@@ -7,6 +7,7 @@
   bottom: 0;
   justify-content: center;
   align-items: center;
+  z-index: 99;
 }
 
 #modal-background {
@@ -16,10 +17,12 @@
   left: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
+  z-index: 99;
 }
 
 #modal-content {
   position: absolute;
   /* background-color: powderblue; */
   border-radius: 10px;
+  z-index: 99;
 }

@@ -13,7 +13,7 @@ const GroupInfo = () => {
   const dispatch = useDispatch();
   const group = useSelector((state) => state.groups[groupId]);
   const organizer = useSelector(
-    (state) => group?.organizerId === state.session.user.id
+    (state) => group?.organizerId === state.session.user?.id
   );
   const [showModal, setShowModal] = useState(false);
   const [showAddImg, setShowAddImg] = useState(false);
@@ -161,6 +161,11 @@ const GroupInfo = () => {
           </div>
           <div className="groupInfo members-container">
             <h3>Organizer</h3>
+            <p className="groupInfo organizer">
+              <span className="groupInfo organizer-name">
+                {group.Organizer?.firstName} {group.Organizer?.lastName}
+              </span>
+            </p>
             <h3>Members</h3>
           </div>
         </div>
