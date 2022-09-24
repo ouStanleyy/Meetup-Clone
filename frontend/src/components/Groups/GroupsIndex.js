@@ -48,7 +48,7 @@ const GroupsIndex = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry, idx) => {
+        entries.forEach((entry) => {
           setIsVisible((state) => ({
             ...state,
             [entry.target]: entry.isIntersecting,
@@ -58,7 +58,6 @@ const GroupsIndex = () => {
       },
       { threshold: 1 }
     );
-
     (async () => {
       try {
         await dispatch(
@@ -95,9 +94,7 @@ const GroupsIndex = () => {
             >
               <div
                 className={`groups group-container ${
-                  isVisible[`http://localhost:3000/groups/${group.id}`]
-                    ? "visible"
-                    : ""
+                  isVisible[groupsRef.current[idx]?.href] ? "visible" : ""
                 }`}
               >
                 <div className="group img-container">
