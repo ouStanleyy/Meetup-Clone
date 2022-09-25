@@ -1,0 +1,60 @@
+.login_signup-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: height 500ms;
+  transform: translate3d(0, 0, 0);
+  background-color: white;
+  animation: enter 300ms ease-in;
+}
+
+.login-modal {
+  transition: all 500ms ease;
+  transform: translateX(0%);
+}
+
+.login-modal_hidden {
+  transition: all 500ms ease;
+  transform: translateX(-100%);
+  position: fixed;
+}
+
+.signup-modal {
+  transition: all 500ms ease;
+  transform: translateX(0%);
+}
+
+.signup-modal_hidden {
+  transition: all 500ms ease;
+  transform: translateX(100%);
+  position: fixed;
+}
+
+.exit-animation {
+  animation: exit 300ms ease-out;
+}
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: translateY(20%);
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes exit {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+}

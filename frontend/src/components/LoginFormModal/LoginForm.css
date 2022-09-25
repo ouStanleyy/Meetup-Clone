@@ -1,0 +1,103 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  border-radius: 10px;
+  padding: 10px;
+  gap: 5px;
+  background-color: white;
+}
+
+.login-form button,
+.credentials {
+  width: 80%;
+  padding: 5px;
+  border: solid 1px black;
+  border-radius: 20px;
+}
+
+.login-form button {
+  width: 50%;
+  margin: 20px;
+  background-color: lightslategrey;
+  border-color: transparent;
+  font-size: 1em;
+  transition: 100ms;
+}
+
+.login-form button:hover {
+  filter: brightness(1.2);
+  scale: 1.05;
+  cursor: pointer;
+}
+
+.login-form button:active {
+  transition: 1ms;
+  scale: 1;
+}
+
+.credentials:focus {
+  outline-width: 0;
+  filter: drop-shadow(0 0 10px) contrast(0.85);
+}
+
+.show-password {
+  display: flex;
+  justify-content: space-between;
+  width: 130px;
+  height: 20px;
+}
+
+.signup-span {
+  font-weight: bold;
+  color: salmon;
+}
+
+.signup-span:hover,
+.demo-login:hover {
+  cursor: pointer;
+}
+
+.login-form p {
+  margin: 0;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 30px;
+  color: red;
+}
+
+.error-wiggle {
+  animation: wiggle 200ms ease-in;
+}
+
+@keyframes wiggle {
+  0% {
+    scale: 0.8;
+  }
+  15% {
+    transform: rotate(-5deg);
+  }
+  35% {
+    transform: rotate(5deg);
+  }
+  50% {
+    scale: 1.2;
+  }
+  65% {
+    transform: rotate(-5deg);
+  }
+  85% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0);
+    scale: 1;
+  }
+}

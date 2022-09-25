@@ -1,0 +1,66 @@
+.navbar {
+  width: 100vw;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  background-color: white;
+  z-index: 99;
+}
+
+.navbar > ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style-type: none;
+  border-bottom: 1px solid lightgray;
+  box-shadow: 0 8px 6px -6px lightgray;
+  padding-bottom: 10px;
+}
+
+.navlink {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color: salmon;
+}
+
+.profile-button,
+.logout-button {
+  border: transparent;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  background-color: lightgray;
+  border-radius: 5px;
+  border: 1px solid gray;
+  width: 175px;
+  height: 250px;
+}
+
+.dropdown-menu > div {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 80%;
+  height: 100%;
+}
+
+.dropdown-menu > div:not(:last-child) {
+  border-bottom: 1px solid gray;
+}
+
+.login-signup-li {
+  display: flex;
+  gap: 10px;
+  margin-right: 20px;
+}
