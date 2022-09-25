@@ -38,6 +38,9 @@ const ProfileButton = ({ user }) => {
             <Link to="/your-groups">Your groups</Link>
           </div>
           <div>
+            <Link to="/groups/new">Start a new group</Link>
+          </div>
+          <div>
             <button className="logout-button" onClick={logoutHandler}>
               <i className="fa-solid fa-right-from-bracket fa-2x" />
             </button>

@@ -56,7 +56,7 @@ const GroupsIndex = () => {
         });
         // setIsVisible(entries.map((entry) => entry.isIntersecting));
       },
-      { threshold: 1 }
+      { threshold: 0.5 }
     );
     (async () => {
       try {
@@ -80,10 +80,6 @@ const GroupsIndex = () => {
   return (
     groups && (
       <div className="groups container">
-        <Link to="/groups/new">
-          <button>Start a new group</button>
-        </Link>
-
         {groups.map((group, idx) => {
           return (
             <Link
