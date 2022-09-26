@@ -17,6 +17,7 @@ const Navigation = () => {
         </li>
         <li className="login-signup-li">
           <Link to="/groups">Groups</Link>
+          <Link to="/events">Events</Link>
           {!activeSession ? (
             <LoginSignupModal />
           ) : (

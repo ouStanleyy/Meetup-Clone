@@ -67,7 +67,7 @@ const GroupsIndex = () => {
         groupsRef.current.forEach((el) => {
           observer.observe(el);
         });
-      } catch {}
+      } catch (err) {}
     })();
   }, [dispatch, pathname]);
 

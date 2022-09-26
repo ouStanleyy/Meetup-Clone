@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const SET_SESSION = "session/SET_SESSION";
 const REMOVE_SESSION = "session/REMOVE_SESSION";
 const LOAD_GROUPS = "session/LOAD_GROUPS";
+const LOAD_EVENTS = "session/LOAD_EVENTS";
 
 const setSession = (user) => ({
   type: SET_SESSION,
@@ -16,6 +17,11 @@ const removeSession = () => ({
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
   groups,
+});
+
+const loadEvents = (events) => ({
+  type: LOAD_EVENTS,
+  events,
 });
 
 export const login = (payload) => async (dispatch) => {
@@ -82,7 +88,23 @@ export const getSessionGroups = () => async (dispatch) => {
   return Groups;
 };
 
-const sessionReducer = (state = { user: null, groups: {} }, action) => {
+export const getSessionEvents = () => async (dispatch) => {
+  const res = await csrfFetch("/api/users/session/events");
+  const { Events } = await res.json();
+
+  if (res.ok) {
+    const normalizedData = {};
+    Events.forEach((event) => (normalizedData[event.id] = event));
+    dispatch(loadEvents(normalizedData));
+  }
+
+  return Events;
+};
+
+const sessionReducer = (
+  state = { user: null, groups: {}, events: {} },
+  action
+) => {
   switch (action.type) {
     case SET_SESSION:
       return { ...state, user: { ...action.user } };
@@ -90,6 +112,8 @@ const sessionReducer = (state = { user: null, groups: {} }, action) => {
       return { ...state, user: null, groups: {} };
     case LOAD_GROUPS:
       return { ...state, groups: { ...action.groups } };
+    case LOAD_EVENTS:
+      return { ...state, events: { ...action.events } };
     default:
       return state;
   }
