@@ -1,7 +1,7 @@
 import { csrfFetch } from "./csrf";
 
 const LOAD_EVENTS = "events/EVENTS";
-// const LOAD_DETAILS = "groups/LOAD_DETAILS";
+const LOAD_DETAILS = "events/LOAD_DETAILS";
 // const ADD_GROUP = "groups/ADD_GROUP";
 // const REMOVE_GROUP = "groups/REMOVE_GROUP";
 // const ADD_IMAGE = "groups/ADD_IMAGE";
@@ -11,10 +11,10 @@ const loadEvents = (events) => ({
   events,
 });
 
-// const loadDetails = (group) => ({
-//   type: LOAD_DETAILS,
-//   group,
-// });
+const loadDetails = (event) => ({
+  type: LOAD_DETAILS,
+  event,
+});
 
 // const addGroup = (group) => ({
 //   type: ADD_GROUP,
@@ -45,20 +45,21 @@ export const getEvents = () => async (dispatch) => {
   return Events;
 };
 
-// export const getGroupById = (groupId) => async (dispatch) => {
-//   const res = await csrfFetch(`/api/groups/${groupId}`);
-//   const data = await res.json();
+export const getEventById = (eventId) => async (dispatch) => {
+  console.log("hi");
+  const res = await csrfFetch(`/api/events/${eventId}`);
+  const data = await res.json();
 
-//   if (!res.ok) {
-//     const err = new Error();
-//     err.message = data.message;
-//     err.status = data.statusCode;
-//     throw err;
-//   } else {
-//     dispatch(loadDetails(data));
-//     return data;
-//   }
-// };
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    throw err;
+  } else {
+    dispatch(loadDetails(data));
+    return data;
+  }
+};
 
 // export const createGroup = (group) => async (dispatch) => {
 //   const res = await csrfFetch("/api/groups", {
@@ -98,21 +99,20 @@ export const getEvents = () => async (dispatch) => {
 //   }
 // };
 
-// export const deleteGroup = (groupId) => async (dispatch) => {
-//   const res = await csrfFetch(`/api/groups/${groupId}`, { method: "DELETE" });
-//   const data = await res.json();
-
-//   if (!res.ok) {
-//     const err = new Error();
-//     err.message = data.message;
-//     err.status = data.statusCode;
-//     err.errors = data.errors;
-//     throw err;
-//   } else {
-//     dispatch(removeGroup(groupId));
-//     return data;
-//   }
-// };
+export const deleteEvent = (eventId) => async (dispatch) => {
+  // const res = await csrfFetch(`/api/groups/${groupId}`, { method: "DELETE" });
+  // const data = await res.json();
+  // if (!res.ok) {
+  //   const err = new Error();
+  //   err.message = data.message;
+  //   err.status = data.statusCode;
+  //   err.errors = data.errors;
+  //   throw err;
+  // } else {
+  //   dispatch(removeGroup(groupId));
+  //   return data;
+  // }
+};
 
 // export const uploadImage = (groupId, imgUrl) => async (dispatch) => {
 //   const res = await csrfFetch(`/api/groups/${groupId}/images`, {
@@ -136,11 +136,11 @@ const eventsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_EVENTS:
       return { ...state, ...action.events };
-    // case LOAD_DETAILS:
-    // return {
-    //   ...state,
-    //   [action.group.id]: { ...state[action.group.id], ...action.group },
-    // };
+    case LOAD_DETAILS:
+      return {
+        ...state,
+        [action.event.id]: { ...state[action.event.id], ...action.event },
+      };
     // case ADD_GROUP:
     //   return {
     //     ...state,

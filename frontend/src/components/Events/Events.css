@@ -88,22 +88,49 @@
   min-height: 80vh;
   border-radius: 20px;
 }
+
 .eventInfo.header {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
   border-bottom: 1px solid lightgray;
-  height: 300px;
+  height: fit-content;
+  /* border: 2px solid; */
+  padding-left: 5px;
+}
+
+.eventInfo.body {
+  display: flex;
+  /* justify-content: space-between; */
+  height: 100%;
+  border: 2px solid blue;
+}
+
+.eventInfo.body-left {
+  /* display: flex;
+  justify-content: space-between;
+  height: 300px; */
+  width: 60%;
+  border: 2px solid red;
+}
+
+.eventInfo.body-right {
+  /* display: flex;
+  justify-content: space-between;
+  height: 300px; */
+  width: 40%;
+  border: 2px solid yellow;
 }
 
 .eventInfo.img-container {
-  width: 500px;
-  height: 300px;
+  box-sizing: border-box;
+  width: 550px;
+  height: 325px;
+  border: 1px solid;
 }
 
 .eventInfo.img {
-  width: 500px;
-  height: 300px;
-  border-top-left-radius: 20px;
+  width: 550px;
+  height: 325px;
 }
 
 .eventInfo.details-container {
@@ -115,15 +142,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-sizing: border-box;
   width: 30em;
   height: 15em;
   /* border: 1px solid; */
 }
 
 .eventInfo.name,
-.eventInfo.location,
-.eventInfo.about,
+.eventInfo.startDate,
+.eventInfo.description,
 .eventInfo.numAttending,
 .eventInfo.organizer {
   height: 1.5em;
@@ -131,13 +157,19 @@
   /* border: 1px solid; */
 }
 
-.eventInfo.name {
+.eventInfo.startDate {
   margin-top: 0.5em;
 }
 
-.eventInfo .fa-solid {
+.fa-solid,
+.fa-regular {
+  box-sizing: border-box;
   text-align: center;
   width: 30px;
+}
+
+.fa-regular {
+  padding-left: 10px;
 }
 
 .eventInfo.button {
@@ -178,23 +210,49 @@
   filter: brightness(1.2);
 }
 
-.eventInfo.body {
-  display: flex;
-  /* border: 1px solid; */
-}
-
-.eventInfo.about-container {
+.eventInfo.description-container {
   box-sizing: border-box;
-  width: 55%;
-  padding: 0 15px;
+  width: 550px;
+  padding-left: 5px;
   /* height: inherit; */
-  /* border: 1px solid; */
+  border: 1px solid;
 }
 
-.eventInfo.members-container {
+.eventInfo.attendees-container {
   box-sizing: border-box;
-  margin-left: auto;
-  width: 40%;
-  padding: 0 15px;
-  /* border: 1px solid; */
+  width: 550px;
+  padding-left: 5px;
+  border: 1px solid;
+}
+
+.eventInfo.group {
+  display: flex;
+  border: 1px solid;
+}
+
+.eventInfo.group_img-container,
+.groupInfo.group_img {
+  width: 25%;
+  border: 1px solid red;
+}
+
+.eventInfo.group_details {
+  box-sizing: border-box;
+  width: 75%;
+  padding-left: 5%;
+  border: 1px solid blue;
+}
+
+.eventInfo.venue {
+  height: 300px;
+  border: 1px solid green;
+}
+
+.eventInfo.venue-date,
+.eventInfo.venue-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: fit-content;
+  border: 1px solid orange;
 }

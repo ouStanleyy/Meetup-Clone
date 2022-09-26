@@ -28,9 +28,7 @@ const EventsIndex = () => {
 
     (async () => {
       try {
-        await dispatch(
-          pathname === "/events" ? getEvents() : getSessionEvents()
-        );
+        await dispatch(getEvents());
 
         eventsRef.current.forEach((el) => {
           observer.observe(el);

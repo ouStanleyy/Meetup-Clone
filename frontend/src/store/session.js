@@ -112,8 +112,8 @@ const sessionReducer = (
       return { ...state, user: null, groups: {} };
     case LOAD_GROUPS:
       return { ...state, groups: { ...action.groups } };
-    case LOAD_EVENTS:
-      return { ...state, events: { ...action.events } };
+    // case LOAD_EVENTS:
+    //   return { ...state, events: { ...action.events } };
     default:
       return state;
   }
