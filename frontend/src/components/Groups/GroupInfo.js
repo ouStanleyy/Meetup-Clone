@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { Modal } from "../../context/Modal";
 import {
   getGroupById,
@@ -181,7 +181,9 @@ const GroupInfo = () => {
                 Events
               </span>
             </li>
-            <li>Start a new event</li>
+            <li>
+              {organizer && <Link to="/events/new">Start a new event</Link>}
+            </li>
           </ul>
         </nav>
         <div className="groupInfo body">

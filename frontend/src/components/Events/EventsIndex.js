@@ -92,7 +92,7 @@ const EventsIndex = () => {
                     {event.numAttending === 1 ? "attendee" : "attendees"}{" "}
                     <span className="event interpunct">·</span>{" "}
                     <span className="event type_privacy">
-                      {event.type} {event.private ? "private" : "public"} event
+                      {event.type} event
                     </span>
                   </p>
                 </div>

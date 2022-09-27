@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import { GroupsIndex, GroupInfo, CreateGroupForm } from "./components/Groups";
 import EventsIndex from "./components/Events/EventsIndex";
 import EventInfo from "./components/Events/EventInfo";
+import CreateEventForm from "./components/Events/CreateEventForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ function App() {
         <Navigation />
         <Switch>
           <Route exact path="/groups/new" component={CreateGroupForm} />
+          <Route exact path="/events/new" component={CreateEventForm} />
           <Route exact path="/groups/:groupId" component={GroupInfo} />
           <Route exact path="/events/:eventId" component={EventInfo} />
           <Route exact path="/groups" component={GroupsIndex} />

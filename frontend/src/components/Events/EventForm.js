@@ -6,24 +6,34 @@ import { createEvent, updateEvent } from "../../store/events";
 const EventForm = ({ onSubmit, event, formType }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [name, setName] = useState(group.name);
-  const [about, setAbout] = useState(group.about);
-  const [type, setType] = useState(group.type);
-  const [privacy, setPrivacy] = useState(group.private);
-  const [city, setCity] = useState(group.city);
-  const [state, setState] = useState(group.state);
+  const [name, setName] = useState(event.name);
+  const [description, setDescription] = useState(event.description);
+  const [type, setType] = useState(event.type);
+  const [capacity, setCapacity] = useState(event.capacity);
+  const [price, setPrice] = useState(event.price);
+  const [startDate, setStartDate] = useState(event.startDate);
+  const [endDate, setEndDate] = useState(event.endDate);
   const [errors, setErrors] = useState({});
   const [wiggle, setWiggle] = useState(false);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    group = { ...group, name, about, type, private: privacy, city, state };
+    event = {
+      ...event,
+      name,
+      description,
+      type,
+      capacity,
+      price,
+      startDate,
+      endDate,
+    };
 
     try {
-      const newGroup = await dispatch(
-        formType === "Create" ? createGroup(group) : updateGroup(group)
+      const newEvent = await dispatch(
+        formType === "Create" ? createEvent(event) : updateEvent(event)
       );
-      history.push(`/groups/${newGroup.id}`);
+      history.push(`/events/${newEvent.id}`);
       onSubmit();
     } catch (err) {
       setWiggle(true);
@@ -32,66 +42,86 @@ const EventForm = ({ onSubmit, event, formType }) => {
   };
 
   useEffect(() => {
-    0 < about.length && about.length < 50
-      ? setErrors({ about: "Please write at least 50 characters" })
+    0 < name.length && name.length < 5
+      ? setErrors({ name: "Name must be at least 5 characters" })
       : setErrors({});
-  }, [about]);
+  }, [name]);
+
+  const capacityHandler = ({ target: { value } }) => {
+    if (value < 0 || value.length < 1) setCapacity(0);
+    else if (value.length > 1 && value.startsWith(0))
+      setCapacity(value.slice(1));
+    else setCapacity(value);
+  };
+
+  const priceHandler = ({ target: { value } }) => {
+    if (value.length < 1) setPrice("$0.00");
+    else {
+      value = value.replace(/[$.,]/g, "");
+      const valueDisplay = (parseInt(value, 10) / 100).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+
+      setPrice(valueDisplay);
+    }
+  };
 
   return (
-    <section className="groupForm-section">
-      <form className="group-form" onSubmit={submitHandler}>
+    <section className="eventForm-section">
+      <form className="event-form" onSubmit={submitHandler}>
         <div className="errors">
           {errors.status && (
             <h3
               onAnimationEnd={() => setWiggle(false)}
               className={wiggle ? "errors-wiggle" : ""}
             >
-              Group creation failed: {errors.message}
+              Event creation failed: {errors.message}
             </h3>
           )}
         </div>
-        <label>Group Name</label>
+        <label>Event Name</label>
         <input
-          className="group-info"
+          className="event-info"
           type="text"
-          placeholder="Group Name"
+          placeholder="Event Name"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <p>{errors.name}</p>
-        <label>About</label>
+        <label>Description</label>
         <textarea
-          className="group-info"
-          placeholder="Please write at least 50 characters"
+          className="event-info"
+          placeholder="Details of your event"
           required
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
-        <p>{errors.about}</p>
-        <label>City</label>
+        <p>{errors.description}</p>
+        <label>Capacity</label>
         <input
-          className="group-info"
-          type="text"
-          placeholder="City"
+          className="event-info"
+          type="number"
           required
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          value={capacity}
+          onChange={capacityHandler}
         />
-        <p>{errors.city}</p>
-        <label>State</label>
+        <p>{errors.capacity}</p>
+        <label>Price</label>
         <input
-          className="group-info"
+          className="event-info"
           type="text"
-          placeholder="State"
           required
-          value={state}
-          onChange={(e) => setState(e.target.value)}
+          min="0.00"
+          step="0.01"
+          value={price}
+          onChange={priceHandler}
         />
-        <p>{errors.state}</p>
+        <p>{errors.price}</p>
         <label>Type</label>
         <select
-          className="group-info"
+          className="event-info"
           required
           value={type}
           onChange={(e) => setType(e.target.value)}
@@ -103,26 +133,30 @@ const EventForm = ({ onSubmit, event, formType }) => {
           <option value="Online">Online</option>
         </select>
         <p>{errors.type}</p>
-        <label>Private</label>
-        <select
-          className="group-info"
+        <label>Start Date</label>
+        <input
+          className="event-info"
+          type="datetime-local"
           required
-          value={privacy}
-          onChange={(e) => setPrivacy(e.target.value)}
-        >
-          <option disabled value="">
-            Please Select One
-          </option>
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
-        <p>{errors.private}</p>
-        <button disabled={about.length < 50} type="submit">
-          {formType} Group
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        ></input>
+        <p>{errors.startDate}</p>
+        <label>End Date</label>
+        <input
+          className="event-info"
+          type="datetime-local"
+          required
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        ></input>
+        <p>{errors.endDate}</p>
+        <button disabled={name.length < 5} type="submit">
+          {formType} Event
         </button>
       </form>
     </section>
   );
 };
 
-export default GroupForm;
+export default EventForm;

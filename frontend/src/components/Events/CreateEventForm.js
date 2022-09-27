@@ -3,11 +3,12 @@ import EventForm from "./EventForm";
 const CreateEventForm = () => {
   const event = {
     name: "",
-    about: "",
+    description: "",
     type: "",
-    private: "",
-    city: "",
-    state: "",
+    capacity: 0,
+    price: "$0.00",
+    startDate: "",
+    endDate: "",
   };
 
   return <EventForm event={event} formType="Create" />;

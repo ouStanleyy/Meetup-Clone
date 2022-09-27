@@ -2,7 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_EVENTS = "events/EVENTS";
 const LOAD_DETAILS = "events/LOAD_DETAILS";
-// const ADD_GROUP = "groups/ADD_GROUP";
+const ADD_EVENT = "events/ADD_EVENT";
 // const REMOVE_GROUP = "groups/REMOVE_GROUP";
 // const ADD_IMAGE = "groups/ADD_IMAGE";
 
@@ -16,10 +16,10 @@ const loadDetails = (event) => ({
   event,
 });
 
-// const addGroup = (group) => ({
-//   type: ADD_GROUP,
-//   group,
-// });
+const addEvent = (event) => ({
+  type: ADD_EVENT,
+  event,
+});
 
 // const removeGroup = (groupId) => ({
 //   type: REMOVE_GROUP,
@@ -60,43 +60,43 @@ export const getEventById = (eventId) => async (dispatch) => {
   }
 };
 
-// export const createGroup = (group) => async (dispatch) => {
-//   const res = await csrfFetch("/api/groups", {
-//     method: "POST",
-//     body: JSON.stringify(group),
-//   });
-//   const data = await res.json();
+export const createEvent = (event) => async (dispatch) => {
+  const res = await csrfFetch("/api/events", {
+    method: "POST",
+    body: JSON.stringify(event),
+  });
+  const data = await res.json();
+  console.log(data);
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(addEvent(data));
+    return data;
+  }
+};
 
-//   if (!res.ok) {
-//     const err = new Error();
-//     err.message = data.message;
-//     err.status = data.statusCode;
-//     err.errors = data.errors;
-//     throw err;
-//   } else {
-//     dispatch(addGroup(data));
-//     return data;
-//   }
-// };
+export const updateEvent = (event) => async (dispatch) => {
+  const res = await csrfFetch(`/api/events/${event.id}`, {
+    method: "PUT",
+    body: JSON.stringify(event),
+  });
+  const data = await res.json();
 
-// export const updateGroup = (group) => async (dispatch) => {
-//   const res = await csrfFetch(`/api/groups/${group.id}`, {
-//     method: "PUT",
-//     body: JSON.stringify(group),
-//   });
-//   const data = await res.json();
-
-//   if (!res.ok) {
-//     const err = new Error();
-//     err.message = data.message;
-//     err.status = data.statusCode;
-//     err.errors = data.errors;
-//     throw err;
-//   } else {
-//     dispatch(addGroup(data));
-//     return data;
-//   }
-// };
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(addEvent(data));
+    return data;
+  }
+};
 
 export const deleteEvent = (eventId) => async (dispatch) => {
   // const res = await csrfFetch(`/api/groups/${groupId}`, { method: "DELETE" });
