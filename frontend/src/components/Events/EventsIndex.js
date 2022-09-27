@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { getEvents } from "../../store/events";
-import { getSessionEvents } from "../../store/session";
 import "./Events.css";
 
 const EventsIndex = () => {
   const { pathname } = useLocation();
+  const { groupId } = useParams();
   const dispatch = useDispatch();
   const events = useSelector((state) =>
-    Object.values(pathname === "/events" ? state.events : state.session.events)
+    Object.values(
+      pathname === "/events" ? state.events : state.groups[groupId].Events
+    )
   );
   const eventsRef = useRef([]);
   const [isVisible, setIsVisible] = useState({});
@@ -30,9 +32,10 @@ const EventsIndex = () => {
       try {
         await dispatch(getEvents());
 
-        eventsRef.current.forEach((el) => {
-          observer.observe(el);
-        });
+        if (pathname === "/events")
+          eventsRef.current.forEach((el) => {
+            observer.observe(el);
+          });
       } catch (err) {}
     })();
   }, [dispatch, pathname]);

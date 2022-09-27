@@ -5,6 +5,7 @@ const LOAD_DETAILS = "groups/LOAD_DETAILS";
 const ADD_GROUP = "groups/ADD_GROUP";
 const REMOVE_GROUP = "groups/REMOVE_GROUP";
 const ADD_IMAGE = "groups/ADD_IMAGE";
+const LOAD_EVENTS = "groups/LOAD_EVENTS";
 
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
@@ -30,6 +31,12 @@ const addImage = (groupId, image) => ({
   type: ADD_IMAGE,
   groupId,
   image,
+});
+
+const loadEvents = (groupId, events) => ({
+  type: LOAD_EVENTS,
+  groupId,
+  events,
 });
 
 export const getGroups = () => async (dispatch) => {
@@ -132,6 +139,20 @@ export const uploadImage = (groupId, imgUrl) => async (dispatch) => {
   }
 };
 
+export const getEventsOfGroup = (groupId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}/events`);
+  const { Events } = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    throw err;
+  } else {
+    const normalizedData = {};
+    Events.forEach((event) => (normalizedData[event.id] = event));
+    dispatch(loadEvents(groupId, normalizedData));
+  }
+};
+
 const groupsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_GROUPS:
@@ -156,6 +177,14 @@ const groupsReducer = (state = {}, action) => {
         [action.groupId]: {
           ...state[action.groupId],
           Images: [...state[action.groupId].Images, { ...action.image }],
+        },
+      };
+    case LOAD_EVENTS:
+      return {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Events: { ...action.events },
         },
       };
     default:

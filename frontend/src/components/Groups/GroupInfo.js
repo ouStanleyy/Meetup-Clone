@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { Modal } from "../../context/Modal";
-import { getGroupById, deleteGroup } from "../../store/groups";
+import {
+  getGroupById,
+  deleteGroup,
+  getEventsOfGroup,
+} from "../../store/groups";
+import EventsIndex from "../Events/EventsIndex";
 import { AddImageForm } from "../Images";
 import EditGroupForm from "./EditGroupForm";
 import "./Groups.css";
@@ -18,6 +23,7 @@ const GroupInfo = () => {
   const [showModal, setShowModal] = useState(false);
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [bodyDisplay, setBodyDisplay] = useState("about");
   const [redirect, setRedirect] = useState(false);
   const [redirect2, setRedirect2] = useState(false);
   const [redirect3, setRedirect3] = useState(false);
@@ -32,6 +38,7 @@ const GroupInfo = () => {
     (async () => {
       try {
         await dispatch(getGroupById(groupId));
+        await dispatch(getEventsOfGroup(groupId));
       } catch (err) {
         setRedirect(true);
 
@@ -154,11 +161,41 @@ const GroupInfo = () => {
             )}
           </div>
         </div>
+        <nav className="groupInfo_navbar">
+          <ul>
+            <li>
+              <span
+                className={`groupInfo about-span ${
+                  bodyDisplay === "about" ? "active" : ""
+                }`}
+                onClick={() => setBodyDisplay("about")}
+              >
+                About
+              </span>{" "}
+              <span
+                className={`groupInfo events-span ${
+                  bodyDisplay === "events" ? "active" : ""
+                }`}
+                onClick={() => setBodyDisplay("events")}
+              >
+                Events
+              </span>
+            </li>
+            <li>Start a new event</li>
+          </ul>
+        </nav>
         <div className="groupInfo body">
-          <div className="groupInfo about-container">
-            <h3>What we're about</h3>
-            <p className="groupInfo about">{group.about}</p>
-          </div>
+          {bodyDisplay === "about" && (
+            <div className="groupInfo about-container">
+              <h3>What we're about</h3>
+              <p className="groupInfo about">{group.about}</p>
+            </div>
+          )}
+          {bodyDisplay === "events" && (
+            <div className="groupInfo events-container">
+              <EventsIndex />
+            </div>
+          )}
           <div className="groupInfo members-container">
             <h3>Organizer</h3>
             <p className="groupInfo organizer">

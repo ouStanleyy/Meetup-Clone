@@ -46,7 +46,6 @@ export const getEvents = () => async (dispatch) => {
 };
 
 export const getEventById = (eventId) => async (dispatch) => {
-  console.log("hi");
   const res = await csrfFetch(`/api/events/${eventId}`);
   const data = await res.json();
 
