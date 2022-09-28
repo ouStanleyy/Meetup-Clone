@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { createEvent, updateEvent } from "../../store/events";
+import { getGroupById } from "../../store/groups";
 
 const EventForm = ({ onSubmit, event, formType }) => {
   const { groupId } = useParams();
@@ -11,11 +12,15 @@ const EventForm = ({ onSubmit, event, formType }) => {
   const [description, setDescription] = useState(event.description);
   const [type, setType] = useState(event.type);
   const [capacity, setCapacity] = useState(event.capacity);
-  const [price, setPrice] = useState(event.price);
+  const [price, setPrice] = useState(`$${event.price.toFixed(2)}`);
   const [startDate, setStartDate] = useState(event.startDate);
   const [endDate, setEndDate] = useState(event.endDate);
   const [errors, setErrors] = useState({});
   const [wiggle, setWiggle] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  const [redirect2, setRedirect2] = useState(false);
+  const [redirect3, setRedirect3] = useState(false);
+  const [redirect4, setRedirect4] = useState(false);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -30,13 +35,9 @@ const EventForm = ({ onSubmit, event, formType }) => {
       endDate,
     };
 
-    console.log(event);
-
     try {
       const newEvent = await dispatch(
-        formType === "Create"
-          ? createEvent(groupId, event)
-          : updateEvent(groupId, event)
+        formType === "Create" ? createEvent(groupId, event) : updateEvent(event)
       );
       history.push(`/events/${newEvent.id}`);
       onSubmit();
@@ -45,6 +46,31 @@ const EventForm = ({ onSubmit, event, formType }) => {
       setErrors({ ...err, ...err.errors });
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (groupId) await dispatch(getGroupById(groupId));
+      } catch (err) {
+        setRedirect(true);
+
+        let redirectId = setTimeout(() => {
+          setRedirect2(true);
+          redirectId = setTimeout(() => {
+            setRedirect3(true);
+            redirectId = setTimeout(() => setRedirect4(true), 1000);
+          }, 1000);
+        }, 1000);
+
+        const timeoutId = setTimeout(() => history.push("/groups"), 4000);
+
+        return () => {
+          clearTimeout(timeoutId);
+          clearTimeout(redirectId);
+        };
+      }
+    })();
+  }, [dispatch, groupId, history]);
 
   useEffect(() => {
     0 < name.length && name.length < 5
@@ -71,6 +97,21 @@ const EventForm = ({ onSubmit, event, formType }) => {
       setPrice(valueDisplay);
     }
   };
+
+  if (redirect)
+    return (
+      <h1>
+        The group that you are looking for does not exit. You will be redirected
+        to the groups page in a moment.
+        {redirect2 && (
+          <p>
+            {" "}
+            Redirecting.{redirect3 && <span>.</span>}
+            {redirect4 && <span>.</span>}
+          </p>
+        )}
+      </h1>
+    );
 
   // const endDateHandler = ({ target: { value } }) => {
   //   // if ((value - startDate) < 30)

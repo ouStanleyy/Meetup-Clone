@@ -6,7 +6,7 @@ const CreateEventForm = () => {
     description: "",
     type: "",
     capacity: 0,
-    price: "$0.00",
+    price: 0,
     startDate: "",
     endDate: "",
     venueId: null,

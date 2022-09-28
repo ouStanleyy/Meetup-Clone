@@ -124,7 +124,10 @@ const validateEventInput = [
     .isString()
     .withMessage("Capacity must be an integer"),
   check("price")
-    .isDecimal({ force_decimal: true, decimal_digits: "1,2" })
+    .isDecimal({
+      // force_decimal: true,
+      decimal_digits: "1,2",
+    })
     .isFloat({ min: 0.0, max: 9999.99 })
     .not()
     .isString()

@@ -5,7 +5,7 @@ import { Modal } from "../../context/Modal";
 import { getEventById, deleteEvent } from "../../store/events";
 import { getGroupById } from "../../store/groups";
 import { AddImageForm } from "../Images";
-// import EditEventForm from "./EditEventForm";
+import EditEventForm from "./EditEventForm";
 import "./Events.css";
 
 const EventInfo = () => {
@@ -15,7 +15,7 @@ const EventInfo = () => {
   const event = useSelector((state) => state.events[eventId]);
   const group = useSelector((state) => state.groups[event?.groupId]);
   const organizer = useSelector(
-    (state) => event?.organizerId === state.session.user?.id
+    (state) => group?.Organizer?.id === state.session.user?.id
   );
   const [showModal, setShowModal] = useState(false);
   const [showAddImg, setShowAddImg] = useState(false);
@@ -79,23 +79,78 @@ const EventInfo = () => {
     group && (
       <div className="eventInfo container">
         <div className="eventInfo header">
-          <h4 className="eventInfo startDate">
-            {new Date(event.startDate).toLocaleDateString("en-US", {
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </h4>
-          <h1 className="eventInfo name">{event.name}</h1>
-          <p className="eventInfo organizer">
-            <i className="fa-solid fa-child-reaching" />
-            Hosted by{" "}
-            <span className="eventInfo organizer-name">
-              {group?.Organizer?.firstName} {group?.Organizer?.lastName}
-            </span>
-          </p>
+          <div className="eventInfo header-left">
+            <h4 className="eventInfo startDate">
+              {new Date(event.startDate).toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </h4>
+            <h1 className="eventInfo name">{event.name}</h1>
+            <p className="eventInfo organizer">
+              <i className="fa-solid fa-child-reaching" />
+              Hosted by{" "}
+              <span className="eventInfo organizer-name">
+                {group?.Organizer?.firstName} {group?.Organizer?.lastName}
+              </span>
+            </p>
+          </div>
+
+          <div className="eventInfo buttons-container">
+            {!showEdit ? (
+              <div className="eventInfo buttons-container-top">
+                <div>
+                  {organizer && (
+                    <>
+                      <button
+                        className="groupInfo button"
+                        onClick={() => setShowEdit(true)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="groupInfo button"
+                        onClick={() => setShowAddImg(true)}
+                      >
+                        Add Image
+                      </button>
+                      <button
+                        className="groupInfo button"
+                        onClick={() => setShowModal(true)}
+                      >
+                        Delete
+                      </button>
+
+                      {showModal && (
+                        <Modal onClose={() => setShowModal(false)}>
+                          <div style={{ backgroundColor: "white" }}>
+                            <p>
+                              Are you sure you want to delete this event? This
+                              action is permanent and cannot be reverted.
+                            </p>
+                            <button onClick={deleteHandler}>DELETE</button>
+                            <button onClick={() => setShowModal(false)}>
+                              CANCEL
+                            </button>
+                          </div>
+                        </Modal>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <EditEventForm onUpdate={() => setShowEdit(false)} />
+            )}
+
+            {showAddImg && (
+              <AddImageForm onClose={() => setShowAddImg(false)} />
+            )}
+          </div>
         </div>
+
         <div className="eventInfo body">
           <div className="eventInfo body-left">
             <div className="eventInfo img-container">
@@ -112,58 +167,6 @@ const EventInfo = () => {
             <div className="eventInfo attendees-container">
               <h3>Attendees</h3>
             </div>
-            {/* <div className="eventInfo details-container">
-              {!showEdit ? (
-                <div className="eventInfo details-container-top">
-                  <div>
-                    {organizer && (
-                      <>
-                        <button
-                          className="groupInfo button"
-                          onClick={() => setShowEdit(true)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="groupInfo button"
-                          onClick={() => setShowAddImg(true)}
-                        >
-                          Add Image
-                        </button>
-                        <button
-                          className="groupInfo button"
-                          onClick={() => setShowModal(true)}
-                        >
-                          Delete
-                        </button>
-
-                        {showModal && (
-                          <Modal onClose={() => setShowModal(false)}>
-                            <div style={{ backgroundColor: "white" }}>
-                              <p>
-                                Are you sure you want to delete this event? This
-                                action is permanent and cannot be reverted.
-                              </p>
-                              <button onClick={deleteHandler}>DELETE</button>
-                              <button onClick={() => setShowModal(false)}>
-                                CANCEL
-                              </button>
-                            </div>
-                          </Modal>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                // <EditGroupForm onUpdate={() => setShowEdit(false)} />
-                <></>
-              )}
-
-              {showAddImg && (
-                <AddImageForm onClose={() => setShowAddImg(false)} />
-              )}
-            </div> */}
           </div>
 
           <div className="eventInfo body-right">
@@ -226,6 +229,10 @@ const EventInfo = () => {
                   <p>Venue location has not been provided yet</p>
                 )}
               </div>
+            </div>
+            <div className="eventInfo price">
+              <h4>{event.price >= 0.01 ? `$${event.price}` : "FREE"}</h4>
+              {!organizer && <button>Attend</button>}
             </div>
           </div>
         </div>

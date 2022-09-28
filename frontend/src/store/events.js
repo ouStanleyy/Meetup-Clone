@@ -66,7 +66,7 @@ export const createEvent = (groupId, event) => async (dispatch) => {
     body: JSON.stringify(event),
   });
   const data = await res.json();
-  console.log(data);
+
   if (!res.ok) {
     const err = new Error();
     err.message = data.message;
@@ -79,14 +79,15 @@ export const createEvent = (groupId, event) => async (dispatch) => {
   }
 };
 
-export const updateEvent = (groupId, event) => async (dispatch) => {
+export const updateEvent = (event) => async (dispatch) => {
   const res = await csrfFetch(`/api/events/${event.id}`, {
     method: "PUT",
     body: JSON.stringify(event),
   });
   const data = await res.json();
-
+  console.log(data);
   if (!res.ok) {
+    console.log("hi");
     const err = new Error();
     err.message = data.message;
     err.status = data.statusCode;
@@ -140,11 +141,11 @@ const eventsReducer = (state = {}, action) => {
         ...state,
         [action.event.id]: { ...state[action.event.id], ...action.event },
       };
-    // case ADD_GROUP:
-    //   return {
-    //     ...state,
-    //     [action.group.id]: { ...state[action.group.id], ...action.group },
-    //   };
+    case ADD_EVENT:
+      return {
+        ...state,
+        [action.event.id]: { ...state[action.event.id], ...action.event },
+      };
     // case REMOVE_GROUP:
     //   const newState = { ...state };
     //   delete newState[action.groupId];
