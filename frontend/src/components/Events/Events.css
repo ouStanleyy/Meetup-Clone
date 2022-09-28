@@ -102,7 +102,7 @@
   display: flex;
   /* justify-content: space-between; */
   height: 100%;
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
 }
 
 .eventInfo.body-left {
@@ -110,7 +110,7 @@
   justify-content: space-between;
   height: 300px; */
   width: 60%;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .eventInfo.body-right {
@@ -119,14 +119,14 @@
   gap: 20px;
   /* height: 300px; */
   width: 40%;
-  border: 2px solid yellow;
+  /* border: 2px solid yellow; */
 }
 
 .eventInfo.img-container {
   box-sizing: border-box;
   width: 550px;
   height: 325px;
-  border: 1px solid;
+  /* border: 1px solid; */
 }
 
 .eventInfo.img {
@@ -216,7 +216,7 @@
   width: 550px;
   padding-left: 5px;
   /* height: inherit; */
-  border: 1px solid;
+  /* border: 1px solid; */
 }
 
 .eventInfo.attendees-container {
@@ -265,7 +265,7 @@
   align-items: center;
   gap: 10px;
   height: fit-content;
-  border: 1px solid orange;
+  /* border: 1px solid orange; */
 }
 
 .eventInfo.price {

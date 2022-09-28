@@ -6,7 +6,7 @@ const EditGroupForm = ({ onUpdate }) => {
   const { groupId } = useParams();
   const group = useSelector((state) => state.groups[groupId]);
 
-  return <GroupForm onSubmit={onUpdate} group={group} formType="Update" />;
+  return <GroupForm closeEdit={onUpdate} group={group} formType="Update" />;
 };
 
 export default EditGroupForm;

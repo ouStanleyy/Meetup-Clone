@@ -6,7 +6,7 @@ const EditEventForm = ({ onUpdate }) => {
   const { eventId } = useParams();
   const event = useSelector((state) => state.events[eventId]);
 
-  return <EventForm onSubmit={onUpdate} event={event} formType="Update" />;
+  return <EventForm closeEdit={onUpdate} event={event} formType="Update" />;
 };
 
 export default EditEventForm;

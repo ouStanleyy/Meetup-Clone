@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createGroup, updateGroup } from "../../store/groups";
 
-const GroupForm = ({ onSubmit, group, formType }) => {
+const GroupForm = ({ closeEdit, group, formType }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [name, setName] = useState(group.name);
@@ -24,7 +24,7 @@ const GroupForm = ({ onSubmit, group, formType }) => {
         formType === "Create" ? createGroup(group) : updateGroup(group)
       );
       history.push(`/groups/${newGroup.id}`);
-      onSubmit();
+      closeEdit();
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });
@@ -120,6 +120,7 @@ const GroupForm = ({ onSubmit, group, formType }) => {
         <button disabled={about.length < 50} type="submit">
           {formType} Group
         </button>
+        <button onClick={closeEdit}>Cancel</button>
       </form>
     </section>
   );

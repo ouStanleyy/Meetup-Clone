@@ -27,7 +27,7 @@ const EventInfo = () => {
 
   const deleteHandler = async () => {
     await dispatch(deleteEvent(event.id));
-    history.push("/your-events");
+    history.push(`/groups/${group.id}`);
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const EventInfo = () => {
   }, [dispatch, eventId, history]);
 
   useEffect(() => {
-    (async () => await dispatch(getGroupById(event?.groupId)))();
+    if (event) (async () => await dispatch(getGroupById(event?.groupId)))();
   }, [dispatch, event]);
 
   if (redirect)
@@ -105,19 +105,19 @@ const EventInfo = () => {
                   {organizer && (
                     <>
                       <button
-                        className="groupInfo button"
+                        className="eventInfo button"
                         onClick={() => setShowEdit(true)}
                       >
                         Edit
                       </button>
                       <button
-                        className="groupInfo button"
+                        className="eventInfo button"
                         onClick={() => setShowAddImg(true)}
                       >
                         Add Image
                       </button>
                       <button
-                        className="groupInfo button"
+                        className="eventInfo button"
                         onClick={() => setShowModal(true)}
                       >
                         Delete
@@ -146,7 +146,11 @@ const EventInfo = () => {
             )}
 
             {showAddImg && (
-              <AddImageForm onClose={() => setShowAddImg(false)} />
+              <AddImageForm
+                onClose={() => setShowAddImg(false)}
+                addType="events"
+                id={eventId}
+              />
             )}
           </div>
         </div>

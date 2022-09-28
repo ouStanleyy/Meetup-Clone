@@ -157,7 +157,11 @@ const GroupInfo = () => {
             )}
 
             {showAddImg && (
-              <AddImageForm onClose={() => setShowAddImg(false)} />
+              <AddImageForm
+                onClose={() => setShowAddImg(false)}
+                addType="groups"
+                id={groupId}
+              />
             )}
           </div>
         </div>

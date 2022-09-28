@@ -3,8 +3,8 @@ import { csrfFetch } from "./csrf";
 const LOAD_EVENTS = "events/EVENTS";
 const LOAD_DETAILS = "events/LOAD_DETAILS";
 const ADD_EVENT = "events/ADD_EVENT";
-// const REMOVE_GROUP = "groups/REMOVE_GROUP";
-// const ADD_IMAGE = "groups/ADD_IMAGE";
+const REMOVE_EVENT = "events/REMOVE_EVENT";
+const ADD_IMAGE = "events/ADD_IMAGE";
 
 const loadEvents = (events) => ({
   type: LOAD_EVENTS,
@@ -21,16 +21,16 @@ const addEvent = (event) => ({
   event,
 });
 
-// const removeGroup = (groupId) => ({
-//   type: REMOVE_GROUP,
-//   groupId,
-// });
+const removeEvent = (eventId) => ({
+  type: REMOVE_EVENT,
+  eventId,
+});
 
-// const addImage = (groupId, image) => ({
-//   type: ADD_IMAGE,
-//   groupId,
-//   image,
-// });
+const addImage = (eventId, image) => ({
+  type: ADD_IMAGE,
+  eventId,
+  image,
+});
 
 export const getEvents = () => async (dispatch) => {
   const res = await csrfFetch("/api/events");
@@ -85,7 +85,7 @@ export const updateEvent = (event) => async (dispatch) => {
     body: JSON.stringify(event),
   });
   const data = await res.json();
-  console.log(data);
+
   if (!res.ok) {
     console.log("hi");
     const err = new Error();
@@ -100,64 +100,65 @@ export const updateEvent = (event) => async (dispatch) => {
 };
 
 export const deleteEvent = (eventId) => async (dispatch) => {
-  // const res = await csrfFetch(`/api/groups/${groupId}`, { method: "DELETE" });
-  // const data = await res.json();
-  // if (!res.ok) {
-  //   const err = new Error();
-  //   err.message = data.message;
-  //   err.status = data.statusCode;
-  //   err.errors = data.errors;
-  //   throw err;
-  // } else {
-  //   dispatch(removeGroup(groupId));
-  //   return data;
-  // }
+  const res = await csrfFetch(`/api/events/${eventId}`, { method: "DELETE" });
+  const data = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(removeEvent(eventId));
+    return data;
+  }
 };
 
-// export const uploadImage = (groupId, imgUrl) => async (dispatch) => {
-//   const res = await csrfFetch(`/api/groups/${groupId}/images`, {
-//     method: "POST",
-//     body: JSON.stringify(imgUrl),
-//   });
-//   const data = await res.json();
+export const uploadEventImage = (eventId, imgUrl) => async (dispatch) => {
+  const res = await csrfFetch(`/api/events/${eventId}/images`, {
+    method: "POST",
+    body: JSON.stringify(imgUrl),
+  });
+  const data = await res.json();
 
-//   if (!res.ok) {
-//     const err = new Error();
-//     err.message = data.message;
-//     err.status = data.statusCode;
-//     throw err;
-//   } else {
-//     dispatch(addImage(groupId, data));
-//     return data;
-//   }
-// };
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    throw err;
+  } else {
+    dispatch(addImage(eventId, data));
+    return data;
+  }
+};
 
 const eventsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_EVENTS:
       return { ...state, ...action.events };
     case LOAD_DETAILS:
-      return {
-        ...state,
-        [action.event.id]: { ...state[action.event.id], ...action.event },
-      };
+    // return {
+    //   ...state,
+    //   [action.event.id]: { ...state[action.event.id], ...action.event },
+    // };
     case ADD_EVENT:
       return {
         ...state,
         [action.event.id]: { ...state[action.event.id], ...action.event },
       };
-    // case REMOVE_GROUP:
-    //   const newState = { ...state };
-    //   delete newState[action.groupId];
-    //   return newState;
-    // case ADD_IMAGE:
-    //   return {
-    //     ...state,
-    //     [action.groupId]: {
-    //       ...state[action.groupId],
-    //       Images: [...state[action.groupId].Images, { ...action.image }],
-    //     },
-    //   };
+    case REMOVE_EVENT:
+      const newState = { ...state };
+      delete newState[action.eventId];
+      return newState;
+    case ADD_IMAGE:
+      return {
+        ...state,
+        [action.eventId]: {
+          ...state[action.eventId],
+          Images: [...state[action.eventId].Images, { ...action.image }],
+        },
+      };
     default:
       return state;
   }

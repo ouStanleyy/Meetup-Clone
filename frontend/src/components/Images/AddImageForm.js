@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-import { uploadImage } from "../../store/groups";
+import { useHistory } from "react-router-dom";
+import { uploadGroupImage } from "../../store/groups";
+import { uploadEventImage } from "../../store/events";
 
-const AddImageForm = ({ onClose, addType }) => {
-  const { groupId } = useParams();
+const AddImageForm = ({ onClose, addType, id }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [uploadChoice, setUploadChoice] = useState("url");
@@ -15,10 +15,13 @@ const AddImageForm = ({ onClose, addType }) => {
     e.preventDefault();
 
     try {
-      //   await dispatch(addType === "Group" ? addImage(groupId, { url }) : null);
-      await dispatch(uploadImage(groupId, { url }));
+      await dispatch(
+        addType === "groups"
+          ? uploadGroupImage(id, { url })
+          : uploadEventImage(id, { url })
+      );
       onClose();
-      history.push(`/groups/${groupId}`);
+      history.push(`/${addType}/${id}`);
     } catch (err) {
       // setErrors({ ...err, ...err.errors });
     }
