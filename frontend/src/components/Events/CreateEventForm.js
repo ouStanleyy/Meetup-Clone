@@ -9,6 +9,7 @@ const CreateEventForm = () => {
     price: "$0.00",
     startDate: "",
     endDate: "",
+    venueId: null,
   };
 
   return <EventForm event={event} formType="Create" />;

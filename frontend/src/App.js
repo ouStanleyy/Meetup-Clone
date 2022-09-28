@@ -22,7 +22,11 @@ function App() {
         <Navigation />
         <Switch>
           <Route exact path="/groups/new" component={CreateGroupForm} />
-          <Route exact path="/events/new" component={CreateEventForm} />
+          <Route
+            exact
+            path="/groups/:groupId/events/new"
+            component={CreateEventForm}
+          />
           <Route exact path="/groups/:groupId" component={GroupInfo} />
           <Route exact path="/events/:eventId" component={EventInfo} />
           <Route exact path="/groups" component={GroupsIndex} />

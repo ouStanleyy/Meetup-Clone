@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { createEvent, updateEvent } from "../../store/events";
 
 const EventForm = ({ onSubmit, event, formType }) => {
+  const { groupId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
   const [name, setName] = useState(event.name);
@@ -23,15 +24,19 @@ const EventForm = ({ onSubmit, event, formType }) => {
       name,
       description,
       type,
-      capacity,
-      price,
+      capacity: Number(capacity),
+      price: Number(price.slice(1)),
       startDate,
       endDate,
     };
 
+    console.log(event);
+
     try {
       const newEvent = await dispatch(
-        formType === "Create" ? createEvent(event) : updateEvent(event)
+        formType === "Create"
+          ? createEvent(groupId, event)
+          : updateEvent(groupId, event)
       );
       history.push(`/events/${newEvent.id}`);
       onSubmit();
@@ -67,6 +72,10 @@ const EventForm = ({ onSubmit, event, formType }) => {
     }
   };
 
+  // const endDateHandler = ({ target: { value } }) => {
+  //   // if ((value - startDate) < 30)
+  // };
+
   return (
     <section className="eventForm-section">
       <form className="event-form" onSubmit={submitHandler}>
@@ -84,7 +93,7 @@ const EventForm = ({ onSubmit, event, formType }) => {
         <input
           className="event-info"
           type="text"
-          placeholder="Event Name"
+          placeholder="Minimum of 5 characters"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -147,6 +156,7 @@ const EventForm = ({ onSubmit, event, formType }) => {
           className="event-info"
           type="datetime-local"
           required
+          min={startDate}
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         ></input>

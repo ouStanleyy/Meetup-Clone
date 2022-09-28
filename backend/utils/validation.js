@@ -108,7 +108,7 @@ const validateVenueInput = [
 const validateEventInput = [
   check("venueId").custom((venueId, { req }) =>
     Venue.findByPk(venueId).then((venue) => {
-      if (!venue || venue.groupId != req.group.id)
+      if (venueId !== null && (!venue || venue.groupId != req.group.id))
         return Promise.reject("Venue does not exist");
     })
   ),

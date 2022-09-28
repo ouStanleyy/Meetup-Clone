@@ -216,11 +216,15 @@ const EventInfo = () => {
               </div>
               <div className="eventInfo venue-location">
                 <i className="fa-solid fa-map-pin" />
-                <p>
-                  {event.Venue.address}{" "}
-                  <span className="event interpunct">·</span> {event.Venue.city}
-                  , {event.Venue.state}
-                </p>
+                {event.Venue ? (
+                  <p>
+                    {event.Venue?.address}{" "}
+                    <span className="event interpunct">·</span>{" "}
+                    {event.Venue?.city}, {event.Venue?.state}
+                  </p>
+                ) : (
+                  <p>Venue location has not been provided yet</p>
+                )}
               </div>
             </div>
           </div>

@@ -182,7 +182,11 @@ const GroupInfo = () => {
               </span>
             </li>
             <li>
-              {organizer && <Link to="/events/new">Start a new event</Link>}
+              {organizer && (
+                <Link to={`/groups/${groupId}/events/new`}>
+                  Start a new event
+                </Link>
+              )}
             </li>
           </ul>
         </nav>
