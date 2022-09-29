@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { createEvent, updateEvent } from "../../store/events";
 import { getGroupById } from "../../store/groups";
 
-const EventForm = ({ closeEdit, event, formType }) => {
+const EventForm = ({ closeForm, event, formType }) => {
   const { groupId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const EventForm = ({ closeEdit, event, formType }) => {
         formType === "Create" ? createEvent(groupId, event) : updateEvent(event)
       );
       history.push(`/events/${newEvent.id}`);
-      closeEdit();
+      closeForm();
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });
@@ -205,7 +205,7 @@ const EventForm = ({ closeEdit, event, formType }) => {
         <button disabled={name.length < 5} type="submit">
           {formType} Event
         </button>
-        <button onClick={closeEdit}>Cancel</button>
+        <button onClick={closeForm}>Cancel</button>
       </form>
     </section>
   );

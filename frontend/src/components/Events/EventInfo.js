@@ -99,60 +99,49 @@ const EventInfo = () => {
           </div>
 
           <div className="eventInfo buttons-container">
-            {!showEdit ? (
-              <div className="eventInfo buttons-container-top">
-                <div>
-                  {organizer && (
-                    <>
-                      <button
-                        className="eventInfo button"
-                        onClick={() => setShowEdit(true)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="eventInfo button"
-                        onClick={() => setShowAddImg(true)}
-                      >
-                        Add Image
-                      </button>
-                      <button
-                        className="eventInfo button"
-                        onClick={() => setShowModal(true)}
-                      >
-                        Delete
-                      </button>
-
-                      {showModal && (
-                        <Modal onClose={() => setShowModal(false)}>
-                          <div style={{ backgroundColor: "white" }}>
-                            <p>
-                              Are you sure you want to delete this event? This
-                              action is permanent and cannot be reverted.
-                            </p>
-                            <button onClick={deleteHandler}>DELETE</button>
-                            <button onClick={() => setShowModal(false)}>
-                              CANCEL
-                            </button>
-                          </div>
-                        </Modal>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <EditEventForm onUpdate={() => setShowEdit(false)} />
+            {organizer && (
+              <>
+                <button
+                  className="eventInfo button"
+                  onClick={() => setShowEdit(true)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="eventInfo button"
+                  onClick={() => setShowAddImg(true)}
+                >
+                  Add Image
+                </button>
+                <button
+                  className="eventInfo button"
+                  onClick={() => setShowModal(true)}
+                >
+                  Delete
+                </button>
+              </>
             )}
 
-            {showAddImg && (
-              <AddImageForm
-                onClose={() => setShowAddImg(false)}
-                addType="events"
-                id={eventId}
-              />
+            {showModal && (
+              <Modal onClose={() => setShowModal(false)}>
+                <div style={{ backgroundColor: "white" }}>
+                  <p>
+                    Are you sure you want to delete this event? This action is
+                    permanent and cannot be reverted.
+                  </p>
+                  <button onClick={deleteHandler}>DELETE</button>
+                  <button onClick={() => setShowModal(false)}>CANCEL</button>
+                </div>
+              </Modal>
             )}
           </div>
+          {showAddImg && (
+            <AddImageForm
+              onClose={() => setShowAddImg(false)}
+              addType="events"
+              id={eventId}
+            />
+          )}
         </div>
 
         <div className="eventInfo body">
@@ -174,70 +163,77 @@ const EventInfo = () => {
           </div>
 
           <div className="eventInfo body-right">
-            <Link to={`/groups/${group.id}`}>
-              <div className="eventInfo group">
-                <div className="eventInfo group_img-container">
-                  <img
-                    className="eventInfo group_img"
-                    src={group?.previewImage || group?.Images?.[0]?.url}
-                    alt={group?.previewImage || group?.Images?.[0]?.url}
-                  />
+            {showEdit ? (
+              <EditEventForm onUpdate={() => setShowEdit(false)} />
+            ) : (
+              <>
+                <Link to={`/groups/${group.id}`}>
+                  <div className="eventInfo group">
+                    <div className="eventInfo group_img-container">
+                      <img
+                        className="eventInfo group_img"
+                        src={group?.previewImage || group?.Images?.[0]?.url}
+                        alt={group?.previewImage || group?.Images?.[0]?.url}
+                      />
+                    </div>
+                    <div className="eventInfo group_details">
+                      <h4>{group?.name}</h4>
+                      <p>
+                        {group?.type} {group.private ? "private" : "public"}{" "}
+                        group
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+                <div className="eventInfo venue">
+                  <div className="eventInfo venue-date">
+                    <i className="fa-regular fa-clock" />
+                    <p>
+                      {new Date(event.startDate).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}{" "}
+                      at{" "}
+                      {new Date(event.startDate).toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}{" "}
+                      to{" "}
+                      {new Date(event.endDate).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}{" "}
+                      at{" "}
+                      {new Date(event.endDate).toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        timeZoneName: "short",
+                      })}{" "}
+                    </p>
+                  </div>
+                  <div className="eventInfo venue-location">
+                    <i className="fa-solid fa-map-pin" />
+                    {event.Venue ? (
+                      <p>
+                        {event.Venue?.address}{" "}
+                        <span className="event interpunct">·</span>{" "}
+                        {event.Venue?.city}, {event.Venue?.state}
+                      </p>
+                    ) : (
+                      <p>Venue location has not been provided yet</p>
+                    )}
+                  </div>
                 </div>
-                <div className="eventInfo group_details">
-                  <h4>{group?.name}</h4>
-                  <p>
-                    {group?.type} {group.private ? "private" : "public"} group
-                  </p>
+                <div className="eventInfo price">
+                  <h4>{event.price >= 0.01 ? `$${event.price}` : "FREE"}</h4>
+                  {!organizer && <button>Attend</button>}
                 </div>
-              </div>
-            </Link>
-            <div className="eventInfo venue">
-              <div className="eventInfo venue-date">
-                <i className="fa-regular fa-clock" />
-                <p>
-                  {new Date(event.startDate).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}{" "}
-                  at{" "}
-                  {new Date(event.startDate).toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}{" "}
-                  to{" "}
-                  {new Date(event.endDate).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}{" "}
-                  at{" "}
-                  {new Date(event.endDate).toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "numeric",
-                    timeZoneName: "short",
-                  })}{" "}
-                </p>
-              </div>
-              <div className="eventInfo venue-location">
-                <i className="fa-solid fa-map-pin" />
-                {event.Venue ? (
-                  <p>
-                    {event.Venue?.address}{" "}
-                    <span className="event interpunct">·</span>{" "}
-                    {event.Venue?.city}, {event.Venue?.state}
-                  </p>
-                ) : (
-                  <p>Venue location has not been provided yet</p>
-                )}
-              </div>
-            </div>
-            <div className="eventInfo price">
-              <h4>{event.price >= 0.01 ? `$${event.price}` : "FREE"}</h4>
-              {!organizer && <button>Attend</button>}
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>

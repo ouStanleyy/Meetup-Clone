@@ -64,7 +64,7 @@ const LoginSignupModal = () => {
                 ? "login_signup-modal exit-animation"
                 : "login_signup-modal"
             }
-            style={{ height: height }}
+            style={{ height }}
           >
             <div
               ref={loginRef}

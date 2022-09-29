@@ -1,6 +1,8 @@
+import { useHistory } from "react-router";
 import GroupForm from "./GroupForm";
 
 const CreateGroupForm = () => {
+  const history = useHistory();
   const group = {
     name: "",
     about: "",
@@ -10,7 +12,13 @@ const CreateGroupForm = () => {
     state: "",
   };
 
-  return <GroupForm group={group} formType="Create" />;
+  return (
+    <GroupForm
+      closeForm={() => history.push("/groups")}
+      group={group}
+      formType="Create"
+    />
+  );
 };
 
 export default CreateGroupForm;
