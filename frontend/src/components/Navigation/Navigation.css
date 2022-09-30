@@ -31,12 +31,18 @@
   transform: rotate(-20deg) translateY(-10px);
 }
 
-.navlink {
-  text-decoration: none;
-  color: black;
+.login-signup-li > a {
+  font-weight: bold;
+  transition: all 200ms;
 }
 
-.active {
+.login-signup-li > a:hover {
+  color: salmon;
+  filter: brightness(1.2);
+  cursor: pointer;
+}
+
+.login-signup-li > a.active {
   color: salmon;
 }
 

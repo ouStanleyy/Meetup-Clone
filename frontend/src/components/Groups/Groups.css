@@ -276,8 +276,6 @@
 .groupInfo.about-span.active,
 .groupInfo.events-span.active {
   color: salmon;
-  transition: 0.2s;
-  transform: translateY(2px);
 }
 
 .groupInfo.body {
