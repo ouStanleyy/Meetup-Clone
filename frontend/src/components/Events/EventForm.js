@@ -12,7 +12,7 @@ const EventForm = ({ closeForm, event, formType }) => {
   const [description, setDescription] = useState(event.description);
   const [type, setType] = useState(event.type);
   const [capacity, setCapacity] = useState(event.capacity);
-  const [price, setPrice] = useState(`$${event.price.toFixed(2)}`);
+  const [price, setPrice] = useState(`$${Number(event.price).toFixed(2)}`);
   const [startDate, setStartDate] = useState(event.startDate);
   const [endDate, setEndDate] = useState(event.endDate);
   const [errors, setErrors] = useState({});
@@ -40,7 +40,7 @@ const EventForm = ({ closeForm, event, formType }) => {
         formType === "Create" ? createEvent(groupId, event) : updateEvent(event)
       );
       history.push(`/events/${newEvent.id}`);
-      closeForm();
+      if (formType === "Update") closeForm();
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });
