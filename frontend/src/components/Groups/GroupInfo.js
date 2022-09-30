@@ -8,6 +8,7 @@ import {
   getEventsOfGroup,
 } from "../../store/groups";
 import EventsIndex from "../Events/EventsIndex";
+import VenuesIndex from "../Venues/VenuesIndex";
 import { AddImageForm } from "../Images";
 import EditGroupForm from "./EditGroupForm";
 import "./Groups.css";
@@ -205,6 +206,14 @@ const GroupInfo = () => {
               >
                 Events
               </span>
+              <span
+                className={`groupInfo venues-span ${
+                  bodyDisplay === "venues" ? "active" : ""
+                }`}
+                onClick={() => setBodyDisplay("venues")}
+              >
+                Venues
+              </span>
             </li>
             <li>
               {organizer && (
@@ -228,6 +237,11 @@ const GroupInfo = () => {
           {bodyDisplay === "events" && (
             <div className="groupInfo events-container">
               <EventsIndex />
+            </div>
+          )}
+          {bodyDisplay === "venues" && (
+            <div className="groupInfo venues-container">
+              <VenuesIndex />
             </div>
           )}
           <div className="groupInfo members-container">

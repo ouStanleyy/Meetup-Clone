@@ -1,0 +1,147 @@
+.interpunct {
+  font-weight: bold;
+  font-size: larger;
+  line-height: 0;
+}
+
+.venues.container {
+  margin-left: 20%;
+  width: 80%;
+  /* height: 94vh; */
+  margin-top: -40px;
+  overflow: auto;
+  padding: 20px 0 10px;
+  /* border: 1px solid; */
+}
+
+.venues.venue-container {
+  display: flex;
+  gap: 1em;
+  width: 50%;
+  height: 200px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid lightgray;
+  background-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0px 8px 6px -2px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  /* border: 1px solid red; */
+}
+
+.venueInfo.venue {
+  height: 300px;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  box-shadow: 0px 8px 6px -2px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+  transition: all 400ms;
+}
+
+.venueInfo.venue:hover {
+  transform: scale(0.98);
+}
+
+.venueInfo.venue-date,
+.venueInfo.venue-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: fit-content;
+  /* border: 1px solid orange; */
+}
+
+.venue.img-container {
+  width: 16em;
+  height: 10em;
+  /* border: 1px solid blue; */
+}
+
+.venue.img {
+  width: 16em;
+  height: 10em;
+  border-radius: 5px;
+}
+
+.venue.details-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 26em;
+  height: 12em;
+  /* border: 1px solid green; */
+}
+
+.venue.name,
+.venue.startDate,
+.venue.group-name,
+.venue.numAttending {
+  height: 1.5em;
+  margin: 0;
+  overflow: hidden;
+  /* border: 1px solid; */
+}
+
+.venue.startDate {
+  color: goldenrod;
+  filter: contrast(0.3);
+  text-transform: uppercase;
+}
+
+.venue.group-name {
+  height: 3.5em;
+}
+
+.venue.numAttending,
+.venue.group-name {
+  color: beige;
+  filter: contrast(0.3);
+}
+
+.fa-solid,
+.fa-regular {
+  box-sizing: border-box;
+  text-align: center;
+  width: 30px;
+}
+
+.fa-regular {
+  padding-left: 10px;
+}
+
+.venue.button {
+  position: relative;
+  /* display: inline-block; */
+  outline: 0;
+  border: 0;
+  background-image: linear-gradient(to top right, #e052a0, #f19041);
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  margin: 0 5px;
+  z-index: 1;
+}
+
+.venue.button::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(to top right, #71ffff, #526bf4);
+  border-radius: 5px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.venue.button:hover::after {
+  opacity: 1;
+}
+
+.venue.button:active::after {
+  filter: brightness(1.2);
+}
