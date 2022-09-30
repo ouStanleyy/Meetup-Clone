@@ -130,7 +130,7 @@ const GroupsIndex = () => {
         <div className="group discover">
           {pathname === "/groups"
             ? "Discover New Groups"
-            : `Welcome, ${user.firstName} 👋🏻`}
+            : `Welcome, ${user.firstName}`}
         </div>
       </div>
     )

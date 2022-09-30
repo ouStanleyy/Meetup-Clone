@@ -101,7 +101,9 @@ const EventsIndex = () => {
             </Link>
           );
         })}
-        <div className="event discover">Discover New Groups</div>
+        {pathname === "/events" && (
+          <div className="event discover">Discover New Events</div>
+        )}
       </div>
     )
   );
