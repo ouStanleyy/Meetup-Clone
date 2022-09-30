@@ -55,7 +55,7 @@ export const getGroups = () => async (dispatch) => {
 export const getGroupById = (groupId) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}`);
   const data = await res.json();
-  console.log(data);
+
   if (!res.ok) {
     const err = new Error();
     err.message = data.message;
