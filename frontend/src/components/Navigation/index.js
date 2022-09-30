@@ -12,7 +12,8 @@ const Navigation = () => {
       <ul>
         <li>
           <Link className="navlink" to="/">
-            <i className="fa-solid fa-house fa-2x" />
+            {/* <i className="fa-solid fa-house fa-2x" /> */}
+            <span id="home-logo">RendeVue</span>
           </Link>
         </li>
         <li className="login-signup-li">

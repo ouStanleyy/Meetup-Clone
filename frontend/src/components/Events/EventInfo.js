@@ -24,10 +24,26 @@ const EventInfo = () => {
   const [redirect2, setRedirect2] = useState(false);
   const [redirect3, setRedirect3] = useState(false);
   const [redirect4, setRedirect4] = useState(false);
+  const [transform, setTransform] = useState("");
 
   const deleteHandler = async () => {
     await dispatch(deleteEvent(event.id));
     history.push(`/groups/${group.id}`);
+  };
+
+  const mouseMoveHandler = (e) => {
+    const width = e.currentTarget.offsetWidth;
+    const height = e.currentTarget.offsetHeight;
+    const centerX = e.currentTarget.offsetLeft + width / 2;
+    const centerY = e.currentTarget.offsetTop + height / 2;
+    const mouseX = e.clientX - centerX;
+    const mouseY = e.clientY - centerY;
+    const rotateX = (-mouseY / (height / 2)).toFixed(2);
+    const rotateY = (mouseX / (width / 2)).toFixed(2);
+
+    setTransform(
+      `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+    );
   };
 
   useEffect(() => {
@@ -77,7 +93,12 @@ const EventInfo = () => {
   return (
     event &&
     group && (
-      <div className="eventInfo container">
+      <div
+        className="eventInfo container"
+        onMouseMove={mouseMoveHandler}
+        onMouseLeave={() => setTransform("")}
+        style={{ transform }}
+      >
         <div className="eventInfo header">
           <div className="eventInfo header-left">
             <h4 className="eventInfo startDate">

@@ -30,7 +30,7 @@ const AddImageForm = ({ onClose, addType, id }) => {
   return (
     <>
       <form onSubmit={submitHandler}>
-        <label>How do you want to upload the image?</label>
+        {/* <label>How do you want to upload the image?</label>
         <select
           className="image-upload-choice"
           required
@@ -46,20 +46,20 @@ const AddImageForm = ({ onClose, addType, id }) => {
             accept="image/png, image/jpeg, image/jpg"
             required
           />
-        ) : (
-          <>
-            <label>Enter an https:// URL:</label>
-            <input
-              type="url"
-              placeholder="https://example.com"
-              pattern="https://.*"
-              size="30"
-              value={url}
-              required
-              onChange={(e) => setUrl(e.target.value)}
-            />
-          </>
-        )}
+        ) : ( */}
+        <>
+          {/* <label>Enter an https:// URL:</label> */}
+          <input
+            type="url"
+            placeholder="https://example.com"
+            pattern="https://.*"
+            size="30"
+            value={url}
+            required
+            onChange={(e) => setUrl(e.target.value)}
+          />
+        </>
+        {/* )} */}
         <button>Add Image</button>
       </form>
       <button onClick={onClose}>Cancel</button>

@@ -32,7 +32,7 @@ function App() {
           <Route exact path="/groups" component={GroupsIndex} />
           <Route exact path="/events" component={EventsIndex} />
           <Route exact path="/your-groups" component={GroupsIndex} />
-          <Route exact path="/your-events" component={EventsIndex} />
+          {/* <Route exact path="/your-events" component={EventsIndex} /> */}
           <Route exact path="/">
             <h1>Homepage</h1>
           </Route>

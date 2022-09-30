@@ -37,9 +37,9 @@ const ProfileButton = ({ user }) => {
           <div>
             <Link to="/your-groups">Your groups</Link>
           </div>
-          <div>
+          {/* <div>
             <Link to="/your-events">Your events</Link>
-          </div>
+          </div> */}
           <div>
             <Link to="/groups/new">Start a new group</Link>
           </div>

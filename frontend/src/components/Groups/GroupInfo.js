@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { Modal } from "../../context/Modal";
@@ -16,7 +16,6 @@ const GroupInfo = () => {
   const { groupId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const groupInfoRef = useRef();
   const group = useSelector((state) => state.groups[groupId]);
   const organizer = useSelector(
     (state) => group?.organizerId === state.session.user?.id
@@ -43,8 +42,8 @@ const GroupInfo = () => {
     const centerY = e.currentTarget.offsetTop + height / 2;
     const mouseX = e.clientX - centerX;
     const mouseY = e.clientY - centerY;
-    const rotateX = ((-3 * mouseY) / (height / 2)).toFixed(2);
-    const rotateY = ((3 * mouseX) / (width / 2)).toFixed(2);
+    const rotateX = (-mouseY / (height / 2)).toFixed(2);
+    const rotateY = (mouseX / (width / 2)).toFixed(2);
 
     setTransform(
       `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
@@ -95,12 +94,9 @@ const GroupInfo = () => {
   return (
     group && (
       <div
-        ref={groupInfoRef}
         className="groupInfo container"
         onMouseMove={mouseMoveHandler}
-        onMouseLeave={(e) => {
-          if (e.currentTarget === groupInfoRef.current) setTransform("");
-        }}
+        onMouseLeave={() => setTransform("")}
         style={{ transform }}
       >
         <div className="groupInfo header">
@@ -212,7 +208,10 @@ const GroupInfo = () => {
             </li>
             <li>
               {organizer && (
-                <Link to={`/groups/${groupId}/events/new`}>
+                <Link
+                  className="groupInfo new-event"
+                  to={`/groups/${groupId}/events/new`}
+                >
                   Start a new event
                 </Link>
               )}

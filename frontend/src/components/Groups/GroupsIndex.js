@@ -11,7 +11,9 @@ const GroupsIndex = () => {
   const groups = useSelector((state) =>
     Object.values(pathname === "/groups" ? state.groups : state.session.groups)
   );
+  const user = useSelector((state) => state.session.user);
   const groupsRef = useRef([]);
+  const groupsContainerRef = useRef();
   const [isVisible, setIsVisible] = useState({});
 
   // if (groupsRef.current.length !== groups.length) {
@@ -56,7 +58,11 @@ const GroupsIndex = () => {
         });
         // setIsVisible(entries.map((entry) => entry.isIntersecting));
       },
-      { threshold: 0.5 }
+      {
+        threshold: 0.5,
+        root: groupsContainerRef.current,
+        // rootMargin: "-150px 0px 0px 0px",
+      }
     );
     (async () => {
       try {
@@ -79,7 +85,7 @@ const GroupsIndex = () => {
 
   return (
     groups && (
-      <div className="groups container">
+      <div ref={groupsContainerRef} className="groups container">
         {groups.map((group, idx) => {
           return (
             <Link
@@ -121,6 +127,11 @@ const GroupsIndex = () => {
             </Link>
           );
         })}
+        <div className="group discover">
+          {pathname === "/groups"
+            ? "Discover New Groups"
+            : `Welcome, ${user.firstName} 👋🏻`}
+        </div>
       </div>
     )
   );
