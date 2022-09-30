@@ -14,6 +14,7 @@ const EventsIndex = () => {
     )
   );
   const eventsRef = useRef([]);
+  const eventsContainerRef = useRef();
   const [isVisible, setIsVisible] = useState({});
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const EventsIndex = () => {
             [entry.target]: entry.isIntersecting,
           }))
         ),
-      { threshold: 0.5 }
+      { threshold: 0.5, root: eventsContainerRef.current }
     );
 
     (async () => {
@@ -42,7 +43,7 @@ const EventsIndex = () => {
 
   return (
     events && (
-      <div className="events container">
+      <div ref={eventsContainerRef} className="events container">
         {events.map((event, idx) => {
           return (
             <Link
@@ -100,6 +101,7 @@ const EventsIndex = () => {
             </Link>
           );
         })}
+        <div className="event discover">Discover New Groups</div>
       </div>
     )
   );

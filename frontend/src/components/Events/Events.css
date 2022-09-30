@@ -4,16 +4,43 @@
   line-height: 0;
 }
 
+.event.discover {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  top: 60px;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  font-size: 180px;
+  /* font-weight: 500; */
+  font-family: "Seaweed Script", cursive;
+  /* pointer-events: none; */
+  /* border: 2px solid; */
+  color: transparent;
+  background-image: linear-gradient(to top right, #71ffff, #526bf4);
+  background-clip: text;
+  background-color: lightseagreen;
+}
+
+.event.discover:hover {
+  cursor: default;
+}
+
 .events.container {
   margin-left: 20%;
-  width: 40%;
+  width: 80%;
+  height: 94vh;
+  margin-top: -40px;
+  overflow: auto;
   /* border: 1px solid; */
 }
 
 .events.event-container {
   display: flex;
   gap: 1em;
-  width: 100%;
+  width: 50%;
   height: 200px;
   margin-bottom: 10px;
   border-bottom: 1px solid lightgray;
@@ -247,6 +274,13 @@
   display: flex;
   border-radius: 10px;
   border: 1px solid lightgray;
+  box-shadow: 0px 8px 6px -2px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+  transition: all 400ms;
+}
+
+.eventInfo.group:hover {
+  transform: scale(0.98);
 }
 
 .eventInfo.group_img-container {
@@ -274,6 +308,13 @@
   height: 300px;
   border-radius: 10px;
   border: 1px solid lightgray;
+  box-shadow: 0px 8px 6px -2px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+  transition: all 400ms;
+}
+
+.eventInfo.venue:hover {
+  transform: scale(0.98);
 }
 
 .eventInfo.venue-date,
