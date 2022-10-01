@@ -51,9 +51,9 @@
   /* border: 1px solid red; */
 }
 
-.groups.group-container:hover {
-  scale: 0.98;
-}
+/* .groups.group-container:hover {
+  transform: scale(0.98) translateY(-5px);
+} */
 
 /* .groupInfo-link:hover {
   cursor: default;
@@ -116,6 +116,10 @@
   /* transition: all 500ms ease; */
   transform: translateX(0%);
   opacity: 1;
+}
+
+.groups.group-container:hover {
+  transform: scale(0.98) translateY(-5px);
 }
 
 /* .groupInfo.outter-container {
@@ -260,13 +264,16 @@
 
 .groupInfo.about-span,
 .groupInfo.events-span,
+.groupInfo.venues-span,
 .groupInfo.new-event {
   font-weight: bold;
   transition: filter 200ms;
+  padding: 10px;
 }
 
 .groupInfo.about-span:hover,
 .groupInfo.events-span:hover,
+.groupInfo.venues-span:hover,
 .groupInfo.new-event:hover {
   color: salmon;
   filter: brightness(1.2);
@@ -274,7 +281,8 @@
 }
 
 .groupInfo.about-span.active,
-.groupInfo.events-span.active {
+.groupInfo.events-span.active,
+.groupInfo.venues-span.active {
   color: salmon;
 }
 
@@ -284,15 +292,17 @@
 }
 
 .groupInfo.about-container {
-  box-sizing: border-box;
+  /* box-sizing: border-box;
   width: 55%;
-  padding: 0 15px;
+  padding: 0 15px; */
   /* height: inherit; */
   /* border: 1px solid; */
 }
 
-.groupInfo.events-container {
-  box-sizing: border-box;
+.groupInfo.about-container,
+.groupInfo.events-container,
+.groupInfo.venues-container {
+  /* box-sizing: border-box; */
   width: 55%;
   height: 27em;
   padding: 0 15px;
@@ -317,13 +327,13 @@
 }
 
 .groupInfo.events-container .events.event-container {
+  background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 8px 6px -2px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.4);
   transition: transform 400ms;
 }
 
 .groupInfo.events-container .events.event-container:hover {
-  transform: scale(0.98);
+  transform: scale(0.98) translateY(-5px);
 }
 
 .groupInfo.members-container {

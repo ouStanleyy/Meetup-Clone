@@ -197,7 +197,7 @@ const GroupInfo = () => {
                 onClick={() => setBodyDisplay("about")}
               >
                 About
-              </span>{" "}
+              </span>
               <span
                 className={`groupInfo events-span ${
                   bodyDisplay === "events" ? "active" : ""
@@ -241,7 +241,7 @@ const GroupInfo = () => {
           )}
           {bodyDisplay === "venues" && (
             <div className="groupInfo venues-container">
-              <VenuesIndex />
+              <VenuesIndex organizer={organizer} />
             </div>
           )}
           <div className="groupInfo members-container">
