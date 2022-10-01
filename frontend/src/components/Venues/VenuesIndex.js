@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import EditVenueForm from "./EditVenueForm";
@@ -7,16 +7,34 @@ import "./Venues.css";
 const VenuesIndex = ({ organizer }) => {
   const { groupId } = useParams();
   const venues = useSelector((state) => state.groups[groupId].Venues);
-  const [showEdit, setShowEdit] = useState(false);
+  const [showEdit, setShowEdit] = useState({});
+
+  const editVenueHandler = (idx) => () => {
+    setShowEdit((state) => ({
+      ...state,
+      [idx]: true,
+    }));
+  };
+
+  useEffect(() => {
+    venues.forEach((_, idx) => {
+      setShowEdit((state) => ({
+        ...state,
+        [idx]: false,
+      }));
+    });
+  }, [venues]);
 
   return (
     venues && (
       <div className="venues container">
-        {venues.map((venue) => {
+        {venues.map((venue, idx) => {
           return (
             <div
               key={venue.id}
-              className={`venues venue-container ${showEdit ? "expand" : ""}`}
+              className={`venues venue-container ${
+                showEdit[idx] ? "expand" : ""
+              }`}
             >
               <div className="venue map-container">
                 {/* <img
@@ -26,7 +44,7 @@ const VenuesIndex = ({ organizer }) => {
                 /> */}
               </div>
               <div className="venue details-container">
-                {!showEdit ? (
+                {!showEdit[idx] ? (
                   <>
                     <div className="venue location-container">
                       <i className="fa-solid fa-map-pin" />
@@ -41,7 +59,7 @@ const VenuesIndex = ({ organizer }) => {
                       {organizer && (
                         <button
                           className="venue button"
-                          onClick={() => setShowEdit(true)}
+                          onClick={editVenueHandler(idx)}
                         >
                           Edit
                         </button>

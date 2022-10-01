@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-import { updateVenue } from "../../store/groups";
-// import { getGroupById } from "../../store/groups";
+import { useParams } from "react-router-dom";
+import { createVenue, editVenue } from "../../store/groups";
 
 const VenueForm = ({ closeForm, venue, formType }) => {
   const { groupId } = useParams();
-  const history = useHistory();
   const dispatch = useDispatch();
   const [address, setAddress] = useState(venue.address);
   const [city, setCity] = useState(venue.city);
@@ -15,10 +13,6 @@ const VenueForm = ({ closeForm, venue, formType }) => {
   const [lng, setLng] = useState(venue.lng);
   const [errors, setErrors] = useState({});
   const [wiggle, setWiggle] = useState(false);
-  // const [redirect, setRedirect] = useState(false);
-  // const [redirect2, setRedirect2] = useState(false);
-  // const [redirect3, setRedirect3] = useState(false);
-  // const [redirect4, setRedirect4] = useState(false);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -32,39 +26,17 @@ const VenueForm = ({ closeForm, venue, formType }) => {
     };
 
     try {
-      await dispatch(updateVenue(groupId, venue));
-      // history.push(`/groups/${groupId}`);
+      await dispatch(
+        formType === "Create"
+          ? createVenue(groupId, venue)
+          : editVenue(groupId, venue)
+      );
       closeForm();
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });
     }
   };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       if (groupId) await dispatch(getGroupById(groupId));
-  //     } catch (err) {
-  //       setRedirect(true);
-
-  //       let redirectId = setTimeout(() => {
-  //         setRedirect2(true);
-  //         redirectId = setTimeout(() => {
-  //           setRedirect3(true);
-  //           redirectId = setTimeout(() => setRedirect4(true), 1000);
-  //         }, 1000);
-  //       }, 1000);
-
-  //       const timeoutId = setTimeout(() => history.push("/groups"), 4000);
-
-  //       return () => {
-  //         clearTimeout(timeoutId);
-  //         clearTimeout(redirectId);
-  //       };
-  //     }
-  //   })();
-  // }, [dispatch, groupId, history]);
 
   // useEffect(() => {
   //   0 < name.length && name.length < 5
@@ -91,21 +63,6 @@ const VenueForm = ({ closeForm, venue, formType }) => {
   //     setPrice(valueDisplay);
   //   }
   // };
-
-  // if (redirect)
-  //   return (
-  //     <h1>
-  //       The group that you are looking for does not exit. You will be redirected
-  //       to the groups page in a moment.
-  //       {redirect2 && (
-  //         <p>
-  //           {" "}
-  //           Redirecting.{redirect3 && <span>.</span>}
-  //           {redirect4 && <span>.</span>}
-  //         </p>
-  //       )}
-  //     </h1>
-  //   );
 
   return (
     <section className="venueForm-section">

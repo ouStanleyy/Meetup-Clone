@@ -7,6 +7,7 @@ const REMOVE_GROUP = "groups/REMOVE_GROUP";
 const ADD_IMAGE = "groups/ADD_IMAGE";
 const LOAD_EVENTS = "groups/LOAD_EVENTS";
 const ADD_VENUE = "groups/ADD_VENUE";
+const UPDATE_VENUE = "groups/UPDATE_VENUE";
 
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
@@ -42,6 +43,12 @@ const loadEvents = (groupId, events) => ({
 
 const addVenue = (groupId, venue) => ({
   type: ADD_VENUE,
+  groupId,
+  venue,
+});
+
+const updateVenue = (groupId, venue) => ({
+  type: UPDATE_VENUE,
   groupId,
   venue,
 });
@@ -160,7 +167,26 @@ export const getEventsOfGroup = (groupId) => async (dispatch) => {
   }
 };
 
-export const updateVenue = (groupId, venue) => async (dispatch) => {
+export const createVenue = (groupId, venue) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}/venues`, {
+    method: "POST",
+    body: JSON.stringify(venue),
+  });
+  const data = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(addVenue(groupId, data));
+    return data;
+  }
+};
+
+export const editVenue = (groupId, venue) => async (dispatch) => {
   const res = await csrfFetch(`/api/venues/${venue.id}`, {
     method: "PUT",
     body: JSON.stringify(venue),
@@ -176,7 +202,7 @@ export const updateVenue = (groupId, venue) => async (dispatch) => {
     err.errors = data.errors;
     throw err;
   } else {
-    dispatch(addVenue(groupId, data));
+    dispatch(updateVenue(groupId, data));
     return data;
   }
 };
@@ -216,6 +242,14 @@ const groupsReducer = (state = {}, action) => {
         },
       };
     case ADD_VENUE:
+      return {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Venues: [...state[action.groupId].Venues, { ...action.venue }],
+        },
+      };
+    case UPDATE_VENUE:
       return {
         ...state,
         [action.groupId]: {

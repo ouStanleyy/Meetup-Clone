@@ -1,27 +1,15 @@
-import { useHistory, useParams } from "react-router";
-import EventForm from "./VenueForm";
+import VenueForm from "./VenueForm";
 
-const CreateEventForm = () => {
-  const history = useHistory();
-  const { groupId } = useParams();
-  const event = {
-    name: "",
-    description: "",
-    type: "",
-    capacity: 0,
-    price: 0,
-    startDate: "",
-    endDate: "",
-    venueId: null,
+const CreateVenueForm = ({ onClose }) => {
+  const venue = {
+    address: "",
+    city: "",
+    state: "",
+    lat: 0,
+    lng: 0,
   };
 
-  return (
-    <EventForm
-      closeForm={() => history.push(`/groups/${groupId}`)}
-      event={event}
-      formType="Create"
-    />
-  );
+  return <VenueForm closeForm={onClose} venue={venue} formType="Create" />;
 };
 
-export default CreateEventForm;
+export default CreateVenueForm;

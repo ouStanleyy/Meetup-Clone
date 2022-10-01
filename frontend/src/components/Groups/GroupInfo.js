@@ -12,6 +12,7 @@ import VenuesIndex from "../Venues/VenuesIndex";
 import { AddImageForm } from "../Images";
 import EditGroupForm from "./EditGroupForm";
 import "./Groups.css";
+import CreateVenueForm from "../Venues/CreateVenueForm";
 
 const GroupInfo = () => {
   const { groupId } = useParams();
@@ -25,6 +26,7 @@ const GroupInfo = () => {
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [bodyDisplay, setBodyDisplay] = useState("about");
+  const [showAddVenue, setShowAddVenue] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [redirect2, setRedirect2] = useState(false);
   const [redirect3, setRedirect3] = useState(false);
@@ -217,12 +219,22 @@ const GroupInfo = () => {
             </li>
             <li>
               {organizer && (
-                <Link
-                  className="groupInfo new-event"
-                  to={`/groups/${groupId}/events/new`}
-                >
-                  Start a new event
-                </Link>
+                <>
+                  <span
+                    className={`groupInfo new-venue-span ${
+                      showAddVenue ? "active" : ""
+                    }`}
+                    onClick={() => setShowAddVenue(true)}
+                  >
+                    Add a venue
+                  </span>
+                  <Link
+                    className="groupInfo new-event"
+                    to={`/groups/${groupId}/events/new`}
+                  >
+                    Start a new event
+                  </Link>
+                </>
               )}
             </li>
           </ul>
@@ -244,15 +256,22 @@ const GroupInfo = () => {
               <VenuesIndex organizer={organizer} />
             </div>
           )}
-          <div className="groupInfo members-container">
-            <h3>Organizer</h3>
-            <p className="groupInfo organizer">
-              <span className="groupInfo organizer-name">
-                {group.Organizer?.firstName} {group.Organizer?.lastName}
-              </span>
-            </p>
-            <h3>Members</h3>
-          </div>
+
+          {showAddVenue ? (
+            <div className="groupInfo new-venue-container">
+              <CreateVenueForm onClose={() => setShowAddVenue(false)} />
+            </div>
+          ) : (
+            <div className="groupInfo members-container">
+              <h3>Organizer</h3>
+              <p className="groupInfo organizer">
+                <span className="groupInfo organizer-name">
+                  {group.Organizer?.firstName} {group.Organizer?.lastName}
+                </span>
+              </p>
+              <h3>Members</h3>
+            </div>
+          )}
         </div>
       </div>
     )

@@ -265,6 +265,7 @@
 .groupInfo.about-span,
 .groupInfo.events-span,
 .groupInfo.venues-span,
+.groupInfo.new-venue-span,
 .groupInfo.new-event {
   font-weight: bold;
   transition: filter 200ms;
@@ -274,6 +275,7 @@
 .groupInfo.about-span:hover,
 .groupInfo.events-span:hover,
 .groupInfo.venues-span:hover,
+.groupInfo.new-venue-span:hover,
 .groupInfo.new-event:hover {
   color: salmon;
   filter: brightness(1.2);
@@ -282,7 +284,8 @@
 
 .groupInfo.about-span.active,
 .groupInfo.events-span.active,
-.groupInfo.venues-span.active {
+.groupInfo.venues-span.active,
+.groupInfo.new-venue-span.active {
   color: salmon;
 }
 
