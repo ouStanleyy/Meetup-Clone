@@ -294,23 +294,24 @@
   /* border: 1px solid; */
 }
 
-.groupInfo.about-container {
-  /* box-sizing: border-box;
-  width: 55%;
-  padding: 0 15px; */
-  /* height: inherit; */
-  /* border: 1px solid; */
-}
-
 .groupInfo.about-container,
 .groupInfo.events-container,
 .groupInfo.venues-container {
   /* box-sizing: border-box; */
+  box-shadow: inset 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  margin-top: -20px;
+  margin-left: 20px;
+  border-radius: 5px;
   width: 55%;
   height: 27em;
   padding: 0 15px;
   overflow-y: scroll;
+  transform: translateX(0%);
   /* height: inherit; */
+}
+
+.groupInfo.about-container.hidden {
+  transform: translateX(-100%);
 }
 
 .groupInfo.events-container .events.container {
