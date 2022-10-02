@@ -26,6 +26,8 @@ const GroupInfo = () => {
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [bodyDisplay, setBodyDisplay] = useState("about");
+  const [toggleDisplay, setToggleDisplay] = useState(true);
+  const [pausedFn, setPausedFn] = useState(false);
   const [showAddVenue, setShowAddVenue] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [redirect2, setRedirect2] = useState(false);
@@ -51,6 +53,20 @@ const GroupInfo = () => {
     setTransform(
       `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
     );
+  };
+
+  const selectBodyDisplay = (selection) => {
+    if (!pausedFn) {
+      setPausedFn(true);
+      setToggleDisplay(false);
+      setTimeout(() => {
+        setBodyDisplay(selection);
+        setTimeout(() => {
+          setToggleDisplay(true);
+          setTimeout(() => setPausedFn(false), 450);
+        }, 300);
+      }, 300);
+    }
   };
 
   useEffect(() => {
@@ -196,7 +212,7 @@ const GroupInfo = () => {
                 className={`groupInfo about-span ${
                   bodyDisplay === "about" ? "active" : ""
                 }`}
-                onClick={() => setBodyDisplay("about")}
+                onClick={() => selectBodyDisplay("about")}
               >
                 About
               </span>
@@ -204,7 +220,7 @@ const GroupInfo = () => {
                 className={`groupInfo events-span ${
                   bodyDisplay === "events" ? "active" : ""
                 }`}
-                onClick={() => setBodyDisplay("events")}
+                onClick={() => selectBodyDisplay("events")}
               >
                 Events
               </span>
@@ -212,7 +228,7 @@ const GroupInfo = () => {
                 className={`groupInfo venues-span ${
                   bodyDisplay === "venues" ? "active" : ""
                 }`}
-                onClick={() => setBodyDisplay("venues")}
+                onClick={() => selectBodyDisplay("venues")}
               >
                 Venues
               </span>
@@ -239,20 +255,33 @@ const GroupInfo = () => {
             </li>
           </ul>
         </nav>
+
         <div className="groupInfo body">
           {bodyDisplay === "about" && (
-            <div className="groupInfo about-container">
+            <div
+              className={`groupInfo about-container ${
+                toggleDisplay ? "" : "hidden"
+              }`}
+            >
               <h3>What we're about</h3>
               <p className="groupInfo about">{group.about}</p>
             </div>
           )}
           {bodyDisplay === "events" && (
-            <div className="groupInfo events-container">
+            <div
+              className={`groupInfo events-container ${
+                toggleDisplay ? "" : "hidden"
+              }`}
+            >
               <EventsIndex />
             </div>
           )}
           {bodyDisplay === "venues" && (
-            <div className="groupInfo venues-container">
+            <div
+              className={`groupInfo venues-container ${
+                toggleDisplay ? "" : "hidden"
+              }`}
+            >
               <VenuesIndex organizer={organizer} />
             </div>
           )}

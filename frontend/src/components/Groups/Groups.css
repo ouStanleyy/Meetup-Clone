@@ -306,12 +306,22 @@
   height: 27em;
   padding: 0 15px;
   overflow-y: scroll;
-  transform: translateX(0%);
+  overflow-x: hidden;
   /* height: inherit; */
 }
 
-.groupInfo.about-container.hidden {
-  transform: translateX(-100%);
+.groupInfo.about-container > *,
+.groupInfo.events-container > *,
+.groupInfo.venues-container > * {
+  transition: all 500ms;
+  transform: translateX(0%);
+}
+
+.groupInfo.about-container.hidden > *,
+.groupInfo.events-container.hidden > *,
+.groupInfo.venues-container.hidden > * {
+  transition: all 500ms;
+  transform: translateX(110%);
 }
 
 .groupInfo.events-container .events.container {
