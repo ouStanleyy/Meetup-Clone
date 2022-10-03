@@ -12,7 +12,7 @@ const CreateEventForm = () => {
     price: 0,
     startDate: "",
     endDate: "",
-    venueId: null,
+    venueId: "",
   };
 
   return (

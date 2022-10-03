@@ -21,8 +21,8 @@ const VenueForm = ({ closeForm, venue, formType }) => {
       address,
       city,
       state,
-      lat,
-      lng,
+      lat: Number(lat),
+      lng: Number(lng),
     };
 
     try {
@@ -38,31 +38,24 @@ const VenueForm = ({ closeForm, venue, formType }) => {
     }
   };
 
-  // useEffect(() => {
-  //   0 < name.length && name.length < 5
-  //     ? setErrors({ name: "Name must be at least 5 characters" })
-  //     : setErrors({});
-  // }, [name]);
-
-  // const capacityHandler = ({ target: { value } }) => {
-  //   if (value < 0 || value.length < 1) setCapacity(0);
-  //   else if (value.length > 1 && value.startsWith(0))
-  //     setCapacity(value.slice(1));
-  //   else setCapacity(value);
-  // };
-
-  // const priceHandler = ({ target: { value } }) => {
-  //   if (value.length < 1) setPrice("$0.00");
-  //   else {
-  //     value = value.replace(/[$.,]/g, "");
-  //     const valueDisplay = (parseInt(value, 10) / 100).toLocaleString("en-US", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     });
-
-  //     setPrice(valueDisplay);
-  //   }
-  // };
+  const latHandler = ({ target: { value } }) => {
+    if (value.length > 1 && value.startsWith(0) && !value.includes("."))
+      setLat(value.slice(1));
+    else if (value < -90) setLat(-90);
+    else if (value > 90) setLat(90);
+    else if (value.split(".")[1]?.length > 6)
+      setLat(value.slice(0, value.length - (value.split(".")[1].length - 6)));
+    else setLat(value);
+  };
+  const lngHandler = ({ target: { value } }) => {
+    if (value.length > 1 && value.startsWith(0) && !value.includes("."))
+      setLng(value.slice(1));
+    else if (value < -180) setLng(-180);
+    else if (value > 180) setLng(180);
+    else if (value.split(".")[1]?.length > 6)
+      setLng(value.slice(0, value.length - (value.split(".")[1].length - 6)));
+    else setLng(value);
+  };
 
   return (
     <section className="venueForm-section">
@@ -110,7 +103,7 @@ const VenueForm = ({ closeForm, venue, formType }) => {
           type="number"
           required
           value={lat}
-          onChange={(e) => setLat(Number(e.target.value))}
+          onChange={latHandler}
         />
         <p>{errors.lat}</p>
         <label>Longitude</label>
@@ -118,9 +111,8 @@ const VenueForm = ({ closeForm, venue, formType }) => {
           className="venue-info"
           type="number"
           required
-          // min="0.00"
           value={lng}
-          onChange={(e) => setLng(Number(e.target.value))}
+          onChange={lngHandler}
         />
         <p>{errors.lng}</p>
         <button type="submit">{formType} Venue</button>

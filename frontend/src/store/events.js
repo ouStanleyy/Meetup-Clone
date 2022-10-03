@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_EVENTS = "events/EVENTS";
 const LOAD_DETAILS = "events/LOAD_DETAILS";
 const ADD_EVENT = "events/ADD_EVENT";
+const UPDATE_EVENT = "events/UPDATE_EVENT";
 const REMOVE_EVENT = "events/REMOVE_EVENT";
 const ADD_IMAGE = "events/ADD_IMAGE";
 
@@ -18,6 +19,11 @@ const loadDetails = (event) => ({
 
 const addEvent = (event) => ({
   type: ADD_EVENT,
+  event,
+});
+
+const updateEvent = (event) => ({
+  type: UPDATE_EVENT,
   event,
 });
 
@@ -79,22 +85,23 @@ export const createEvent = (groupId, event) => async (dispatch) => {
   }
 };
 
-export const updateEvent = (event) => async (dispatch) => {
+export const editEvent = (event) => async (dispatch) => {
   const res = await csrfFetch(`/api/events/${event.id}`, {
     method: "PUT",
     body: JSON.stringify(event),
   });
   const data = await res.json();
 
+  console.log(data);
+
   if (!res.ok) {
-    console.log("hi");
     const err = new Error();
     err.message = data.message;
     err.status = data.statusCode;
     err.errors = data.errors;
     throw err;
   } else {
-    dispatch(addEvent(data));
+    dispatch(updateEvent(data));
     return data;
   }
 };
@@ -143,6 +150,11 @@ const eventsReducer = (state = {}, action) => {
     //   [action.event.id]: { ...state[action.event.id], ...action.event },
     // };
     case ADD_EVENT:
+    // return {
+    //   ...state,
+    //   [action.event.id]: { ...state[action.event.id], ...action.event },
+    // };
+    case UPDATE_EVENT:
       return {
         ...state,
         [action.event.id]: { ...state[action.event.id], ...action.event },

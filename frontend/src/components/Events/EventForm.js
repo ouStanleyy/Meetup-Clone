@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { createEvent, updateEvent } from "../../store/events";
+import { createEvent, editEvent, getEventById } from "../../store/events";
 import { getGroupById } from "../../store/groups";
 
 const EventForm = ({ closeForm, event, formType }) => {
   const { groupId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  const venues = useSelector(
+    (state) => state.groups[groupId || event?.groupId]?.Venues
+  );
   const [name, setName] = useState(event.name);
   const [description, setDescription] = useState(event.description);
   const [type, setType] = useState(event.type);
@@ -15,6 +18,9 @@ const EventForm = ({ closeForm, event, formType }) => {
   const [price, setPrice] = useState(`$${Number(event.price).toFixed(2)}`);
   const [startDate, setStartDate] = useState(event.startDate);
   const [endDate, setEndDate] = useState(event.endDate);
+  const [venueId, setVenueId] = useState(
+    event.venueId ? event.venueId : "null"
+  );
   const [errors, setErrors] = useState({});
   const [wiggle, setWiggle] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -33,14 +39,18 @@ const EventForm = ({ closeForm, event, formType }) => {
       price: Number(price.slice(1)),
       startDate,
       endDate,
+      venueId: venueId > 0 ? Number(venueId) : null,
     };
 
     try {
       const newEvent = await dispatch(
-        formType === "Create" ? createEvent(groupId, event) : updateEvent(event)
+        formType === "Create" ? createEvent(groupId, event) : editEvent(event)
       );
-      history.push(`/events/${newEvent.id}`);
-      if (formType === "Update") closeForm();
+      await dispatch(getEventById(newEvent.id));
+
+      formType === "Update"
+        ? closeForm()
+        : history.push(`/events/${newEvent.id}`);
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });
@@ -201,6 +211,26 @@ const EventForm = ({ closeForm, event, formType }) => {
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         ></input>
+        <p>{errors.endDate}</p>
+        <label>Venue</label>
+        <select
+          className="event-info"
+          required
+          value={venueId}
+          onChange={(e) => setVenueId(e.target.value)}
+        >
+          <option disabled value="">
+            Please Select One
+          </option>
+          <option value="null">No venue</option>
+          {venues?.map((venue) => {
+            return (
+              <option key={venue.id} value={venue.id}>
+                {venue.address} · {venue.city}, {venue.state}
+              </option>
+            );
+          })}
+        </select>
         <p>{errors.endDate}</p>
         <button disabled={name.length < 5} type="submit">
           {formType} Event
