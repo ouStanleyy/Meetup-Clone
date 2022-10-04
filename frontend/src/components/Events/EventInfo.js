@@ -248,6 +248,12 @@ const EventInfo = () => {
                       <p>Venue location has not been provided yet</p>
                     )}
                   </div>
+                  <div className="eventInfo venue-map">
+                    <img
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${event.Venue?.address}&zoom=15&size=400x300&scale=2&markers=${event.Venue?.address}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
+                      alt="map"
+                    />
+                  </div>
                 </div>
                 <div className="eventInfo price">
                   <h4>{event.price >= 0.01 ? `$${event.price}` : "FREE"}</h4>

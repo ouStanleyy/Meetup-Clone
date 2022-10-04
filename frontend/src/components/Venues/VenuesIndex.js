@@ -37,11 +37,10 @@ const VenuesIndex = ({ organizer }) => {
               }`}
             >
               <div className="venue map-container">
-                {/* <img
-                  className="venue img"
-                  src={venue.previewImage}
-                  alt={venue.previewImage}
-                /> */}
+                <img
+                  src={`https://maps.googleapis.com/maps/api/staticmap?center=${venue.address}&zoom=18&size=400x300&scale=2&markers=${venue.address}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
+                  alt="map"
+                />
               </div>
               <div className="venue details-container">
                 {!showEdit[idx] ? (

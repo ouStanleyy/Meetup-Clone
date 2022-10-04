@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { createVenue, editVenue } from "../../store/groups";
@@ -6,6 +6,7 @@ import { createVenue, editVenue } from "../../store/groups";
 const VenueForm = ({ closeForm, venue, formType }) => {
   const { groupId } = useParams();
   const dispatch = useDispatch();
+  const addressRef = useRef();
   const [address, setAddress] = useState(venue.address);
   const [city, setCity] = useState(venue.city);
   const [state, setState] = useState(venue.state);
@@ -57,6 +58,26 @@ const VenueForm = ({ closeForm, venue, formType }) => {
     else setLng(value);
   };
 
+  useEffect(() => {
+    const autocomplete = new window.google.maps.places.Autocomplete(
+      addressRef.current,
+      {
+        types: ["address"],
+        componentRestrictions: { country: ["US"] },
+        fields: ["address_components", "geometry", "url"],
+      }
+    );
+
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      const address = place.address_components;
+
+      setAddress(`${address[0].long_name} ${address[1].short_name}`);
+      setCity(`${address[2].long_name}`);
+      setState(`${address[5].short_name}`);
+    });
+  }, []);
+
   return (
     <section className="venueForm-section">
       <form className="venue-form" onSubmit={submitHandler}>
@@ -74,6 +95,7 @@ const VenueForm = ({ closeForm, venue, formType }) => {
         <input
           className="venue-info"
           type="text"
+          ref={addressRef}
           required
           value={address}
           onChange={(e) => setAddress(e.target.value)}

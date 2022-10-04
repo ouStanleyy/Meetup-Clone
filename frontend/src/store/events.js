@@ -143,7 +143,7 @@ export const uploadEventImage = (eventId, imgUrl) => async (dispatch) => {
 const eventsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_EVENTS:
-      return { ...state, ...action.events };
+      return { ...action.events };
     case LOAD_DETAILS:
     // return {
     //   ...state,
