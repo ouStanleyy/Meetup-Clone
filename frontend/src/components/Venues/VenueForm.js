@@ -7,6 +7,7 @@ const VenueForm = ({ closeForm, venue, formType }) => {
   const { groupId } = useParams();
   const dispatch = useDispatch();
   const addressRef = useRef();
+  const cityRef = useRef();
   const [address, setAddress] = useState(venue.address);
   const [city, setCity] = useState(venue.city);
   const [state, setState] = useState(venue.state);
@@ -39,23 +40,30 @@ const VenueForm = ({ closeForm, venue, formType }) => {
     }
   };
 
-  const latHandler = ({ target: { value } }) => {
-    if (value.length > 1 && value.startsWith(0) && !value.includes("."))
-      setLat(value.slice(1));
-    else if (value < -90) setLat(-90);
-    else if (value > 90) setLat(90);
-    else if (value.split(".")[1]?.length > 6)
-      setLat(value.slice(0, value.length - (value.split(".")[1].length - 6)));
-    else setLat(value);
-  };
-  const lngHandler = ({ target: { value } }) => {
-    if (value.length > 1 && value.startsWith(0) && !value.includes("."))
-      setLng(value.slice(1));
-    else if (value < -180) setLng(-180);
-    else if (value > 180) setLng(180);
-    else if (value.split(".")[1]?.length > 6)
-      setLng(value.slice(0, value.length - (value.split(".")[1].length - 6)));
-    else setLng(value);
+  // const latHandler = ({ target: { value } }) => {
+  //   if (value.length > 1 && value.startsWith(0) && !value.includes("."))
+  //     setLat(value.slice(1));
+  //   else if (value < -90) setLat(-90);
+  //   else if (value > 90) setLat(90);
+  //   else if (value.split(".")[1]?.length > 7)
+  //     setLat(value.slice(0, value.length - (value.split(".")[1].length - 7)));
+  //   else setLat(value);
+  // };
+  // const lngHandler = ({ target: { value } }) => {
+  //   if (value.length > 1 && value.startsWith(0) && !value.includes("."))
+  //     setLng(value.slice(1));
+  //   else if (value < -180) setLng(-180);
+  //   else if (value > 180) setLng(180);
+  //   else if (value.split(".")[1]?.length > 7)
+  //     setLng(value.slice(0, value.length - (value.split(".")[1].length - 7)));
+  //   else setLng(value);
+  // };
+
+  const addressBlurHandler = (e) => {
+    setCity("");
+    setState("");
+    setLat(0);
+    setLng(0);
   };
 
   useEffect(() => {
@@ -63,7 +71,7 @@ const VenueForm = ({ closeForm, venue, formType }) => {
       addressRef.current,
       {
         types: ["address"],
-        componentRestrictions: { country: ["US"] },
+        componentRestrictions: { country: "US" },
         fields: ["address_components", "geometry", "url"],
       }
     );
@@ -72,16 +80,41 @@ const VenueForm = ({ closeForm, venue, formType }) => {
       const place = autocomplete.getPlace();
       const address = place.address_components;
 
-      setAddress(`${address[0].long_name} ${address[1].short_name}`);
-      setCity(`${address[2].long_name}`);
-      setState(`${address[5].short_name}`);
+      if (!place.geometry) {
+        setCity("");
+        setState("");
+        setLat(0);
+        setLng(0);
+      } else {
+        setAddress(`${address[0].long_name} ${address[1].short_name}`);
+        setCity(`${address[2].long_name}`);
+        setState(`${address[5].short_name}`);
+        setLat(place.geometry.location.lat().toFixed(7));
+        setLng(place.geometry.location.lng().toFixed(7));
+      }
     });
+
+    // const autocompleteCity = new window.google.maps.places.Autocomplete(
+    //   cityRef.current,
+    //   {
+    //     types: ["(cities)"],
+    //     componentRestrictions: { country: "US" },
+    //     fields: ["address_components", "geometry"],
+    //   }
+    // );
+
+    // autocompleteCity.addListener("place_changed", () => {
+    //   const city = autocompleteCity.getPlace().address_components;
+
+    //   setCity(`${city[0].long_name}`);
+    //   setState(`${city[3].short_name}`);
+    // });
   }, []);
 
   return (
     <section className="venueForm-section">
       <form className="venue-form" onSubmit={submitHandler}>
-        <div className="errors">
+        {/* <div className="errors">
           {errors.status && (
             <h3
               onAnimationEnd={() => setWiggle(false)}
@@ -90,7 +123,7 @@ const VenueForm = ({ closeForm, venue, formType }) => {
               Venue creation failed: {errors.message}
             </h3>
           )}
-        </div>
+        </div> */}
         <label>Address</label>
         <input
           className="venue-info"
@@ -99,45 +132,53 @@ const VenueForm = ({ closeForm, venue, formType }) => {
           required
           value={address}
           onChange={(e) => setAddress(e.target.value)}
+          onBlur={addressBlurHandler}
         />
-        <p>{errors.address}</p>
+        {/* <p>{errors.address}</p> */}
         <label>City</label>
         <input
           className="venue-info"
           type="text"
+          ref={cityRef}
           required
+          disabled
           value={city}
-          onChange={(e) => setCity(e.target.value)}
+          // onChange={(e) => setCity(e.target.value)}
         />
-        <p>{errors.city}</p>
+        {/* <p>{errors.city}</p> */}
         <label>State</label>
         <input
           className="venue-info"
           type="text"
           required
+          disabled
           value={state}
-          onChange={(e) => setState(e.target.value)}
+          // onChange={(e) => setState(e.target.value)}
         />
-        <p>{errors.city}</p>
+        {/* <p>{errors.city}</p> */}
         <label>Latitude</label>
         <input
           className="venue-info"
           type="number"
           required
+          disabled
           value={lat}
-          onChange={latHandler}
+          // onChange={latHandler}
         />
-        <p>{errors.lat}</p>
+        {/* <p>{errors.lat}</p> */}
         <label>Longitude</label>
         <input
           className="venue-info"
           type="number"
           required
+          disabled
           value={lng}
-          onChange={lngHandler}
+          // onChange={lngHandler}
         />
-        <p>{errors.lng}</p>
-        <button type="submit">{formType} Venue</button>
+        {/* <p>{errors.lng}</p> */}
+        <button disabled={!lat && !lng} type="submit">
+          {formType} Venue
+        </button>
         <button onClick={closeForm}>Cancel</button>
       </form>
     </section>

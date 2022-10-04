@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createGroup, updateGroup } from "../../store/groups";
@@ -6,6 +6,7 @@ import { createGroup, updateGroup } from "../../store/groups";
 const GroupForm = ({ closeForm, group, formType }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const cityRef = useRef();
   const [name, setName] = useState(group.name);
   const [about, setAbout] = useState(group.about);
   const [type, setType] = useState(group.type);
@@ -30,6 +31,40 @@ const GroupForm = ({ closeForm, group, formType }) => {
       setErrors({ ...err, ...err.errors });
     }
   };
+
+  useEffect(() => {
+    const autocomplete = new window.google.maps.places.Autocomplete(
+      cityRef.current,
+      {
+        types: ["(cities)"],
+        componentRestrictions: { country: "US" },
+        fields: ["address_components", "geometry"],
+      }
+    );
+
+    autocomplete.addListener("place_changed", () => {
+      const city = autocomplete.getPlace().address_components;
+
+      setCity(`${city[0].long_name}`);
+      setState(`${city[3].short_name}`);
+    });
+
+    // const autocompleteCity = new window.google.maps.places.Autocomplete(
+    //   cityRef.current,
+    //   {
+    //     types: ["(cities)"],
+    //     componentRestrictions: { country: "US" },
+    //     fields: ["address_components", "geometry"],
+    //   }
+    // );
+
+    // autocompleteCity.addListener("place_changed", () => {
+    //   const city = autocompleteCity.getPlace().address_components;
+
+    //   setCity(`${city[0].long_name}`);
+    //   setState(`${city[3].short_name}`);
+    // });
+  }, []);
 
   useEffect(() => {
     0 < about.length && about.length < 50
@@ -73,6 +108,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
         <input
           className="group-info"
           type="text"
+          ref={cityRef}
           placeholder="City"
           required
           value={city}

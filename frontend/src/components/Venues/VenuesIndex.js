@@ -12,9 +12,16 @@ const VenuesIndex = ({ organizer }) => {
   const editVenueHandler = (idx) => () => {
     setShowEdit((state) => ({
       ...state,
-      [idx]: true,
+      [idx]: !state[idx],
     }));
   };
+
+  // const closeEditVenueHandler = (idx) => () => {
+  //   setShowEdit((state) => ({
+  //     ...state,
+  //     [idx]: true,
+  //   }));
+  // };
 
   useEffect(() => {
     venues.forEach((_, idx) => {
@@ -38,7 +45,7 @@ const VenuesIndex = ({ organizer }) => {
             >
               <div className="venue map-container">
                 <img
-                  src={`https://maps.googleapis.com/maps/api/staticmap?center=${venue.address}&zoom=18&size=400x300&scale=2&markers=${venue.address}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
+                  src={`https://maps.googleapis.com/maps/api/staticmap?center=${venue.lat},${venue.lng}&zoom=18&size=400x300&scale=2&markers=${venue.lat},${venue.lng}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
                   alt="map"
                 />
               </div>
@@ -68,7 +75,7 @@ const VenuesIndex = ({ organizer }) => {
                 ) : (
                   <EditVenueForm
                     venue={venue}
-                    onUpdate={() => setShowEdit(false)}
+                    onUpdate={editVenueHandler(idx)}
                   />
                 )}
               </div>
