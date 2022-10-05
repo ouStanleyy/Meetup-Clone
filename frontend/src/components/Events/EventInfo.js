@@ -250,7 +250,7 @@ const EventInfo = () => {
                   </div>
                   <div className="eventInfo venue-map">
                     <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${event.Venue?.address}&zoom=15&size=400x300&scale=2&markers=${event.Venue?.address}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${event.Venue?.lat},${event.Venue?.lng}&zoom=15&size=400x300&scale=2&markers=${event.Venue?.lat},${event.Venue?.lng}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
                       alt="map"
                     />
                   </div>
