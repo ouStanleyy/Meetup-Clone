@@ -75,24 +75,20 @@ const EventInfo = () => {
     if (event) (async () => await dispatch(getGroupById(event?.groupId)))();
   }, [dispatch, event]);
 
-  if (redirect)
-    return (
-      <h1>
-        The event that you are looking for does not exit. You will be redirected
-        to the events page in a moment.
-        {redirect2 && (
-          <p>
-            {" "}
-            Redirecting.{redirect3 && <span>.</span>}
-            {redirect4 && <span>.</span>}
-          </p>
-        )}
-      </h1>
-    );
-
-  return (
-    event &&
-    group && (
+  return redirect ? (
+    <h1>
+      The event that you are looking for does not exit. You will be redirected
+      to the events page in a moment.
+      {redirect2 && (
+        <p>
+          {" "}
+          Redirecting.{redirect3 && <span>.</span>}
+          {redirect4 && <span>.</span>}
+        </p>
+      )}
+    </h1>
+  ) : (
+    event && group && (
       <div
         className="eventInfo container"
         onMouseMove={mouseMoveHandler}

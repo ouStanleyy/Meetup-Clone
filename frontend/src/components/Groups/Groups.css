@@ -373,9 +373,14 @@
 
 .groupInfo.new-venue-container * {
   align-items: center;
-  gap: 10px;
-  width: 350px;
+  gap: 8px;
+  width: 300px;
   /* border: 1px solid; */
+}
+
+.groupInfo.new-venue-container input {
+  padding-left: 10px;
+  height: 25px;
 }
 
 .groupInfo.body-right:hover {

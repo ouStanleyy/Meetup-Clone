@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createGroup, updateGroup } from "../../store/groups";
+import { createGroup, editGroup } from "../../store/groups";
 
 const GroupForm = ({ closeForm, group, formType }) => {
   const history = useHistory();
@@ -22,7 +22,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
 
     try {
       const newGroup = await dispatch(
-        formType === "Create" ? createGroup(group) : updateGroup(group)
+        formType === "Create" ? createGroup(group) : editGroup(group)
       );
       history.push(`/groups/${newGroup.id}`);
       closeForm();

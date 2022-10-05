@@ -112,22 +112,19 @@ const GroupInfo = () => {
     })();
   }, [dispatch, groupId, history]);
 
-  if (redirect)
-    return (
-      <h1>
-        The group that you are looking for does not exit. You will be redirected
-        to the groups page in a moment.
-        {redirect2 && (
-          <p>
-            {" "}
-            Redirecting.{redirect3 && <span>.</span>}
-            {redirect4 && <span>.</span>}
-          </p>
-        )}
-      </h1>
-    );
-
-  return (
+  return redirect ? (
+    <h1>
+      The group that you are looking for does not exit. You will be redirected
+      to the groups page in a moment.
+      {redirect2 && (
+        <p>
+          {" "}
+          Redirecting.{redirect3 && <span>.</span>}
+          {redirect4 && <span>.</span>}
+        </p>
+      )}
+    </h1>
+  ) : (
     group && (
       <div
         className="groupInfo container"

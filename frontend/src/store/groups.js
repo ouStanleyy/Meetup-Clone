@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_GROUPS = "groups/LOAD_GROUPS";
 const LOAD_DETAILS = "groups/LOAD_DETAILS";
 const ADD_GROUP = "groups/ADD_GROUP";
+const UPDATE_GROUP = "groups/UPDATE_GROUP";
 const REMOVE_GROUP = "groups/REMOVE_GROUP";
 const ADD_IMAGE = "groups/ADD_IMAGE";
 const LOAD_EVENTS = "groups/LOAD_EVENTS";
@@ -21,6 +22,11 @@ const loadDetails = (group) => ({
 
 const addGroup = (group) => ({
   type: ADD_GROUP,
+  group,
+});
+
+const updateGroup = (group) => ({
+  type: UPDATE_GROUP,
   group,
 });
 
@@ -100,7 +106,7 @@ export const createGroup = (group) => async (dispatch) => {
   }
 };
 
-export const updateGroup = (group) => async (dispatch) => {
+export const editGroup = (group) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${group.id}`, {
     method: "PUT",
     body: JSON.stringify(group),
@@ -114,7 +120,8 @@ export const updateGroup = (group) => async (dispatch) => {
     err.errors = data.errors;
     throw err;
   } else {
-    dispatch(addGroup(data));
+    await dispatch(getEventsOfGroup(group.id));
+    dispatch(updateGroup(data));
     return data;
   }
 };
@@ -217,6 +224,11 @@ const groupsReducer = (state = {}, action) => {
     //   [action.group.id]: { ...state[action.group.id], ...action.group },
     // };
     case ADD_GROUP:
+    // return {
+    //   ...state,
+    //   [action.group.id]: { ...state[action.group.id], ...action.group },
+    // };
+    case UPDATE_GROUP:
       return {
         ...state,
         [action.group.id]: { ...state[action.group.id], ...action.group },
