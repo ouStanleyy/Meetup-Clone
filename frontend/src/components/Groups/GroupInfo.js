@@ -7,6 +7,7 @@ import {
   deleteGroup,
   getEventsOfGroup,
   getMembersOfGroup,
+  requestMembership,
 } from "../../store/groups";
 import EventsIndex from "../Events/EventsIndex";
 import VenuesIndex from "../Venues/VenuesIndex";
@@ -32,6 +33,8 @@ const GroupInfo = () => {
   //         (member) => member.Membership.status !== "pending"
   //       ));
   const [showModal, setShowModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errors, setErrors] = useState({});
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [bodyDisplay, setBodyDisplay] = useState("about");
@@ -93,6 +96,15 @@ const GroupInfo = () => {
     }
 
     e.preventDefault();
+  };
+
+  const joinGroup = async () => {
+    try {
+      await dispatch(requestMembership(groupId));
+    } catch (err) {
+      setShowErrorModal(true);
+      setErrors({ ...err });
+    }
   };
 
   useEffect(() => {
@@ -229,6 +241,7 @@ const GroupInfo = () => {
             )}
           </div>
         </div>
+
         <nav className="groupInfo_navbar">
           <ul>
             <li>
@@ -258,7 +271,7 @@ const GroupInfo = () => {
               </span>
             </li>
             <li>
-              {organizer && (
+              {organizer ? (
                 <>
                   <span
                     className={`groupInfo new-venue-span ${
@@ -275,6 +288,10 @@ const GroupInfo = () => {
                     Start a new event
                   </Link>
                 </>
+              ) : (
+                <button className="groupInfo button" onClick={joinGroup}>
+                  Join this group
+                </button>
               )}
             </li>
           </ul>
@@ -327,7 +344,7 @@ const GroupInfo = () => {
                     {group.Organizer?.firstName} {group.Organizer?.lastName}
                   </span>
                 </p>
-                <h3>Members</h3>
+                <h3>Members ({group.numMembers})</h3>
                 {members &&
                   members.map((member) => (
                     <p key={member.id} className="groupInfo member">
@@ -338,6 +355,15 @@ const GroupInfo = () => {
             )}
           </div>
         </div>
+
+        {showErrorModal && (
+          <Modal onClose={() => setShowErrorModal(false)}>
+            <div style={{ backgroundColor: "white" }}>
+              <p>{errors.message}</p>
+              <button onClick={() => setShowErrorModal(false)}>Okay</button>
+            </div>
+          </Modal>
+        )}
       </div>
     )
   );

@@ -6,10 +6,10 @@ const ADD_GROUP = "groups/ADD_GROUP";
 const UPDATE_GROUP = "groups/UPDATE_GROUP";
 const REMOVE_GROUP = "groups/REMOVE_GROUP";
 const ADD_IMAGE = "groups/ADD_IMAGE";
-const LOAD_EVENTS = "groups/LOAD_EVENTS";
-const LOAD_MEMBERS = "groups/LOAD_MEMBERS";
 const ADD_VENUE = "groups/ADD_VENUE";
 const UPDATE_VENUE = "groups/UPDATE_VENUE";
+const LOAD_EVENTS = "groups/LOAD_EVENTS";
+const LOAD_MEMBERS = "groups/LOAD_MEMBERS";
 
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
@@ -42,18 +42,6 @@ const addImage = (groupId, image) => ({
   image,
 });
 
-const loadEvents = (groupId, events) => ({
-  type: LOAD_EVENTS,
-  groupId,
-  events,
-});
-
-const loadMembers = (groupId, members) => ({
-  type: LOAD_MEMBERS,
-  groupId,
-  members,
-});
-
 const addVenue = (groupId, venue) => ({
   type: ADD_VENUE,
   groupId,
@@ -64,6 +52,18 @@ const updateVenue = (groupId, venue) => ({
   type: UPDATE_VENUE,
   groupId,
   venue,
+});
+
+const loadEvents = (groupId, events) => ({
+  type: LOAD_EVENTS,
+  groupId,
+  events,
+});
+
+const loadMembers = (groupId, members) => ({
+  type: LOAD_MEMBERS,
+  groupId,
+  members,
 });
 
 export const getGroups = () => async (dispatch) => {
@@ -167,33 +167,6 @@ export const uploadGroupImage = (groupId, imgUrl) => async (dispatch) => {
   }
 };
 
-export const getEventsOfGroup = (groupId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/groups/${groupId}/events`);
-  const { Events } = await res.json();
-
-  if (!res.ok) {
-    const err = new Error();
-    throw err;
-  } else {
-    const normalizedData = {};
-    Events.forEach((event) => (normalizedData[event.id] = event));
-    dispatch(loadEvents(groupId, normalizedData));
-  }
-};
-
-export const getMembersOfGroup = (groupId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/groups/${groupId}/members`);
-  const { Members } = await res.json();
-  if (!res.ok) {
-    const err = new Error();
-    throw err;
-  } else {
-    const normalizedData = {};
-    Members.forEach((member) => (normalizedData[member.id] = member));
-    dispatch(loadMembers(groupId, normalizedData));
-  }
-};
-
 export const createVenue = (groupId, venue) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}/venues`, {
     method: "POST",
@@ -234,6 +207,52 @@ export const editVenue = (groupId, venue) => async (dispatch) => {
   }
 };
 
+export const getEventsOfGroup = (groupId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}/events`);
+  const { Events } = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    throw err;
+  } else {
+    const normalizedData = {};
+    Events.forEach((event) => (normalizedData[event.id] = event));
+    dispatch(loadEvents(groupId, normalizedData));
+  }
+};
+
+export const getMembersOfGroup = (groupId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}/members`);
+  const { Members } = await res.json();
+  if (!res.ok) {
+    const err = new Error();
+    throw err;
+  } else {
+    const normalizedData = {};
+    Members.forEach((member) => (normalizedData[member.id] = member));
+    dispatch(loadMembers(groupId, normalizedData));
+  }
+};
+
+export const requestMembership = (groupId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}/memberships`, {
+    method: "POST",
+  });
+  const data = await res.json();
+
+  console.log(data);
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    throw err;
+  } else {
+    await dispatch(getMembersOfGroup(groupId));
+    return data;
+  }
+};
+
 const groupsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_GROUPS:
@@ -265,22 +284,6 @@ const groupsReducer = (state = {}, action) => {
           Images: [...state[action.groupId].Images, { ...action.image }],
         },
       };
-    case LOAD_EVENTS:
-      return {
-        ...state,
-        [action.groupId]: {
-          ...state[action.groupId],
-          Events: { ...action.events },
-        },
-      };
-    case LOAD_MEMBERS:
-      return {
-        ...state,
-        [action.groupId]: {
-          ...state[action.groupId],
-          Members: { ...action.members },
-        },
-      };
     case ADD_VENUE:
       return {
         ...state,
@@ -297,6 +300,22 @@ const groupsReducer = (state = {}, action) => {
           Venues: state[action.groupId].Venues.map((venue) =>
             venue.id === action.venue.id ? { ...action.venue } : venue
           ),
+        },
+      };
+    case LOAD_EVENTS:
+      return {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Events: { ...action.events },
+        },
+      };
+    case LOAD_MEMBERS:
+      return {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Members: { ...action.members },
         },
       };
     default:
