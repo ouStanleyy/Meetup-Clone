@@ -43,10 +43,15 @@ const GroupForm = ({ closeForm, group, formType }) => {
     );
 
     autocomplete.addListener("place_changed", () => {
-      const city = autocomplete.getPlace().address_components;
+      const place = autocomplete.getPlace().address_components;
+      const city = {};
 
-      setCity(`${city[0].long_name}`);
-      setState(`${city[3].short_name}`);
+      place.forEach(
+        (addressComp) => (city[addressComp.types[0]] = addressComp)
+      );
+
+      setCity(city.locality?.long_name);
+      setState(city.administrative_area_level_1?.short_name);
     });
 
     // const autocompleteCity = new window.google.maps.places.Autocomplete(
