@@ -283,6 +283,7 @@
 
 .groupInfo.about-span,
 .groupInfo.events-span,
+.groupInfo.members-span,
 .groupInfo.venues-span,
 .groupInfo.new-venue-span,
 .groupInfo.new-event {
@@ -293,6 +294,7 @@
 
 .groupInfo.about-span:hover,
 .groupInfo.events-span:hover,
+.groupInfo.members-span:hover,
 .groupInfo.venues-span:hover,
 .groupInfo.new-venue-span:hover,
 .groupInfo.new-event:hover {
@@ -303,6 +305,7 @@
 
 .groupInfo.about-span.active,
 .groupInfo.events-span.active,
+.groupInfo.members-span.active,
 .groupInfo.venues-span.active,
 .groupInfo.new-venue-span.active {
   color: salmon;
@@ -315,6 +318,7 @@
 
 .groupInfo.about-container,
 .groupInfo.events-container,
+.groupInfo.all-members-container,
 .groupInfo.venues-container {
   /* box-sizing: border-box; */
   box-shadow: inset 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
@@ -331,6 +335,7 @@
 
 .groupInfo.about-container > *,
 .groupInfo.events-container > *,
+.groupInfo.all-members-container > *,
 .groupInfo.venues-container > * {
   transition: all 500ms;
   transform: translateX(0%);
@@ -338,6 +343,7 @@
 
 .groupInfo.about-container.hidden > *,
 .groupInfo.events-container.hidden > *,
+.groupInfo.all-members-container.hidden > *,
 .groupInfo.venues-container.hidden > * {
   transition: all 500ms;
   transform: translateX(110%);

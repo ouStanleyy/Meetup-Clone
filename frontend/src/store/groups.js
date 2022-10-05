@@ -10,6 +10,8 @@ const ADD_VENUE = "groups/ADD_VENUE";
 const UPDATE_VENUE = "groups/UPDATE_VENUE";
 const LOAD_EVENTS = "groups/LOAD_EVENTS";
 const LOAD_MEMBERS = "groups/LOAD_MEMBERS";
+const UPDATE_MEMBERSHIP = "groups/UPDATE_MEMBERSHIP";
+const REMOVE_MEMBERSHIP = "groups/REMOVE_MEMBERSHIP";
 
 const loadGroups = (groups) => ({
   type: LOAD_GROUPS,
@@ -64,6 +66,18 @@ const loadMembers = (groupId, members) => ({
   type: LOAD_MEMBERS,
   groupId,
   members,
+});
+
+const updateMembership = (groupId, membership) => ({
+  type: UPDATE_MEMBERSHIP,
+  groupId,
+  membership,
+});
+
+const removeMemberhip = (groupId, memberId) => ({
+  type: REMOVE_MEMBERSHIP,
+  groupId,
+  memberId,
 });
 
 export const getGroups = () => async (dispatch) => {
@@ -253,6 +267,54 @@ export const requestMembership = (groupId) => async (dispatch) => {
   }
 };
 
+export const addMember = (groupId, membership) => async (dispatch) => {
+  const res = await csrfFetch(
+    `/api/groups/${groupId}/memberships/${membership.memberId}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(membership),
+    }
+  );
+  const data = await res.json();
+
+  console.log(data);
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(updateMembership(groupId, data));
+    return data;
+  }
+};
+
+export const deleteMember = (groupId, memberId) => async (dispatch) => {
+  const res = await csrfFetch(
+    `/api/groups/${groupId}/memberships/${memberId}`,
+    {
+      method: "DELETE",
+      body: JSON.stringify({ memberId }),
+    }
+  );
+  const data = await res.json();
+
+  console.log(data);
+
+  if (!res.ok) {
+    const err = new Error();
+    err.message = data.message;
+    err.status = data.statusCode;
+    err.errors = data.errors;
+    throw err;
+  } else {
+    dispatch(removeMemberhip(groupId, memberId));
+    return data;
+  }
+};
+
 const groupsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_GROUPS:
@@ -272,10 +334,11 @@ const groupsReducer = (state = {}, action) => {
         ...state,
         [action.group.id]: { ...state[action.group.id], ...action.group },
       };
-    case REMOVE_GROUP:
+    case REMOVE_GROUP: {
       const newState = { ...state };
       delete newState[action.groupId];
       return newState;
+    }
     case ADD_IMAGE:
       return {
         ...state,
@@ -318,6 +381,31 @@ const groupsReducer = (state = {}, action) => {
           Members: { ...action.members },
         },
       };
+    case UPDATE_MEMBERSHIP:
+      return {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Members: {
+            ...state[action.groupId].Members,
+            [action.membership.memberId]: {
+              ...state[action.groupId].Members[action.membership.memberId],
+              Membership: { status: action.membership.status },
+            },
+          },
+        },
+      };
+    case REMOVE_MEMBERSHIP: {
+      const newState = {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Members: { ...state[action.groupId].Members },
+        },
+      };
+      delete newState[action.groupId].Members[action.memberId];
+      return newState;
+    }
     default:
       return state;
   }

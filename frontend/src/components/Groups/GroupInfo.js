@@ -10,6 +10,7 @@ import {
   requestMembership,
 } from "../../store/groups";
 import EventsIndex from "../Events/EventsIndex";
+import MembersIndex from "../Members/MembersIndex";
 import VenuesIndex from "../Venues/VenuesIndex";
 import { AddImageForm } from "../Images";
 import EditGroupForm from "./EditGroupForm";
@@ -262,6 +263,14 @@ const GroupInfo = () => {
                 Events
               </span>
               <span
+                className={`groupInfo members-span ${
+                  bodyDisplay === "members" ? "active" : ""
+                }`}
+                onClick={() => selectBodyDisplay("members")}
+              >
+                Members
+              </span>
+              <span
                 className={`groupInfo venues-span ${
                   bodyDisplay === "venues" ? "active" : ""
                 }`}
@@ -315,6 +324,15 @@ const GroupInfo = () => {
               }`}
             >
               <EventsIndex />
+            </div>
+          )}
+          {bodyDisplay === "members" && (
+            <div
+              className={`groupInfo all-members-container ${
+                toggleDisplay ? "" : "hidden"
+              }`}
+            >
+              <MembersIndex members={members} organizer={organizer} />
             </div>
           )}
           {bodyDisplay === "venues" && (
