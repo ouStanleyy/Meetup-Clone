@@ -6,13 +6,14 @@ import {
   getGroupById,
   deleteGroup,
   getEventsOfGroup,
+  getMembersOfGroup,
 } from "../../store/groups";
 import EventsIndex from "../Events/EventsIndex";
 import VenuesIndex from "../Venues/VenuesIndex";
 import { AddImageForm } from "../Images";
 import EditGroupForm from "./EditGroupForm";
-import "./Groups.css";
 import CreateVenueForm from "../Venues/CreateVenueForm";
+import "./Groups.css";
 
 const GroupInfo = () => {
   const { groupId } = useParams();
@@ -22,6 +23,14 @@ const GroupInfo = () => {
   const organizer = useSelector(
     (state) => group?.organizerId === state.session.user?.id
   );
+  const members = group?.Members && Object.values(group.Members);
+  // const members =
+  //   group?.Members &&
+  //   (organizer
+  //     ? Object.values(group.Members)
+  //     : Object.values(group.Members).filter(
+  //         (member) => member.Membership.status !== "pending"
+  //       ));
   const [showModal, setShowModal] = useState(false);
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -91,6 +100,7 @@ const GroupInfo = () => {
       try {
         await dispatch(getGroupById(groupId));
         await dispatch(getEventsOfGroup(groupId));
+        await dispatch(getMembersOfGroup(groupId));
       } catch (err) {
         setRedirect(true);
 
@@ -318,6 +328,12 @@ const GroupInfo = () => {
                   </span>
                 </p>
                 <h3>Members</h3>
+                {members &&
+                  members.map((member) => (
+                    <p key={member.id} className="groupInfo member">
+                      {member.firstName} {member.lastName}
+                    </p>
+                  ))}
               </div>
             )}
           </div>

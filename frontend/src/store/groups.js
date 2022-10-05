@@ -7,6 +7,7 @@ const UPDATE_GROUP = "groups/UPDATE_GROUP";
 const REMOVE_GROUP = "groups/REMOVE_GROUP";
 const ADD_IMAGE = "groups/ADD_IMAGE";
 const LOAD_EVENTS = "groups/LOAD_EVENTS";
+const LOAD_MEMBERS = "groups/LOAD_MEMBERS";
 const ADD_VENUE = "groups/ADD_VENUE";
 const UPDATE_VENUE = "groups/UPDATE_VENUE";
 
@@ -45,6 +46,12 @@ const loadEvents = (groupId, events) => ({
   type: LOAD_EVENTS,
   groupId,
   events,
+});
+
+const loadMembers = (groupId, members) => ({
+  type: LOAD_MEMBERS,
+  groupId,
+  members,
 });
 
 const addVenue = (groupId, venue) => ({
@@ -174,6 +181,19 @@ export const getEventsOfGroup = (groupId) => async (dispatch) => {
   }
 };
 
+export const getMembersOfGroup = (groupId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}/members`);
+  const { Members } = await res.json();
+  if (!res.ok) {
+    const err = new Error();
+    throw err;
+  } else {
+    const normalizedData = {};
+    Members.forEach((member) => (normalizedData[member.id] = member));
+    dispatch(loadMembers(groupId, normalizedData));
+  }
+};
+
 export const createVenue = (groupId, venue) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}/venues`, {
     method: "POST",
@@ -217,7 +237,7 @@ export const editVenue = (groupId, venue) => async (dispatch) => {
 const groupsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_GROUPS:
-      return { ...state, ...action.groups };
+      return { ...action.groups };
     case LOAD_DETAILS:
     // return {
     //   ...state,
@@ -251,6 +271,14 @@ const groupsReducer = (state = {}, action) => {
         [action.groupId]: {
           ...state[action.groupId],
           Events: { ...action.events },
+        },
+      };
+    case LOAD_MEMBERS:
+      return {
+        ...state,
+        [action.groupId]: {
+          ...state[action.groupId],
+          Members: { ...action.members },
         },
       };
     case ADD_VENUE:
