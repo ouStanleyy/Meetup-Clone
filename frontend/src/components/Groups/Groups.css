@@ -350,10 +350,51 @@
   transform: scale(0.98) translateY(-5px);
 }
 
-.groupInfo.members-container {
+.groupInfo.body-right {
   box-sizing: border-box;
-  margin-left: auto;
+  margin: -10px auto 10px;
   width: 40%;
   padding: 0 15px;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  box-shadow: 0px 8px 6px -2px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+  transition: all 600ms;
+  /* perspective: 1000px; */
+  transform-style: preserve-3d;
   /* border: 1px solid; */
+}
+
+.groupInfo.new-venue-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.groupInfo.new-venue-container * {
+  align-items: center;
+  gap: 10px;
+  width: 350px;
+  /* border: 1px solid; */
+}
+
+.groupInfo.body-right:hover {
+  scale: 0.98;
+}
+
+.groupInfo.body-right.hidden {
+  transform: rotateY(180deg);
+}
+
+.groupInfo.body-right.hidden:hover {
+  scale: 0.98;
+}
+
+.groupInfo.members-container,
+.groupInfo.new-venue-container {
+  backface-visibility: hidden;
+}
+
+.groupInfo.new-venue-container {
+  transform: rotateY(180deg);
 }

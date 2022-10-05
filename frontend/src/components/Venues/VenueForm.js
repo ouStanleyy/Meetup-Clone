@@ -78,7 +78,14 @@ const VenueForm = ({ closeForm, venue, formType }) => {
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-      const address = place.address_components;
+      const addressComps = place.address_components;
+      const address = {};
+
+      addressComps.forEach(
+        (addressComp) => (address[addressComp.types[0]] = addressComp)
+      );
+
+      // console.log(address);
 
       if (!place.geometry) {
         setCity("");
@@ -86,9 +93,17 @@ const VenueForm = ({ closeForm, venue, formType }) => {
         setLat(0);
         setLng(0);
       } else {
-        setAddress(`${address[0].long_name} ${address[1].short_name}`);
-        setCity(`${address[2].long_name}`);
-        setState(`${address[5].short_name}`);
+        setAddress(
+          address.street_number
+            ? `${address.street_number.long_name} ${address.route?.short_name}`
+            : address.route?.long_name
+        );
+        setCity(
+          address.locality?.long_name ||
+            address.administrative_area_level_3?.long_name ||
+            address.administrative_area_level_2?.long_name
+        );
+        setState(address.administrative_area_level_1?.short_name);
         setLat(place.geometry.location.lat().toFixed(7));
         setLng(place.geometry.location.lng().toFixed(7));
       }

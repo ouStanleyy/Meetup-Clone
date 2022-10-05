@@ -27,6 +27,7 @@ const GroupInfo = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [bodyDisplay, setBodyDisplay] = useState("about");
   const [toggleDisplay, setToggleDisplay] = useState(true);
+  const [toggleRightDisplay, setToggleRightDisplay] = useState(true);
   const [pausedFn, setPausedFn] = useState(false);
   const [showAddVenue, setShowAddVenue] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -67,6 +68,22 @@ const GroupInfo = () => {
         }, 300);
       }, 300);
     }
+  };
+
+  const selectRightDisplay = (selection) => (e) => {
+    if (!pausedFn) {
+      setPausedFn(true);
+      setToggleRightDisplay(selection);
+      setTimeout(() => {
+        setShowAddVenue(!selection);
+        // setTimeout(() => {
+        // setToggleRightDisplay(true);
+        setTimeout(() => setPausedFn(false), 450);
+        // }, 300);
+      }, 150);
+    }
+
+    e.preventDefault();
   };
 
   useEffect(() => {
@@ -240,7 +257,7 @@ const GroupInfo = () => {
                     className={`groupInfo new-venue-span ${
                       showAddVenue ? "active" : ""
                     }`}
-                    onClick={() => setShowAddVenue(true)}
+                    onClick={selectRightDisplay(false)}
                   >
                     Add a venue
                   </span>
@@ -286,21 +303,27 @@ const GroupInfo = () => {
             </div>
           )}
 
-          {showAddVenue ? (
-            <div className="groupInfo new-venue-container">
-              <CreateVenueForm onClose={() => setShowAddVenue(false)} />
-            </div>
-          ) : (
-            <div className="groupInfo members-container">
-              <h3>Organizer</h3>
-              <p className="groupInfo organizer">
-                <span className="groupInfo organizer-name">
-                  {group.Organizer?.firstName} {group.Organizer?.lastName}
-                </span>
-              </p>
-              <h3>Members</h3>
-            </div>
-          )}
+          <div
+            className={`groupInfo body-right ${
+              toggleRightDisplay ? "" : "hidden"
+            }`}
+          >
+            {showAddVenue ? (
+              <div className="groupInfo new-venue-container">
+                <CreateVenueForm onClose={selectRightDisplay(true)} />
+              </div>
+            ) : (
+              <div className="groupInfo members-container">
+                <h3>Organizer</h3>
+                <p className="groupInfo organizer">
+                  <span className="groupInfo organizer-name">
+                    {group.Organizer?.firstName} {group.Organizer?.lastName}
+                  </span>
+                </p>
+                <h3>Members</h3>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     )
