@@ -1,5 +1,5 @@
 import { useHistory } from "react-router";
-import GroupForm from "./GroupForm";
+import CreateGroupPage from "./CreateGroupPage";
 
 const CreateGroupForm = () => {
   const history = useHistory();
@@ -13,7 +13,7 @@ const CreateGroupForm = () => {
   };
 
   return (
-    <GroupForm
+    <CreateGroupPage
       closeForm={() => history.push("/groups")}
       group={group}
       formType="Create"
