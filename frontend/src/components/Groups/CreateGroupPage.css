@@ -128,7 +128,6 @@
   outline: 0;
   border: 0;
   background-image: linear-gradient(to top right, #6e6d6d, #b8b8b8);
-  cursor: pointer;
   border-radius: 5px;
   color: white;
   font-weight: bold;
@@ -140,6 +139,7 @@
 
 .groupCreate button:enabled {
   background-image: linear-gradient(to top right, #e052a0, #f19041);
+  cursor: pointer;
 }
 
 .groupCreate button:enabled::after {

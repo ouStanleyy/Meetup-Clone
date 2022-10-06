@@ -201,7 +201,7 @@ const CreateGroupPage = ({ closeForm, group, formType }) => {
           {page < 4 ? (
             <button
               disabled={
-                (page === 1 && !city) ||
+                (page === 1 && location !== `${city}, ${state}`) ||
                 (page === 2 && name.length < 5) ||
                 (page === 3 && about.length < 50)
               }
