@@ -34,6 +34,7 @@ const GroupInfo = () => {
   //         (member) => member.Membership.status !== "pending"
   //       ));
   const [showModal, setShowModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errors, setErrors] = useState({});
   const [showAddImg, setShowAddImg] = useState(false);
@@ -102,6 +103,7 @@ const GroupInfo = () => {
   const joinGroup = async () => {
     try {
       await dispatch(requestMembership(groupId));
+      setShowRequestModal(true);
     } catch (err) {
       setShowErrorModal(true);
       setErrors({ ...err });
@@ -373,6 +375,15 @@ const GroupInfo = () => {
             )}
           </div>
         </div>
+
+        {showRequestModal && (
+          <Modal onClose={() => setShowRequestModal(false)}>
+            <div style={{ backgroundColor: "white" }}>
+              <p>You have requested to join this group.</p>
+              <button onClick={() => setShowRequestModal(false)}>Okay</button>
+            </div>
+          </Modal>
+        )}
 
         {showErrorModal && (
           <Modal onClose={() => setShowErrorModal(false)}>
