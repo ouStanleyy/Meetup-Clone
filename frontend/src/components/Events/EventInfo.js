@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { Modal } from "../../context/Modal";
-import { getEventById, deleteEvent } from "../../store/events";
+import {
+  getEventById,
+  deleteEvent,
+  getAttendeesOfEvent,
+} from "../../store/events";
 import { getGroupById } from "../../store/groups";
 import { AddImageForm } from "../Images";
 import EditEventForm from "./EditEventForm";
@@ -17,6 +21,7 @@ const EventInfo = () => {
   const organizer = useSelector(
     (state) => group?.Organizer?.id === state.session.user?.id
   );
+  const attendees = event?.Attendees && Object.values(event.Attendees);
   const [showModal, setShowModal] = useState(false);
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -50,6 +55,7 @@ const EventInfo = () => {
     (async () => {
       try {
         await dispatch(getEventById(eventId));
+        await dispatch(getAttendeesOfEvent(eventId));
       } catch (err) {
         setRedirect(true);
 
@@ -176,6 +182,12 @@ const EventInfo = () => {
             </div>
             <div className="eventInfo attendees-container">
               <h3>Attendees</h3>
+              {attendees &&
+                attendees.map((attendee) => (
+                  <p key={attendee.id} className="eventInfo attendee">
+                    {attendee.firstName} {attendee.lastName}
+                  </p>
+                ))}
             </div>
           </div>
 

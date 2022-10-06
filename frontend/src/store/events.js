@@ -6,6 +6,7 @@ const ADD_EVENT = "events/ADD_EVENT";
 const UPDATE_EVENT = "events/UPDATE_EVENT";
 const REMOVE_EVENT = "events/REMOVE_EVENT";
 const ADD_IMAGE = "events/ADD_IMAGE";
+const LOAD_ATTENDEES = "events/LOAD_ATTENDEES";
 
 const loadEvents = (events) => ({
   type: LOAD_EVENTS,
@@ -36,6 +37,12 @@ const addImage = (eventId, image) => ({
   type: ADD_IMAGE,
   eventId,
   image,
+});
+
+const loadAttendees = (eventId, attendees) => ({
+  type: LOAD_ATTENDEES,
+  eventId,
+  attendees,
 });
 
 export const getEvents = () => async (dispatch) => {
@@ -140,6 +147,20 @@ export const uploadEventImage = (eventId, imgUrl) => async (dispatch) => {
   }
 };
 
+export const getAttendeesOfEvent = (eventId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/events/${eventId}/attendees`);
+  const { Attendees } = await res.json();
+
+  if (!res.ok) {
+    const err = new Error();
+    throw err;
+  } else {
+    const normalizedData = {};
+    Attendees.forEach((attendee) => (normalizedData[attendee.id] = attendee));
+    dispatch(loadAttendees(eventId, normalizedData));
+  }
+};
+
 const eventsReducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_EVENTS:
@@ -169,6 +190,14 @@ const eventsReducer = (state = {}, action) => {
         [action.eventId]: {
           ...state[action.eventId],
           Images: [...state[action.eventId].Images, { ...action.image }],
+        },
+      };
+    case LOAD_ATTENDEES:
+      return {
+        ...state,
+        [action.eventId]: {
+          ...state[action.eventId],
+          Attendees: { ...action.attendees },
         },
       };
     default:

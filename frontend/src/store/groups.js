@@ -238,6 +238,7 @@ export const getEventsOfGroup = (groupId) => async (dispatch) => {
 export const getMembersOfGroup = (groupId) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}/members`);
   const { Members } = await res.json();
+
   if (!res.ok) {
     const err = new Error();
     throw err;
@@ -253,8 +254,6 @@ export const requestMembership = (groupId) => async (dispatch) => {
     method: "POST",
   });
   const data = await res.json();
-
-  console.log(data);
 
   if (!res.ok) {
     const err = new Error();
@@ -277,8 +276,6 @@ export const addMember = (groupId, membership) => async (dispatch) => {
   );
   const data = await res.json();
 
-  console.log(data);
-
   if (!res.ok) {
     const err = new Error();
     err.message = data.message;
@@ -300,8 +297,6 @@ export const deleteMember = (groupId, memberId) => async (dispatch) => {
     }
   );
   const data = await res.json();
-
-  console.log(data);
 
   if (!res.ok) {
     const err = new Error();
