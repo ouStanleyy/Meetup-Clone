@@ -428,3 +428,56 @@
 .groupInfo.new-venue-container {
   transform: rotateY(180deg);
 }
+
+.group-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  /* width: 100%; */
+  /* gap: 1px;
+  height: 300px; */
+  height: 300px;
+  /* border: 1px solid; */
+  /* margin: 5px; */
+  /* border-radius: 10px; */
+  /* padding: 10px; */
+}
+
+.group-form button,
+.group-info {
+  width: 90%;
+  /* padding: 5px; */
+  height: 25px;
+  border: solid 1px black;
+  border-radius: 10px;
+}
+/*
+.group-info {
+  width: 80%;
+} */
+
+.group-form button {
+  /* width: 50%;
+  margin: 20px; */
+  background-color: lightslategrey;
+  border-color: transparent;
+  font-size: 1em;
+  transition: 100ms;
+}
+
+.group-form button:hover:enabled {
+  filter: brightness(1.2);
+  scale: 1.05;
+  cursor: pointer;
+}
+
+.group-form button:active:enabled {
+  transition: 1ms;
+  scale: 1;
+}
+
+.group-info:focus {
+  outline-width: 0;
+  /* filter: drop-shadow(0 0 10px) contrast(0.85); */
+}

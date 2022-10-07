@@ -80,7 +80,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
   return (
     <section className="groupForm-section">
       <form className="group-form" onSubmit={submitHandler}>
-        <div className="errors">
+        {/* <div className="errors">
           {errors.status && (
             <h3
               onAnimationEnd={() => setWiggle(false)}
@@ -89,7 +89,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
               Group creation failed: {errors.message}
             </h3>
           )}
-        </div>
+        </div> */}
         <label>Group Name</label>
         <input
           className="group-info"
@@ -99,7 +99,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <p>{errors.name}</p>
+        {/* <p>{errors.name}</p> */}
         <label>About</label>
         <textarea
           className="group-info"
@@ -108,7 +108,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
           value={about}
           onChange={(e) => setAbout(e.target.value)}
         />
-        <p>{errors.about}</p>
+        {/* <p>{errors.about}</p> */}
         <label>City</label>
         <input
           className="group-info"
@@ -119,7 +119,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
-        <p>{errors.city}</p>
+        {/* <p>{errors.city}</p> */}
         <label>State</label>
         <input
           className="group-info"
@@ -129,7 +129,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
           value={state}
           onChange={(e) => setState(e.target.value)}
         />
-        <p>{errors.state}</p>
+        {/* <p>{errors.state}</p> */}
         <label>Type</label>
         <select
           className="group-info"
@@ -143,7 +143,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
           <option value="In person">In person</option>
           <option value="Online">Online</option>
         </select>
-        <p>{errors.type}</p>
+        {/* <p>{errors.type}</p> */}
         <label>Private</label>
         <select
           className="group-info"
@@ -157,7 +157,7 @@ const GroupForm = ({ closeForm, group, formType }) => {
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <p>{errors.private}</p>
+        {/* <p>{errors.private}</p> */}
         <button disabled={about.length < 50} type="submit">
           {formType} Group
         </button>

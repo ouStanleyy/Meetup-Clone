@@ -9,6 +9,7 @@ import {
 } from "../../store/events";
 import { getGroupById } from "../../store/groups";
 import { AddImageForm } from "../Images";
+import MapContainer from "../Maps";
 import EditEventForm from "./EditEventForm";
 import "./Events.css";
 
@@ -30,6 +31,11 @@ const EventInfo = () => {
   const [redirect3, setRedirect3] = useState(false);
   const [redirect4, setRedirect4] = useState(false);
   const [transform, setTransform] = useState("");
+  const settings = {
+    zoom: 15,
+    lat: event?.Venue?.lat,
+    lng: event?.Venue?.lng,
+  };
 
   const deleteHandler = async () => {
     await dispatch(deleteEvent(event.id));
@@ -257,10 +263,7 @@ const EventInfo = () => {
                     )}
                   </div>
                   <div className="eventInfo venue-map">
-                    <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${event.Venue?.lat},${event.Venue?.lng}&zoom=15&size=400x300&scale=2&markers=${event.Venue?.lat},${event.Venue?.lng}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
-                      alt="map"
-                    />
+                    <MapContainer mapType="static" settings={settings} />
                   </div>
                 </div>
                 <div className="eventInfo price">

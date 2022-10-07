@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import MapContainer from "../Maps";
 import EditVenueForm from "./EditVenueForm";
 import "./Venues.css";
 
@@ -44,9 +45,9 @@ const VenuesIndex = ({ organizer }) => {
               }`}
             >
               <div className="venue map-container">
-                <img
-                  src={`https://maps.googleapis.com/maps/api/staticmap?center=${venue.lat},${venue.lng}&zoom=18&size=400x300&scale=2&markers=${venue.lat},${venue.lng}&key=AIzaSyBXlBbzFH1mHN4TIIgglaslzhIwEuPQecY`}
-                  alt="map"
+                <MapContainer
+                  mapType="static"
+                  settings={{ zoom: 18, lat: venue.lat, lng: venue.lng }}
                 />
               </div>
               <div className="venue details-container">
