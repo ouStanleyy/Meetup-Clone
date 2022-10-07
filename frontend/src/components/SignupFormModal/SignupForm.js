@@ -49,7 +49,7 @@ const SignupForm = ({ login }) => {
         </div>
         <label>First Name</label>
         <input
-          className="credentials"
+          className={`credentials ${errors.firstName && "err"}`}
           type="text"
           placeholder="First Name"
           required
@@ -59,7 +59,7 @@ const SignupForm = ({ login }) => {
         <p>{errors.firstName}</p>
         <label>Last Name</label>
         <input
-          className="credentials"
+          className={`credentials ${errors.lastName && "err"}`}
           type="text"
           placeholder="Last Name"
           required
@@ -69,7 +69,7 @@ const SignupForm = ({ login }) => {
         <p>{errors.lastName}</p>
         <label>Email</label>
         <input
-          className="credentials"
+          className={`credentials ${errors.email && "err"}`}
           type="text"
           placeholder="Email"
           required
@@ -79,23 +79,31 @@ const SignupForm = ({ login }) => {
         <p>{errors.email}</p>
         <label>Password</label>
         <input
-          className="credentials"
+          className={`credentials ${errors.password && "err"}`}
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <span className="confirmation-check">
+          {password.length >= 6 && <i className="fa-solid fa-check" />}
+        </span>
         <p>{errors.password}</p>
         <label>Confirm Password</label>
         <input
-          className="credentials"
+          className={`credentials ${errors.password && "err"}`}
           type={showPassword ? "text" : "password"}
           placeholder="Confirm Password"
           required
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
+        <span className="confirmation-check">
+          {confirmPassword.length >= 6 && password === confirmPassword && (
+            <i className="fa-solid fa-check" />
+          )}
+        </span>
         <label className="show-password">
           <div className="checkbox">
             <input

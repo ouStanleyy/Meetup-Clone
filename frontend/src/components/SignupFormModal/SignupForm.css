@@ -10,17 +10,18 @@
   background-color: white;
 }
 
-.signup-form button,
+/* .signup-form button, */
 .credentials {
   width: 80%;
   padding: 5px;
   border: solid 1px black;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .signup-form button {
   width: 50%;
   margin: 20px;
+  border-radius: 20px;
   background-color: lightslategrey;
   border-color: transparent;
   font-size: 1em;
@@ -40,7 +41,23 @@
 
 .credentials:focus {
   outline-width: 0;
-  filter: drop-shadow(0 0 10px) contrast(0.85);
+  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.5)) contrast(0.95);
+}
+
+.credentials.err {
+  border: 2px solid red;
+}
+
+.confirmation-check {
+  position: relative;
+  width: 80%;
+}
+
+.fa-check {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  color: limegreen;
 }
 
 .show-password {
