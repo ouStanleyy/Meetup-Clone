@@ -31,6 +31,13 @@
   transform: rotate(-20deg) translateY(-10px);
 }
 
+.login-signup-li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
 .login-signup-li > a {
   font-weight: bold;
   transition: all 200ms;
@@ -77,10 +84,4 @@
 
 .dropdown-menu > div:not(:last-child) {
   border-bottom: 1px solid gray;
-}
-
-.login-signup-li {
-  display: flex;
-  gap: 10px;
-  margin-right: 20px;
 }

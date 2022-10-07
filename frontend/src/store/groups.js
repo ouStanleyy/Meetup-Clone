@@ -237,7 +237,8 @@ export const getEventsOfGroup = (groupId) => async (dispatch) => {
 
 export const getMembersOfGroup = (groupId) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}/members`);
-  const { Members } = await res.json();
+  const data = await res.json();
+  const { Members } = data;
 
   if (!res.ok) {
     const err = new Error();

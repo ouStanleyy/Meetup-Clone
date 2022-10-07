@@ -32,6 +32,50 @@
   position: fixed;
 }
 
+.login-button,
+.signup-button {
+  box-sizing: border-box;
+  position: relative;
+  /* display: inline-block; */
+  outline: 0;
+  border: 0;
+  background-image: linear-gradient(to top right, #e052a0, #f19041);
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  /* width: 70px;
+  height: 30px; */
+  padding: 6px;
+  z-index: 1;
+}
+
+.login-button::after,
+.signup-button::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(to top right, #71ffff, #526bf4);
+  border-radius: 5px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.login-button:hover::after,
+.signup-button:hover::after {
+  opacity: 1;
+}
+
+.login-button:active::after,
+.signup-button:active::after {
+  filter: brightness(1.2);
+}
+
 .exit-animation {
   animation: exit 300ms ease-out;
 }

@@ -43,7 +43,7 @@ const MembersIndex = ({ members, organizer }) => {
                 </div>
 
                 <div className="member button-container">
-                  {currentUser.id === member.id && (
+                  {currentUser?.id === member?.id && (
                     <button
                       className="member button"
                       onClick={resignMembership(member.id)}

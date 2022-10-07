@@ -53,7 +53,7 @@ const LoginSignupModal = () => {
       <button className="login-button" onClick={login}>
         Log In
       </button>
-      <button className="signin-button" onClick={signup}>
+      <button className="signup-button" onClick={signup}>
         Sign Up
       </button>
       {showModal && (

@@ -83,15 +83,16 @@ router.delete(
 );
 
 // Get all attendees of an event specified by its id
-router.get("/:eventId/attendees", requireAuth, authParams, async (req, res) => {
-  let attendees;
+router.get("/:eventId/attendees", authParams, async (req, res) => {
+  let currUser, attendees;
   const { eventId } = req.params;
-  const currUser = await req.group.getMemberships({
-    where: { memberId: req.user.id },
-  });
+  if (req.user?.id)
+    currUser = await req.group.getMemberships({
+      where: { memberId: req.user.id },
+    });
 
   if (
-    currUser.length &&
+    currUser?.length &&
     (currUser[0].status === "host" || currUser[0].status === "co-host")
   )
     attendees = await User.findAll({

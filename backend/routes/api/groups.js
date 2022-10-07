@@ -90,7 +90,7 @@ router.delete(
 );
 
 // Get all members of a group specified by its id
-router.get("/:groupId/members", requireAuth, async (req, res, next) => {
+router.get("/:groupId/members", async (req, res, next) => {
   const { groupId } = req.params;
   const group = await Group.findByPk(groupId, {
     include: { model: Membership },
@@ -101,13 +101,15 @@ router.get("/:groupId/members", requireAuth, async (req, res, next) => {
     return next(err);
   }
 
-  const currUser = await group.getMemberships({
-    where: { memberId: req.user.id },
-  });
-  let members;
+  let currUser, members;
+
+  if (req.user?.id)
+    currUser = await group.getMemberships({
+      where: { memberId: req.user.id },
+    });
 
   if (
-    currUser.length &&
+    currUser?.length &&
     (currUser[0].status === "host" || currUser[0].status === "co-host")
   )
     members = await User.findAll({
