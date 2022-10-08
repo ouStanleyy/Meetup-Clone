@@ -7,6 +7,8 @@ import { GroupsIndex, GroupInfo, CreateGroupForm } from "./components/Groups";
 import EventsIndex from "./components/Events/EventsIndex";
 import EventInfo from "./components/Events/EventInfo";
 import CreateEventForm from "./components/Events/CreateEventForm";
+import Homepage from "./components/Homepage/Homepage";
+import SignupForm from "./components/SignupFormModal/SignupForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,10 +34,9 @@ function App() {
           <Route exact path="/groups" component={GroupsIndex} />
           <Route exact path="/events" component={EventsIndex} />
           <Route exact path="/your-groups" component={GroupsIndex} />
+          <Route exact path="/signup" component={SignupForm} />
           {/* <Route exact path="/your-events" component={EventsIndex} /> */}
-          <Route exact path="/">
-            <h1>Homepage</h1>
-          </Route>
+          <Route exact path="/" component={Homepage}></Route>
           <Route path="">
             <Redirect to="/" />
           </Route>
