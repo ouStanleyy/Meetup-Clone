@@ -7,29 +7,42 @@ const ProfileButton = ({ user }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const [closeMenu, setCloseMenu] = useState(false);
+  const [pausedFn, setPausedFn] = useState(false);
 
   const logoutHandler = () => {
     dispatch(logout());
     history.push("/");
   };
 
-  useEffect(() => {
-    const closeMenu = () => setShowMenu(false);
+  const openMenu = () => {
+    if (!pausedFn) {
+      setPausedFn(true);
+      setShowMenu(true);
+      setTimeout(() => setPausedFn(false), 200);
+    }
+  };
 
-    if (showMenu) document.addEventListener("click", closeMenu);
+  useEffect(() => {
+    const closeMenu = () => {
+      setCloseMenu(true);
+      setTimeout(() => {
+        setShowMenu(false);
+        setTimeout(() => setCloseMenu(false), 10);
+      }, 200);
+    };
+
+    if (showMenu && !pausedFn) document.addEventListener("click", closeMenu);
     return () => document.removeEventListener("click", closeMenu);
-  }, [showMenu]);
+  }, [showMenu, pausedFn]);
 
   return (
     <>
-      <button
-        className="profile-button"
-        onClick={() => setShowMenu((state) => !state)}
-      >
+      <button className="profile-button" onClick={openMenu}>
         <i className="fa-regular fa-user fa-2x" />
       </button>
       {showMenu && (
-        <div className="dropdown-menu">
+        <div className={`dropdown-menu ${closeMenu && "closed"}`}>
           <div>
             {user.firstName} {user.lastName}
           </div>

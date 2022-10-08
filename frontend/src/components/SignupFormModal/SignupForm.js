@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { signup } from "../../store/session";
 import "./SignupForm.css";
@@ -11,9 +11,20 @@ const SignupForm = ({ login }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [submitReady, setSubmitReady] = useState(false);
+  const [errors, setErrors] = useState({});
   const [wiggle, setWiggle] = useState(false);
+
+  const hasInvalidChars = (str) => {
+    const invalidChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    return invalidChars.test(str);
+  };
+
+  const isValidEmail = (str) => {
+    const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi;
+    return validEmail.test(str);
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -30,6 +41,20 @@ const SignupForm = ({ login }) => {
       setErrors({ ...err, ...err.errors });
     }
   };
+
+  useEffect(() => {
+    setSubmitReady(false);
+
+    firstName.length > 0 &&
+      !hasInvalidChars(firstName) &&
+      lastName.length > 0 &&
+      !hasInvalidChars(lastName) &&
+      isValidEmail(email) &&
+      password.length >= 6 &&
+      confirmPassword.length >= 6 &&
+      password === confirmPassword &&
+      setSubmitReady(true);
+  }, [firstName, lastName, email, password, confirmPassword]);
 
   // if (activeSession) return <Redirect to="/" />;
 
@@ -56,6 +81,11 @@ const SignupForm = ({ login }) => {
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
         />
+        <span className="confirmation-check">
+          {firstName.length > 0 && !hasInvalidChars(firstName) && (
+            <i className="fa-solid fa-check" />
+          )}
+        </span>
         <p>{errors.firstName}</p>
         <label>Last Name</label>
         <input
@@ -66,6 +96,11 @@ const SignupForm = ({ login }) => {
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
         />
+        <span className="confirmation-check">
+          {lastName.length > 0 && !hasInvalidChars(lastName) && (
+            <i className="fa-solid fa-check" />
+          )}
+        </span>
         <p>{errors.lastName}</p>
         <label>Email</label>
         <input
@@ -76,6 +111,9 @@ const SignupForm = ({ login }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        <span className="confirmation-check">
+          {isValidEmail(email) && <i className="fa-solid fa-check" />}
+        </span>
         <p>{errors.email}</p>
         <label>Password</label>
         <input
@@ -114,7 +152,9 @@ const SignupForm = ({ login }) => {
           </div>
           <span>Show Password</span>
         </label>
-        <button type="submit">Sign Up</button>
+        <button disabled={!submitReady} type="submit">
+          Sign Up
+        </button>
         <p>
           Already a member?{" "}
           <span className="login-span" onClick={login}>

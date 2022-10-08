@@ -10,12 +10,17 @@
   background-color: white;
 }
 
+.signup-form > p:not(:last-child) {
+  color: red;
+}
+
 /* .signup-form button, */
 .credentials {
   width: 80%;
   padding: 5px;
   border: solid 1px black;
   border-radius: 10px;
+  transition: border 200ms;
 }
 
 .signup-form button {
@@ -45,6 +50,7 @@
 }
 
 .credentials.err {
+  animation: wiggle 200ms ease-in;
   border: 2px solid red;
 }
 
@@ -58,6 +64,7 @@
   right: 0;
   bottom: 10px;
   color: limegreen;
+  animation: checkEnter 500ms ease-in;
 }
 
 .show-password {
@@ -111,5 +118,17 @@
   100% {
     transform: rotate(0);
     scale: 1;
+  }
+}
+
+@keyframes checkEnter {
+  0% {
+    scale: 0;
+    transform: rotate(360deg);
+  }
+
+  100% {
+    scale: 1;
+    transform: rotate(0deg);
   }
 }
