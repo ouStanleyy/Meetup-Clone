@@ -115,6 +115,8 @@ const GroupInfo = () => {
     setExitAnimation(true);
     setTimeout(() => {
       setShowModal(false);
+      setShowRequestModal(false);
+      setShowErrorModal(false);
       setExitAnimation(false);
     }, 300);
   };
@@ -390,19 +392,23 @@ const GroupInfo = () => {
         </div>
 
         {showRequestModal && (
-          <Modal onClose={() => setShowRequestModal(false)}>
-            <div style={{ backgroundColor: "white" }}>
+          <Modal onClose={closeDeleteModal}>
+            <div
+              className={`delete-modal ${exitAnimation && "exit-animation"}`}
+            >
               <p>You have requested to join this group.</p>
-              <button onClick={() => setShowRequestModal(false)}>Okay</button>
+              <button onClick={closeDeleteModal}>Okay</button>
             </div>
           </Modal>
         )}
 
         {showErrorModal && (
-          <Modal onClose={() => setShowErrorModal(false)}>
-            <div style={{ backgroundColor: "white" }}>
-              <p>{errors.message}</p>
-              <button onClick={() => setShowErrorModal(false)}>Okay</button>
+          <Modal onClose={closeDeleteModal}>
+            <div
+              className={`delete-modal ${exitAnimation && "exit-animation"}`}
+            >
+              <p>{errors.message}.</p>
+              <button onClick={closeDeleteModal}>Okay</button>
             </div>
           </Modal>
         )}

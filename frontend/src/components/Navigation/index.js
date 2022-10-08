@@ -18,6 +18,14 @@ const Navigation = () => {
           </Link>
         </li>
         <li className="login-signup-li">
+          <a href="https://github.com/ouStanleyy">
+            <i class="fa-brands fa-github-alt fa-2x" />
+          </a>
+          <a href="https://www.linkedin.com/in/stanley-ou/">
+            <i class="fa-brands fa-linkedin-in fa-2x" />
+          </a>
+        </li>
+        <li className="login-signup-li">
           <Link className={pathname === "/groups" ? "active" : ""} to="/groups">
             Groups
           </Link>
