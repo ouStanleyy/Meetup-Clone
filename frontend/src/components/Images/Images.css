@@ -1,0 +1,61 @@
+.image-form {
+  width: 100%;
+}
+
+.url-input {
+  width: 90%;
+  padding: 5px 15px 5px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  font: inherit;
+  margin-right: 5px;
+  vertical-align: bottom;
+}
+
+.url-input:focus {
+  outline-width: 0;
+}
+
+.add-image {
+  box-sizing: border-box;
+  position: relative;
+  outline: 0;
+  border: 0;
+  background-image: linear-gradient(to top right, #e052a0, #f19041);
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  padding: 3px;
+  z-index: 1;
+}
+
+.add-image::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 5px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.add-image.accept::after {
+  background-image: linear-gradient(to top right, #1cff42, #048723);
+}
+
+.add-image.cancel::after {
+  background-image: linear-gradient(to top right, #ff0000, #ad0000);
+}
+
+.add-image:hover::after {
+  opacity: 1;
+}
+
+.add-image:active::after {
+  filter: brightness(1.2);
+}

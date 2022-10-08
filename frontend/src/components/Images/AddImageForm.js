@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { uploadGroupImage } from "../../store/groups";
 import { uploadEventImage } from "../../store/events";
+import "./Images.css";
 
 const AddImageForm = ({ onClose, addType, id }) => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const AddImageForm = ({ onClose, addType, id }) => {
 
   return (
     <>
-      <form onSubmit={submitHandler}>
+      <form className="image-form" onSubmit={submitHandler}>
         {/* <label>How do you want to upload the image?</label>
         <select
           className="image-upload-choice"
@@ -50,6 +51,7 @@ const AddImageForm = ({ onClose, addType, id }) => {
         <>
           {/* <label>Enter an https:// URL:</label> */}
           <input
+            className="url-input"
             type="url"
             placeholder="https://example.com"
             pattern="https://.*"
@@ -60,9 +62,13 @@ const AddImageForm = ({ onClose, addType, id }) => {
           />
         </>
         {/* )} */}
-        <button>Add Image</button>
+        <button className="add-image accept">
+          <i className="fa-solid fa-arrow-up" />
+        </button>
       </form>
-      <button onClick={onClose}>Cancel</button>
+      <button className="add-image cancel" onClick={onClose}>
+        <i className="fa-solid fa-xmark" />
+      </button>
     </>
   );
 };

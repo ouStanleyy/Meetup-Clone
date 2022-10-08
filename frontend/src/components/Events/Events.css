@@ -353,6 +353,193 @@
   text-align: right;
 }
 
+.event-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  width: 50%;
+  gap: 20px;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid lightgray;
+  box-shadow: 8px 8px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+  animation: containerEnter 500ms ease-in;
+}
+
+.event-form > * {
+  animation: contentEnter 800ms ease-in;
+}
+
+.eventInfo .event-form {
+  width: 100%;
+  height: 625px;
+  padding: 0;
+  box-shadow: 0px 8px 6px -2px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+  animation: formUpdateEnter 500ms ease-in;
+}
+
+.event-form > .buttons-container {
+  display: flex;
+}
+
+.event-form > .capacity_price-container,
+.event-form > .type_venue-container,
+.event-form > .date-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  /* border: 1px solid; */
+}
+
+.eventInfo .event-form > .date-container {
+  flex-direction: column;
+  gap: 20px;
+}
+
+.event-form > .event_name-container,
+.event-form > .description-container,
+.event-form > .capacity_price-container > div,
+.event-form > .type_venue-container > div,
+.event-form > .date-container > div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 2em;
+}
+
+.eventInfo .event-form > .event_name-container,
+.eventInfo .event-form > .description-container,
+.eventInfo .event-form > .capacity_price-container > div,
+.eventInfo .event-form > .type_venue-container > div,
+.eventInfo .event-form > .date-container > div {
+  padding: 0 0.5em;
+}
+
+.event-form > .description-container > label {
+  align-self: flex-start;
+}
+
+.event-form button,
+.event-info {
+  width: 65%;
+  margin-left: auto;
+  /* margin-right: 2em; */
+  padding: 5px 15px 5px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.event-form > .event_name-container > .event-info,
+.event-form > .description-container > .event-info {
+  width: 84%;
+}
+
+.event-form > .description-container > textarea {
+  width: 100%;
+  height: 200px;
+  resize: none;
+  font: inherit;
+  overflow-y: scroll;
+}
+
+.event-form button {
+  width: 50%;
+  margin: 20px;
+  border-radius: 20px;
+  background-color: lightslategrey;
+  border-color: transparent;
+  font-size: 1em;
+  transition: 100ms;
+}
+
+.event-form button:hover:enabled {
+  filter: brightness(1.2);
+  scale: 1.05;
+  cursor: pointer;
+}
+
+.event-form button:active:enabled {
+  transition: 1ms;
+  scale: 1;
+}
+
+.event-info:focus {
+  outline-width: 0;
+  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.5)) contrast(0.95);
+}
+
+.add-img {
+  display: flex;
+  align-items: flex-end;
+  width: 50%;
+  margin-right: -100px;
+}
+
+.delete-modal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 0 auto;
+  width: 85%;
+  text-align: center;
+  padding: 5px;
+  background-color: white;
+  animation: deleteEnter 300ms ease-in;
+}
+
+.delete-modal > p {
+  width: 100%;
+}
+
+.delete-modal > button {
+  box-sizing: border-box;
+  position: relative;
+  outline: 0;
+  border: 0;
+  background-image: linear-gradient(to top right, #e052a0, #f19041);
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 1;
+}
+
+.delete-modal > button::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(to top right, #71ffff, #526bf4);
+  border-radius: 5px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.delete-modal > button:hover::after {
+  opacity: 1;
+}
+
+.delete-modal > button:active::after {
+  filter: brightness(1.2);
+}
+
+.exit-animation {
+  animation: deleteExit 300ms ease-out;
+}
+
 @keyframes containerEnter {
   0% {
     opacity: 0;
@@ -369,18 +556,48 @@
   0% {
     opacity: 0;
     filter: blur(1.5rem);
-    /* transform: translateY(-10%); */
   }
 
   40% {
     opacity: 0;
     filter: blur(1.5rem);
-    /* transform: translateY(-10%); */
   }
 
   100% {
-    /* transform: translateY(0%); */
     opacity: 1;
     filter: blur(0);
+  }
+}
+
+@keyframes deleteEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(20%);
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes deleteExit {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+}
+
+@keyframes formUpdateEnter {
+  0% {
+    scale: 0;
+  }
+
+  100% {
+    scale: 1;
   }
 }

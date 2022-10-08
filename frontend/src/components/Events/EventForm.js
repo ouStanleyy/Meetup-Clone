@@ -130,7 +130,7 @@ const EventForm = ({ closeForm, event, formType }) => {
   return (
     <section className="eventForm-section">
       <form className="event-form" onSubmit={submitHandler}>
-        <div className="errors">
+        {/* <div className="errors">
           {errors.status && (
             <h3
               onAnimationEnd={() => setWiggle(false)}
@@ -139,103 +139,129 @@ const EventForm = ({ closeForm, event, formType }) => {
               Event creation failed: {errors.message}
             </h3>
           )}
+        </div> */}
+        <div className="event_name-container">
+          <label>Event Name:</label>
+          <input
+            className="event-info"
+            type="text"
+            placeholder="Minimum of 5 characters"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {/* <p>{errors.name}</p> */}
         </div>
-        <label>Event Name</label>
-        <input
-          className="event-info"
-          type="text"
-          placeholder="Minimum of 5 characters"
-          required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <p>{errors.name}</p>
-        <label>Description</label>
-        <textarea
-          className="event-info"
-          placeholder="Details of your event"
-          required
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <p>{errors.description}</p>
-        <label>Capacity</label>
-        <input
-          className="event-info"
-          type="number"
-          required
-          value={capacity}
-          onChange={capacityHandler}
-        />
-        <p>{errors.capacity}</p>
-        <label>Price</label>
-        <input
-          className="event-info"
-          type="text"
-          required
-          min="0.00"
-          step="0.01"
-          value={price}
-          onChange={priceHandler}
-        />
-        <p>{errors.price}</p>
-        <label>Type</label>
-        <select
-          className="event-info"
-          required
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        >
-          <option disabled value="">
-            Please Select One
-          </option>
-          <option value="In person">In person</option>
-          <option value="Online">Online</option>
-        </select>
-        <p>{errors.type}</p>
-        <label>Start Date</label>
-        <input
-          className="event-info"
-          type="datetime-local"
-          required
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        ></input>
-        <p>{errors.startDate}</p>
-        <label>End Date</label>
-        <input
-          className="event-info"
-          type="datetime-local"
-          required
-          min={startDate}
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        ></input>
-        <p>{errors.endDate}</p>
-        <label>Venue</label>
-        <select
-          className="event-info"
-          required
-          value={venueId}
-          onChange={(e) => setVenueId(e.target.value)}
-        >
-          <option disabled value="">
-            Please Select One
-          </option>
-          <option value="null">No venue</option>
-          {venues?.map((venue) => {
-            return (
-              <option key={venue.id} value={venue.id}>
-                {venue.address} · {venue.city}, {venue.state}
+        <div className="description-container">
+          <label>Description:</label>
+          <textarea
+            className="event-info"
+            placeholder="Details of your event"
+            required
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          {/* <p>{errors.description}</p> */}
+        </div>
+        <div className="capacity_price-container">
+          <div>
+            <label>Capacity:</label>
+            <input
+              className="event-info"
+              type="number"
+              required
+              value={capacity}
+              onChange={capacityHandler}
+            />
+            {/* <p>{errors.capacity}</p> */}
+          </div>
+          <div>
+            <label>Price:</label>
+            <input
+              className="event-info"
+              type="text"
+              required
+              min="0.00"
+              step="0.01"
+              value={price}
+              onChange={priceHandler}
+            />
+            {/* <p>{errors.price}</p> */}
+          </div>
+        </div>
+        <div className="type_venue-container">
+          <div>
+            <label>Type:</label>
+            <select
+              className="event-info"
+              required
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+            >
+              <option disabled value="">
+                Please Select One
               </option>
-            );
-          })}
-        </select>
-        <p>{errors.endDate}</p>
-        <button disabled={name.length < 5} type="submit">
-          {formType} Event
-        </button>
-        <button onClick={closeForm}>Cancel</button>
+              <option value="In person">In person</option>
+              <option value="Online">Online</option>
+            </select>
+            {/* <p>{errors.type}</p> */}
+          </div>
+          <div>
+            <label>Venue:</label>
+            <select
+              className="event-info"
+              required
+              value={venueId}
+              onChange={(e) => setVenueId(e.target.value)}
+            >
+              <option disabled value="">
+                Please Select One
+              </option>
+              <option value="null">No venue</option>
+              {venues?.map((venue) => {
+                return (
+                  <option key={venue.id} value={venue.id}>
+                    {venue.address} · {venue.city}, {venue.state}
+                  </option>
+                );
+              })}
+            </select>
+            {/* <p>{errors.venueId}</p> */}
+          </div>
+        </div>
+        <div className="date-container">
+          <div>
+            <label>Start Date:</label>
+            <input
+              className="event-info"
+              type="datetime-local"
+              required
+              min={new Date().toISOString().slice(0, 16)}
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            ></input>
+            {/* <p>{errors.startDate}</p> */}
+          </div>
+          <div>
+            <label>End Date:</label>
+            <input
+              className="event-info"
+              type="datetime-local"
+              required
+              disabled={!startDate}
+              min={startDate}
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            ></input>
+            {/* <p>{errors.endDate}</p> */}
+          </div>
+        </div>
+        <div className="buttons-container">
+          <button disabled={name.length < 5} type="submit">
+            {formType} Event
+          </button>
+          <button onClick={closeForm}>Cancel</button>
+        </div>
       </form>
     </section>
   );

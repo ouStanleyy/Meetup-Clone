@@ -24,6 +24,7 @@ const EventInfo = () => {
   );
   const attendees = event?.Attendees && Object.values(event.Attendees);
   const [showModal, setShowModal] = useState(false);
+  const [exitAnimation, setExitAnimation] = useState(false);
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -55,6 +56,14 @@ const EventInfo = () => {
     setTransform(
       `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
     );
+  };
+
+  const closeDeleteModal = () => {
+    setExitAnimation(true);
+    setTimeout(() => {
+      setShowModal(false);
+      setExitAnimation(false);
+    }, 300);
   };
 
   useEffect(() => {
@@ -127,6 +136,16 @@ const EventInfo = () => {
             </p>
           </div>
 
+          {showAddImg && (
+            <div className="add-img">
+              <AddImageForm
+                onClose={() => setShowAddImg(false)}
+                addType="events"
+                id={eventId}
+              />
+            </div>
+          )}
+
           <div className="eventInfo buttons-container">
             {organizer && (
               <>
@@ -152,25 +171,22 @@ const EventInfo = () => {
             )}
 
             {showModal && (
-              <Modal onClose={() => setShowModal(false)}>
-                <div style={{ backgroundColor: "white" }}>
+              <Modal onClose={closeDeleteModal}>
+                <div
+                  className={`delete-modal ${
+                    exitAnimation && "exit-animation"
+                  }`}
+                >
                   <p>
                     Are you sure you want to delete this event? This action is
                     permanent and cannot be reverted.
                   </p>
                   <button onClick={deleteHandler}>DELETE</button>
-                  <button onClick={() => setShowModal(false)}>CANCEL</button>
+                  <button onClick={closeDeleteModal}>CANCEL</button>
                 </div>
               </Modal>
             )}
           </div>
-          {showAddImg && (
-            <AddImageForm
-              onClose={() => setShowAddImg(false)}
-              addType="events"
-              id={eventId}
-            />
-          )}
         </div>
 
         <div className="eventInfo body">

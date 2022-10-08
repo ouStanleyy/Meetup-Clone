@@ -36,6 +36,7 @@ const GroupInfo = () => {
   const [showModal, setShowModal] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [exitAnimation, setExitAnimation] = useState(false);
   const [errors, setErrors] = useState({});
   const [showAddImg, setShowAddImg] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -108,6 +109,14 @@ const GroupInfo = () => {
       setShowErrorModal(true);
       setErrors({ ...err });
     }
+  };
+
+  const closeDeleteModal = () => {
+    setExitAnimation(true);
+    setTimeout(() => {
+      setShowModal(false);
+      setExitAnimation(false);
+    }, 300);
   };
 
   useEffect(() => {
@@ -214,16 +223,18 @@ const GroupInfo = () => {
                       </button>
 
                       {showModal && (
-                        <Modal onClose={() => setShowModal(false)}>
-                          <div style={{ backgroundColor: "white" }}>
+                        <Modal onClose={closeDeleteModal}>
+                          <div
+                            className={`delete-modal ${
+                              exitAnimation && "exit-animation"
+                            }`}
+                          >
                             <p>
                               Are you sure you want to delete this group? This
                               action is permanent and cannot be reverted.
                             </p>
                             <button onClick={deleteHandler}>DELETE</button>
-                            <button onClick={() => setShowModal(false)}>
-                              CANCEL
-                            </button>
+                            <button onClick={closeDeleteModal}>CANCEL</button>
                           </div>
                         </Modal>
                       )}
@@ -236,11 +247,13 @@ const GroupInfo = () => {
             )}
 
             {showAddImg && (
-              <AddImageForm
-                onClose={() => setShowAddImg(false)}
-                addType="groups"
-                id={groupId}
-              />
+              <div className="add-img">
+                <AddImageForm
+                  onClose={() => setShowAddImg(false)}
+                  addType="groups"
+                  id={groupId}
+                />
+              </div>
             )}
           </div>
         </div>
