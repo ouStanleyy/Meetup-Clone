@@ -11,94 +11,107 @@ const users = [
     password: bcrypt.hashSync("demopassword"),
     groups: [
       {
-        name: "Demo Group",
-        about: "Demo description.",
+        name: "Evening Tennis Under the Bridge",
+        about:
+          "Enjoy rounds of tennis with a tight-nit group of people under the Williamsburg Bridge. Singles or doubles.",
         type: "In person",
         private: false,
-        city: "Demo City",
-        state: "Demo State",
+        city: "New York",
+        state: "NY",
         status: "host",
-        images: ["image url"],
+        images: [
+          "https://static01.nyt.com/images/2018/08/26/autossell/26courts5/merlin_142304082_b4c1a4c6-eab5-46d1-a6cb-695632b10b4e-superJumbo.jpg?quality=75&auto=webp",
+        ],
         events: [
           {
             venue: {
-              address: "123 Demo Street",
-              city: "Demo City",
-              state: "Demo State",
-              lat: 12.3456789,
-              lng: 123.4567891,
+              address: "FDR Dr",
+              city: "New York",
+              state: "NY",
+              lat: 40.715326,
+              lng: -73.975493,
             },
-            name: "Demo Event",
-            description: "Demo description.",
-            type: "In person",
-            capacity: 10,
-            price: 99.99,
-            startDate: new Date("December 17, 2022 03:00:00").toString(),
-            endDate: new Date("December 24, 2022 03:00:00").toString(),
-            status: "member",
-            images: ["image url"],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    firstName: "Fake",
-    lastName: "User",
-    email: "fake@user.io",
-    password: bcrypt.hashSync("fakepassword"),
-    groups: [
-      {
-        name: "Demo Group",
-        status: "member",
-        events: [
-          {
-            name: "Demo Event",
-            status: "member",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    firstName: "Wannabe",
-    lastName: "User",
-    email: "wannabe@user.io",
-    password: bcrypt.hashSync("wannabepassword"),
-    groups: [
-      {
-        name: "Wannabe Group",
-        about: "Wannabe description.",
-        city: "Wannabe City",
-        state: "Wannabe State",
-        status: "host",
-        images: ["image url"],
-        events: [
-          {
-            venue: {
-              address: "123 Wannabe Avenue",
-              city: "Wannabe City",
-              state: "Wannabe State",
-              lat: 87.6543211,
-              lng: 123.4567899,
-            },
-            name: "Wannabe Event",
-            description: "Wannabe description.",
+            name: "Tennis Group First Meet and Greet",
+            description:
+              "First meet and greet event for the evening tennis under the bridge group! Join us online for happy times!",
+            type: "Online",
             capacity: 20,
-            price: 199.99,
-            startDate: new Date("November 05, 2022 03:00:00").toString(),
-            endDate: new Date("November 15, 2022 03:00:00").toString(),
+            price: 18.5,
+            startDate: new Date("December 17, 2022 10:00:00").toString(),
+            endDate: new Date("December 17, 2022 12:00:00").toString(),
             status: "member",
-            images: ["image url"],
+            images: [
+              "https://assets.dnainfo.com/generated/photo/2014/03/east-rivar-park-tennis-courts--1395434904.jpg/extralarge.jpgl",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    firstName: "Daniel",
+    lastName: "Wong",
+    email: "dwong@email.io",
+    password: bcrypt.hashSync("dwongpassword"),
+    groups: [
+      {
+        name: "Evening Tennis Under the Bridge",
+        status: "member",
+        events: [
+          {
+            name: "Tennis Group First Meet and Greet",
+            status: "member",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    firstName: "Stanley",
+    lastName: "Ou",
+    email: "sou@email.io",
+    password: bcrypt.hashSync("soupassword"),
+    groups: [
+      {
+        name: "Couch Co-op Gaming",
+        about:
+          "Battle it out or band together. Hours of excitement gaming together like the good ole days!",
+        type: "In person",
+        city: "Brooklyn",
+        state: "NY",
+        status: "host",
+        images: [
+          "https://www.online-tech-tips.com/wp-content/uploads/2020/01/gaming-on-couch-1.jpeg",
+        ],
+        events: [
+          {
+            venue: {
+              address: "339 Troutman St",
+              city: "Brooklyn",
+              state: "NY",
+              lat: 40.705225,
+              lng: -73.924376,
+            },
+            name: "Nintendo Co-op Night!",
+            description:
+              "Come and enjoy the best titles from the king of co-op gaming, Nintendo!",
+            capacity: 10,
+            price: 4.99,
+            startDate: new Date("December 24, 2022 17:00:00").toString(),
+            endDate: new Date("December 24, 2022 21:00:00").toString(),
+            status: "member",
+            images: [
+              "https://images.nintendolife.com/d05934c36db9e/best-nintendo-switch-couch-co-op-games.large.jpg",
+            ],
           },
         ],
       },
       {
-        name: "Demo Group",
+        name: "Evening Tennis Under the Bridge",
         status: "member",
         events: [
           {
-            name: "Demo Event",
+            name: "Tennis Group First Meet and Greet",
             status: "member",
           },
         ],
