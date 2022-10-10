@@ -194,8 +194,16 @@ const EventInfo = () => {
             <div className="eventInfo img-container">
               <img
                 className="eventInfo img"
-                src={event.previewImage || event.Images?.[0]?.url}
-                alt={event.previewImage || event.Images?.[0]?.url}
+                src={
+                  event.previewImage ||
+                  event.Images?.[0]?.url ||
+                  "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                }
+                alt={
+                  event.previewImage ||
+                  event.Images?.[0]?.url ||
+                  "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                }
               />
             </div>
             <div className="eventInfo description-container">

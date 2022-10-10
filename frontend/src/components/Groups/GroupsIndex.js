@@ -102,8 +102,14 @@ const GroupsIndex = () => {
                 <div className="group img-container">
                   <img
                     className="group img"
-                    src={group.previewImage}
-                    alt={group.previewImage}
+                    src={
+                      group.previewImage ||
+                      "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                    }
+                    alt={
+                      group.previewImage ||
+                      "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                    }
                   />
                 </div>
                 <div className="group details-container">
@@ -129,8 +135,8 @@ const GroupsIndex = () => {
         })}
         <div className="group discover">
           {pathname === "/groups"
-            ? "Discover New Groups"
-            : `Welcome, ${user.firstName}`}
+            ? ""
+            : `Welcome, ${user.firstName} 👋🏻. These are the groups you belong to.`}
         </div>
       </div>
     )

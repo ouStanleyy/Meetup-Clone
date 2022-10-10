@@ -30,25 +30,39 @@
   transform: rotate(-20deg) translateY(-10px);
 }
 
-.login-signup-li {
+.login-signup-li,
+.about-me-links {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-right: 20px;
 }
 
-.login-signup-li > a {
+.login-signup-li {
+  margin-right: 17em;
+  font-size: 20px;
+}
+
+.about-me-links > a {
+  margin-left: 10px;
+  /* margin-right: -10px; */
+}
+
+.login-signup-li > a,
+.about-me-links > a {
   font-weight: bold;
   transition: all 200ms;
 }
 
-.login-signup-li > a:hover {
+.login-signup-li > a:hover,
+.about-me-links > a:hover {
   color: salmon;
   filter: brightness(1.2);
   cursor: pointer;
 }
 
-.login-signup-li > a.active {
+.login-signup-li > a.active,
+.about-me-links > a.active {
   color: salmon;
 }
 

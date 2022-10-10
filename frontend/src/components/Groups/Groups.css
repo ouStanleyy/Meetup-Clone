@@ -13,15 +13,16 @@
   right: 0;
   bottom: 0;
   width: 40%;
-  font-size: 110px;
+  padding-left: 20px;
+  font-size: 80px;
   font-weight: bold;
-  font-family: "Oleo Script Swash Caps", cursive;
+  /* font-family: "Oleo Script Swash Caps", cursive; */
   /* pointer-events: none; */
   /* border: 2px solid; */
-  color: transparent;
-  background-image: linear-gradient(to top right, #71ffff, #526bf4);
-  background-clip: text;
-  background-color: lightseagreen;
+  /* color: transparent; */
+  /* background-image: linear-gradient(to top right, #71ffff, #526bf4); */
+  /* background-clip: text; */
+  /* background-color: black; */
 }
 
 .group.discover:hover {
@@ -107,14 +108,14 @@
 }
 
 .groups.group-container {
-  transform: translateX(100%) rotateY(180deg);
+  transform: translateX(100%);
   opacity: 0;
   transition: all 500ms ease-out;
 }
 
 .groups.group-container.visible {
   /* transition: all 500ms ease; */
-  transform: translateX(0%) rotateY(0deg);
+  transform: translateX(0%);
   opacity: 1;
 }
 

@@ -11,6 +11,8 @@ body {
   margin-top: 100px;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
+  /* background: url(https://www.123freevectors.com/ezoimgfmt/i2.wp.com/files.123freevectors.com/wp-content/original/119232-abstract-blue-and-white-background-image.jpg?w=800&q=95&ezimgfmt=rs:800x450/rscb2)
+    fixed no-repeat center center/cover; */
   background: url(https://images.unsplash.com/photo-1508614999368-9260051292e5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80)
     fixed no-repeat center center/cover;
   /* background: url(https://images.unsplash.com/photo-1620121478247-ec786b9be2fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3432&q=80)

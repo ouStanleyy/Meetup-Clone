@@ -172,8 +172,16 @@ const GroupInfo = () => {
           <div className="groupInfo img-container">
             <img
               className="groupInfo img"
-              src={group.previewImage || group.Images?.[0]?.url}
-              alt={group.previewImage || group.Images?.[0]?.url}
+              src={
+                group.previewImage ||
+                group.Images?.[0]?.url ||
+                "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+              }
+              alt={
+                group.previewImage ||
+                group.Images?.[0]?.url ||
+                "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+              }
             />
           </div>
           <div className="groupInfo details-container">

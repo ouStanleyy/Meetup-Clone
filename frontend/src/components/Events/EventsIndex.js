@@ -60,8 +60,14 @@ const EventsIndex = () => {
                 <div className="event img-container">
                   <img
                     className="event img"
-                    src={event.previewImage}
-                    alt={event.previewImage}
+                    src={
+                      event.previewImage ||
+                      "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                    }
+                    alt={
+                      event.previewImage ||
+                      "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                    }
                   />
                 </div>
                 <div className="event details-container">
@@ -101,9 +107,7 @@ const EventsIndex = () => {
             </Link>
           );
         })}
-        {pathname === "/events" && (
-          <div className="event discover">Discover New Events</div>
-        )}
+        {pathname === "/events" && <div className="event discover"></div>}
       </div>
     )
   );

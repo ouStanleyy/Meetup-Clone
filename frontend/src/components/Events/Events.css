@@ -100,14 +100,14 @@
 }
 
 .events.event-container {
-  transform: translateX(100%) rotateY(180deg);
+  transform: translateX(100%);
   opacity: 0;
   transition: all 500ms ease-out;
 }
 
 .events.event-container.visible {
   /* transition: all 500ms ease; */
-  transform: translateX(0%) rotateY(0deg);
+  transform: translateX(0%);
   opacity: 1;
 }
 
