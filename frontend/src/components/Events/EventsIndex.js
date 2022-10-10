@@ -85,7 +85,11 @@ const EventsIndex = () => {
                         timeZoneName: "short",
                       })}
                     </h4>
-                    <h3 className="event name">{event.name}</h3>
+                    <h3 className="event name">
+                      {pathname === "/events"
+                        ? event.name
+                        : `${event.name.slice(0, 24)}...`}
+                    </h3>
                   </div>
                   <p className="event group-name">
                     {event.Group.name}{" "}
