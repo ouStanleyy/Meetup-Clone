@@ -33,7 +33,7 @@ const Navigation = () => {
             <i class="fa-brands fa-linkedin-in fa-2x" />
           </a>
           {!activeSession ? (
-            <LoginSignupModal />
+            <LoginSignupModal area="nav" />
           ) : (
             <ProfileButton user={activeSession} />
           )}

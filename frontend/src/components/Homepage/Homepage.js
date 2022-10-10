@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import LoginSignupModal from "../LoginSignupModal";
 import "./Homepage.css";
 
 const Homepage = () => {
@@ -9,10 +10,10 @@ const Homepage = () => {
     <div className="homepage-container">
       <div className="header-container">
         <div className="header-left">
-          <h1>Celebrating 20 years of real connections on Meetup</h1>
+          <h1>Celebrating 20 years of real connections on RendeVue</h1>
           <p>
-            Whatever you're looking to do this year, Meetup can help. For 20
-            years, people have turned to Meetup to meet people, make friends,
+            Whatever you're looking to do this year, RendeVue can help. For 20
+            years, people have turned to RendeVue to meet people, make friends,
             find support, grow a business, and explore their interests.
             Thousands of events are happening every day—join the fun.
           </p>
@@ -50,7 +51,7 @@ const Homepage = () => {
       </div>
 
       <div className="body-description">
-        <h2>How Meetup works</h2>
+        <h2>How RendeVue works</h2>
         <p>
           Meet new people who share your interests through online and in-person
           events. It's free to create an account.
@@ -87,9 +88,13 @@ const Homepage = () => {
               src="https://secure.meetupstatic.com/next/images/shared/joinGroup.svg?w=384"
               alt="https://secure.meetupstatic.com/next/images/shared/joinGroup.svg?w=384"
             />
-            <Link to={activeSession ? "/groups/new" : "/signup"}>
-              <h3>Start a group</h3>
-            </Link>
+            {activeSession ? (
+              <Link to="/groups/new">
+                <h3>Start a group</h3>
+              </Link>
+            ) : (
+              <LoginSignupModal area="start" />
+            )}
             <p>
               You don't have to be an expert to gather people together and
               explore shared interests.
@@ -98,9 +103,10 @@ const Homepage = () => {
         </div>
       </div>
 
-      <button className="join-meetup">
-        <Link to="/signup">Join Meetup</Link>
-      </button>
+      <LoginSignupModal area="join" />
+      {/* <button className="join-meetup">
+        <Link to="/signup">Join RendeVue</Link>
+      </button> */}
     </div>
   );
 };

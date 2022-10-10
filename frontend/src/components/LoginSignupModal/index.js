@@ -4,7 +4,7 @@ import LoginForm from "../LoginFormModal/LoginForm";
 import SignupForm from "../SignupFormModal/SignupForm";
 import "./LoginSignupModal.css";
 
-const LoginSignupModal = () => {
+const LoginSignupModal = ({ area }) => {
   const [showModal, setShowModal] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -50,12 +50,22 @@ const LoginSignupModal = () => {
 
   return (
     <>
-      <button className="login-button" onClick={login}>
-        Log In
-      </button>
-      <button className="signup-button" onClick={signup}>
-        Sign Up
-      </button>
+      {area === "nav" && (
+        <>
+          <button className="login-button" onClick={login}>
+            Log In
+          </button>
+          <button className="signup-button" onClick={signup}>
+            Sign Up
+          </button>
+        </>
+      )}
+      {area === "join" && (
+        <button className="join-meetup" onClick={signup}>
+          Join RendeVue
+        </button>
+      )}
+      {area === "start" && <h3 onClick={signup}>Start a group</h3>}
       {showModal && (
         <Modal onClose={reset}>
           <div
