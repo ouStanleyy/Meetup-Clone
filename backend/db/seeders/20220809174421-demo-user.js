@@ -41,7 +41,7 @@ const users = [
             endDate: new Date("December 17, 2022 12:00:00").toString(),
             status: "member",
             images: [
-              "https://assets.dnainfo.com/generated/photo/2014/03/east-rivar-park-tennis-courts--1395434904.jpg/extralarge.jpgl",
+              "https://assets.dnainfo.com/generated/photo/2014/03/east-rivar-park-tennis-courts--1395434904.jpg/extralarge.jpg",
             ],
           },
         ],
