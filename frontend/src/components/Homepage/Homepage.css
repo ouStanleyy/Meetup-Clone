@@ -95,3 +95,7 @@
 .join-meetup:active::after {
   filter: brightness(1.2);
 }
+
+.start-group h3:hover {
+  cursor: pointer;
+}

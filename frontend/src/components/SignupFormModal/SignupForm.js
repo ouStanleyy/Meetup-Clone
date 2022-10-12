@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { signup } from "../../store/session";
 import "./SignupForm.css";
 
 const SignupForm = ({ login }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   // const activeSession = useSelector((state) => state.session.user);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -36,6 +38,7 @@ const SignupForm = ({ login }) => {
 
     try {
       await dispatch(signup(credentials));
+      history.push("/groups/new");
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });

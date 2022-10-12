@@ -28,7 +28,7 @@ const CreateGroupPage = ({ closeForm, group, formType }) => {
         formType === "Create" ? createGroup(group) : editGroup(group)
       );
       history.push(`/groups/${newGroup.id}`);
-      closeForm();
+      if (formType === "edit") closeForm();
     } catch (err) {
       setWiggle(true);
       setErrors({ ...err, ...err.errors });
