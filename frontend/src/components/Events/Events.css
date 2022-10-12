@@ -480,9 +480,11 @@
 
 .add-img {
   display: flex;
-  align-items: flex-end;
-  width: 50%;
-  margin-right: -100px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 28%;
+  margin-left: auto;
 }
 
 .delete-modal {
