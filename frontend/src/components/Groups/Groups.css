@@ -34,7 +34,8 @@
   width: 80%;
   height: 94vh;
   margin-top: -40px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px 0 10px;
   /* border: 1px solid; */
 }
@@ -552,6 +553,29 @@
 .groupInfo.header .add-img {
   width: 100%;
   margin-top: 20px;
+}
+
+.groupInfo.member {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 33%;
+  height: 100px;
+  margin: 10px 0;
+}
+
+.groupInfo.member > #profile-img {
+  width: 80%;
+  border-bottom: 3px solid salmon;
+  border-right: 3px solid salmon;
+  border-radius: 50%;
+}
+
+.groupInfo.member > #profile-name {
+  position: absolute;
+  bottom: 10px;
 }
 
 @keyframes containerEnter {

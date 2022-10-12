@@ -387,12 +387,26 @@ const GroupInfo = () => {
                     {group.Organizer?.firstName} {group.Organizer?.lastName}
                   </span>
                 </p>
-                <h3>Members ({group.numMembers})</h3>
+                <h3>
+                  Members (
+                  {members &&
+                    members.filter(
+                      (member) => member.Membership.status !== "pending"
+                    ).length}
+                  )
+                </h3>
                 {members &&
-                  members.map((member) => (
-                    <p key={member.id} className="groupInfo member">
-                      {member.firstName} {member.lastName}
-                    </p>
+                  members.slice(0, 6).map((member) => (
+                    <div key={member.id} className="groupInfo member">
+                      <img
+                        id="profile-img"
+                        src="https://icons-for-free.com/iconfiles/png/512/home+page+profile+user+icon-1320184025620798710.png"
+                        alt="profile-icon"
+                      />
+                      <span id="profile-name">
+                        {member.firstName} {member.lastName}
+                      </span>
+                    </div>
                   ))}
               </div>
             )}

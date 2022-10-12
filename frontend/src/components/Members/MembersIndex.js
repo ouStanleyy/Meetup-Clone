@@ -32,7 +32,11 @@ const MembersIndex = ({ members, organizer }) => {
           return (
             <div key={member.id} className={`members member-container`}>
               <div className="member profile-img">
-                {/* insert profile image */}
+                <img
+                  id="profile-img"
+                  src="https://icons-for-free.com/iconfiles/png/512/home+page+profile+user+icon-1320184025620798710.png"
+                  alt="profile-icon"
+                />
               </div>
               <div className="member details-container">
                 <div className="member details">
