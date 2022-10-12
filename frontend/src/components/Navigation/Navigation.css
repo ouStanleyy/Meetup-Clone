@@ -36,21 +36,28 @@
   align-items: center;
   gap: 10px;
   margin-right: 20px;
+  /* border: 1px solid; */
 }
 
 .login-signup-li {
   /* margin-right: 17em; */
-  margin-left: -17em;
+  position: relative;
+  margin-left: auto;
+  width: 75%;
+  /* margin-left: -17em; */
   font-size: 20px;
+}
+
+.login-signup-li > *:first-child {
   transition: margin 1000ms ease-in-out;
+  margin-left: 25%;
 }
 
-.login-signup-li.inactive {
-  margin-left: 63em;
+.login-signup-li.inactive > *:first-child {
+  margin-left: 32%;
 }
-
-.login-signup-li.inactive2 {
-  margin-left: 58.5em;
+.login-signup-li.right > *:first-child {
+  margin-left: 88%;
 }
 
 .about-me-links > a {
