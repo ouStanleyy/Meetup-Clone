@@ -19,7 +19,9 @@ const Navigation = () => {
         </li>
         <li
           className={`login-signup-li ${
-            pathname !== "/groups" && pathname !== "/events" && "inactive"
+            pathname !== "/groups" &&
+            pathname !== "/events" &&
+            (activeSession ? "inactive" : "inactive2")
           }`}
         >
           <Link className={pathname === "/groups" ? "active" : ""} to="/groups">

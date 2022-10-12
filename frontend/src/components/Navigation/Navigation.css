@@ -49,6 +49,10 @@
   margin-left: 63em;
 }
 
+.login-signup-li.inactive2 {
+  margin-left: 58.5em;
+}
+
 .about-me-links > a {
   margin-left: 10px;
   /* margin-right: -10px; */
