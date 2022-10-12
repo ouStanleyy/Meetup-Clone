@@ -1,5 +1,14 @@
 .image-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
+}
+
+.image-form > .button-containers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .url-input {

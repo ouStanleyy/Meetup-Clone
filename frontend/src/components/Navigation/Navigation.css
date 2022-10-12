@@ -39,8 +39,14 @@
 }
 
 .login-signup-li {
-  margin-right: 17em;
+  /* margin-right: 17em; */
+  margin-left: -17em;
   font-size: 20px;
+  transition: margin 1000ms ease-in-out;
+}
+
+.login-signup-li.inactive {
+  margin-left: 63em;
 }
 
 .about-me-links > a {

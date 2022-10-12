@@ -62,13 +62,15 @@ const AddImageForm = ({ onClose, addType, id }) => {
           />
         </>
         {/* )} */}
-        <button className="add-image accept">
-          <i className="fa-solid fa-arrow-up" />
-        </button>
+        <div className="button-containers">
+          <button className="add-image accept">
+            <i className="fa-solid fa-arrow-up" />
+          </button>
+          <button className="add-image cancel" onClick={onClose}>
+            <i className="fa-solid fa-xmark" />
+          </button>
+        </div>
       </form>
-      <button className="add-image cancel" onClick={onClose}>
-        <i className="fa-solid fa-xmark" />
-      </button>
     </>
   );
 };

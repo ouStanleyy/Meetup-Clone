@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { getGroups } from "../../store/groups";
 import { getSessionGroups } from "../../store/session";
+import Loader from "../Loader";
 import "./Groups.css";
 
 const GroupsIndex = () => {
@@ -83,63 +84,63 @@ const GroupsIndex = () => {
   //     : (async () => dispatch(getSessionGroups()))();
   // }, [dispatch, pathname]);
 
-  return (
-    groups && (
-      <div ref={groupsContainerRef} className="groups container">
-        {groups.map((group, idx) => {
-          return (
-            <Link
-              className="groupInfo-link"
-              key={group.id}
-              ref={(el) => (groupsRef.current[idx] = el)}
-              to={`/groups/${group.id}`}
+  return groups ? (
+    <div ref={groupsContainerRef} className="groups container">
+      {groups.map((group, idx) => {
+        return (
+          <Link
+            className="groupInfo-link"
+            key={group.id}
+            ref={(el) => (groupsRef.current[idx] = el)}
+            to={`/groups/${group.id}`}
+          >
+            <div
+              className={`groups group-container ${
+                isVisible[groupsRef.current[idx]?.href] ? "visible" : ""
+              }`}
             >
-              <div
-                className={`groups group-container ${
-                  isVisible[groupsRef.current[idx]?.href] ? "visible" : ""
-                }`}
-              >
-                <div className="group img-container">
-                  <img
-                    className="group img"
-                    src={
-                      group.previewImage ||
-                      "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
-                    }
-                    alt={
-                      group.previewImage ||
-                      "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
-                    }
-                  />
-                </div>
-                <div className="group details-container">
-                  <div>
-                    <h3 className="group name">{group.name}</h3>
-                    <h4 className="group location">
-                      {group.city}, {group.state}
-                    </h4>
-                  </div>
-                  <p className="group about">{group.about}</p>
-                  <p className="group numMembers">
-                    {group.numMembers}{" "}
-                    {group.numMembers === 1 ? "member" : "members"}{" "}
-                    <span className="group interpunct">·</span>{" "}
-                    <span className="group type_privacy">
-                      {group.type} {group.private ? "private" : "public"} group
-                    </span>
-                  </p>
-                </div>
+              <div className="group img-container">
+                <img
+                  className="group img"
+                  src={
+                    group.previewImage ||
+                    "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                  }
+                  alt={
+                    group.previewImage ||
+                    "https://st.depositphotos.com/3097111/4720/v/450/depositphotos_47208689-stock-illustration-picture-coming-soon-image-vector.jpg"
+                  }
+                />
               </div>
-            </Link>
-          );
-        })}
-        <div className="group discover">
-          {pathname === "/groups"
-            ? ""
-            : `Welcome, ${user.firstName} 👋🏻. These are the groups you belong to.`}
-        </div>
+              <div className="group details-container">
+                <div>
+                  <h3 className="group name">{group.name}</h3>
+                  <h4 className="group location">
+                    {group.city}, {group.state}
+                  </h4>
+                </div>
+                <p className="group about">{group.about}</p>
+                <p className="group numMembers">
+                  {group.numMembers}{" "}
+                  {group.numMembers === 1 ? "member" : "members"}{" "}
+                  <span className="group interpunct">·</span>{" "}
+                  <span className="group type_privacy">
+                    {group.type} {group.private ? "private" : "public"} group
+                  </span>
+                </p>
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+      <div className="group discover">
+        {pathname === "/groups"
+          ? ""
+          : `Welcome, ${user.firstName} 👋🏻. These are the groups you belong to.`}
       </div>
-    )
+    </div>
+  ) : (
+    <Loader />
   );
 };
 

@@ -56,6 +56,11 @@ const GroupInfo = () => {
     history.push("/your-groups");
   };
 
+  const closeAddImg = (e) => {
+    e.preventDefault();
+    setShowAddImg(false);
+  };
+
   const mouseMoveHandler = (e) => {
     const width = e.currentTarget.offsetWidth;
     const height = e.currentTarget.offsetHeight;
@@ -259,7 +264,7 @@ const GroupInfo = () => {
             {showAddImg && (
               <div className="add-img">
                 <AddImageForm
-                  onClose={() => setShowAddImg(false)}
+                  onClose={closeAddImg}
                   addType="groups"
                   id={groupId}
                 />

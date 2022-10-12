@@ -43,6 +43,11 @@ const EventInfo = () => {
     history.push(`/groups/${group.id}`);
   };
 
+  const closeAddImg = (e) => {
+    e.preventDefault();
+    setShowAddImg(false);
+  };
+
   const mouseMoveHandler = (e) => {
     const width = e.currentTarget.offsetWidth;
     const height = e.currentTarget.offsetHeight;
@@ -139,7 +144,7 @@ const EventInfo = () => {
           {showAddImg && (
             <div className="add-img">
               <AddImageForm
-                onClose={() => setShowAddImg(false)}
+                onClose={closeAddImg}
                 addType="events"
                 id={eventId}
               />
