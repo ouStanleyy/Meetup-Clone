@@ -138,16 +138,6 @@ const users = [
           },
         ],
       },
-      {
-        name: "Techies For Life",
-        status: "member",
-        events: [
-          {
-            name: "Monthly Hackathon",
-            status: "member",
-          },
-        ],
-      },
     ],
   },
   {
