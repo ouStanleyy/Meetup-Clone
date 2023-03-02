@@ -108,7 +108,7 @@ const users = [
             name: "Arm Day",
             description: "Every day is arm day.",
             capacity: 10,
-            price: 0,
+            price: 4.99,
             startDate: new Date("May 12, 2023 10:00:00").toString(),
             endDate: new Date("May 12, 2023 12:00:00").toString(),
             status: "member",
@@ -193,7 +193,7 @@ const users = [
       {
         name: "Techies For Life",
         about: "Join us for all things tech. We attend monthly hackathons.",
-        type: "Online",
+        type: "In person",
         city: "New York",
         state: "NY",
         status: "host",
@@ -202,10 +202,17 @@ const users = [
         ],
         events: [
           {
+            venue: {
+              address: "170E E 2nd St",
+              city: "New York",
+              state: "NY",
+              lat: 40.723297,
+              lng: -73.98392,
+            },
             name: "Monthly Hackathon",
             description: "Time for another hackathon!",
             capacity: 20,
-            price: 0,
+            price: 9.99,
             startDate: new Date("April 18, 2023 13:00:00").toString(),
             endDate: new Date("April 18, 2023 16:00:00").toString(),
             status: "member",
