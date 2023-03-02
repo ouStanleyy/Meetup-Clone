@@ -37,11 +37,43 @@ const users = [
             type: "Online",
             capacity: 20,
             price: 18.5,
-            startDate: new Date("December 17, 2022 10:00:00").toString(),
-            endDate: new Date("December 17, 2022 12:00:00").toString(),
+            startDate: new Date("June 17, 2023 10:00:00").toString(),
+            endDate: new Date("June 17, 2023 12:00:00").toString(),
             status: "member",
             images: [
               "https://assets.dnainfo.com/generated/photo/2014/03/east-rivar-park-tennis-courts--1395434904.jpg/extralarge.jpg",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Weekend Warriors",
+        about: "Weekends are short, so enjoy them to the fullest!",
+        type: "In person",
+        city: "New York",
+        state: "NY",
+        status: "host",
+        images: [
+          "https://media.istockphoto.com/id/682516816/vector/weekend-loading-vector-illustration-yellow-background.jpg?s=612x612&w=0&k=20&c=bdOsuqje_0FXsSlAImInhH26deJWreZXiSb1Jm_p4M0=",
+        ],
+        events: [
+          {
+            venue: {
+              address: "79th Street & 85th Street",
+              city: "New York",
+              state: "NY",
+              lat: 40.781646,
+              lng: -73.966436,
+            },
+            name: "Picnic!",
+            description: "Food will be provided, but BYOB!",
+            capacity: 50,
+            price: 19.99,
+            startDate: new Date("June 24, 2023 10:00:00").toString(),
+            endDate: new Date("June 24, 2023 18:00:00").toString(),
+            status: "member",
+            images: [
+              "https://d32ydbgkw6ghe6.cloudfront.net/production/uploads/cover_images/e8104da779cc2d450ffa1fb53492dffe42f5/i1080x475.jpg",
             ],
           },
         ],
@@ -55,11 +87,63 @@ const users = [
     password: bcrypt.hashSync("dwongpassword"),
     groups: [
       {
+        name: "Gym Rats",
+        about: "Zero rest days, zero cheat days, all gains.",
+        type: "In person",
+        city: "Queens",
+        state: "NY",
+        status: "host",
+        images: [
+          "https://media.timeout.com/images/105928521/1372/772/image.jpg",
+        ],
+        events: [
+          {
+            venue: {
+              address: "29-22 Northern Blvd",
+              city: "Queens",
+              state: "NY",
+              lat: 40.74947,
+              lng: -73.936139,
+            },
+            name: "Arm Day",
+            description: "Every day is arm day.",
+            capacity: 10,
+            price: 0,
+            startDate: new Date("May 12, 2023 10:00:00").toString(),
+            endDate: new Date("May 12, 2023 12:00:00").toString(),
+            status: "member",
+            images: [
+              "https://barbend.com/wp-content/uploads/2022/03/shutterstock_1543790417.jpg",
+            ],
+          },
+        ],
+      },
+      {
         name: "Evening Tennis Under the Bridge",
         status: "member",
         events: [
           {
             name: "Tennis Group First Meet and Greet",
+            status: "member",
+          },
+        ],
+      },
+      {
+        name: "Weekend Warriors",
+        status: "member",
+        events: [
+          {
+            name: "Picnic!",
+            status: "member",
+          },
+        ],
+      },
+      {
+        name: "Techies For Life",
+        status: "member",
+        events: [
+          {
+            name: "Monthly Hackathon",
             status: "member",
           },
         ],
@@ -97,11 +181,36 @@ const users = [
               "Come and enjoy the best titles from the king of co-op gaming, Nintendo!",
             capacity: 10,
             price: 4.99,
-            startDate: new Date("December 24, 2022 17:00:00").toString(),
-            endDate: new Date("December 24, 2022 21:00:00").toString(),
+            startDate: new Date("July 24, 2023 17:00:00").toString(),
+            endDate: new Date("July 24, 2023 21:00:00").toString(),
             status: "member",
             images: [
               "https://images.nintendolife.com/d05934c36db9e/best-nintendo-switch-couch-co-op-games.large.jpg",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Techies For Life",
+        about: "Join us for all things tech. We attend monthly hackathons.",
+        type: "Online",
+        city: "New York",
+        state: "NY",
+        status: "host",
+        images: [
+          "https://miro.medium.com/v2/resize:fit:4800/0*UNHfTP1jvD3yk-iZ.",
+        ],
+        events: [
+          {
+            name: "Monthly Hackathon",
+            description: "Time for another hackathon!",
+            capacity: 20,
+            price: 0,
+            startDate: new Date("April 18, 2023 13:00:00").toString(),
+            endDate: new Date("April 18, 2023 16:00:00").toString(),
+            status: "member",
+            images: [
+              "https://images.squarespace-cdn.com/content/v1/5e6542d2ae16460bb741a9eb/1603318636443-A846ACUKNYUBA0RPLJ94/marvin-meyer-SYTO3xs06fU-unsplash.jpg?format=1500w",
             ],
           },
         ],
@@ -112,6 +221,26 @@ const users = [
         events: [
           {
             name: "Tennis Group First Meet and Greet",
+            status: "member",
+          },
+        ],
+      },
+      {
+        name: "Weekend Warriors",
+        status: "member",
+        events: [
+          {
+            name: "Picnic!",
+            status: "member",
+          },
+        ],
+      },
+      {
+        name: "Gym Rats",
+        status: "member",
+        events: [
+          {
+            name: "Arm Day",
             status: "member",
           },
         ],
